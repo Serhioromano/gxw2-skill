@@ -2,6 +2,47 @@
 
 Load when writing control flow, operators, or ST statements. This covers all ST language constructs available on FX series.
 
+> For the **complete catalog** of all 180+ GX Works 2 instructions (including ladder-only),
+> see [instruction-db.md](instruction-db.md).
+
+---
+
+## Common ST Instructions (Quick Reference)
+
+Most-used instructions in everyday ST programming. Each has `_E` (triggered), `P` (pulse), and/or `D` (32-bit) variants.
+
+| Instruction | Description | Quick Example |
+|-------------|-------------|---------------|
+| `SET(Cond, Dev)` | Latch bit ON | `SET(xAlarm, Y0);` |
+| `RST(Cond, Dev)` | Reset bit OFF | `RST(xReset, Y0);` |
+| `PLS(Cond, Dev)` | One-scan pulse on rising edge | `PLS(xTrig, M50);` |
+| `PLF(Cond, Dev)` | One-scan pulse on falling edge | `PLF(xTrig, M51);` |
+| `MEP(IN)` | Rising edge detect (inline, returns BOOL) | `IF MEP(xStart) THEN ...` |
+| `MEF(IN)` | Falling edge detect (inline, returns BOOL) | `xPulse := MEF(xStop);` |
+| `MOV(S, D)` | Move value | `MOV(K100, wOut);` |
+| `INC(D)` | Increment by 1 | `INC(iCount);` |
+| `DEC(D)` | Decrement by 1 | `DEC(iCount);` |
+| `CMP(S1, S2, D)` | Compare, result bits in D | `CMP(wVal, K100, M0);` |
+| `ZCP(Lo, Hi, S, D)` | Zone compare | `ZCP(K0, K100, wVal, M10);` |
+| `WAND(S1, S2, D)` | Word bitwise AND | `WAND(wIn, H00FF, wOut);` |
+| `WOR(S1, S2, D)` | Word bitwise OR | `WOR(wIn, HFF00, wOut);` |
+| `WXOR(S1, S2, D)` | Word bitwise XOR | `WXOR(wIn, HFFFF, wOut);` |
+| `NEG(D)` | Two's complement negation | `NEG(iVal);` |
+| `BON(S, N, D)` | Test bit N of S → D | `BON(wStatus, K3, M20);` |
+| `SWAP(D)` | Swap high/low byte | `SWAP(wData);` |
+| `BCD(S, D)` | Binary → BCD | `BCD(iVal, wBcd);` |
+| `BIN(S, D)` | BCD → Binary | `BIN(wBcd, iVal);` |
+| `DECO(S, D, N)` | Decode N bits of S → bit in D | `DECO(iStep, M0, K3);` |
+| `ENCO(S, D, N)` | Encode bit position of S → D | `ENCO(M0, iPos, K3);` |
+| `OUT_T(Cond, TCx, Preset)` | Hardware timer start | `OUT_T(TRUE, TC1, K20);` |
+| `OUT_C(Cond, CCx, Preset)` | Hardware counter (16-bit) | `OUT_C(TRUE, CC0, K200);` |
+| `OUT_C_32(Cond, CCx, Preset)` | Hardware counter (32-bit) | `OUT_C_32(TRUE, CC235, K200);` |
+| `SHL(IN, N, D)` | Shift left by N bits | `SHL(wVal, K4, wOut);` |
+| `SHR(IN, N, D)` | Shift right by N bits | `SHR(wVal, K4, wOut);` |
+| `EI` | Enable interrupts | `EI;` |
+| `DI` | Disable interrupts | `DI;` |
+| `WDT` | Reset watchdog timer | `WDT;` |
+
 ---
 
 ## SET / RST
@@ -209,3 +250,306 @@ RST(TRUE, CC235);             // Reset counter to 0
 - `CSx` — counter contact, TRUE when count ≥ preset
 - No CSV declaration needed for `OUT_C`, `OUT_C_32`, `CNx`, `CSx`
 - `OUT_C` for 16-bit (C0–C199), `OUT_C_32` for 32-bit (C200–C255)
+
+---
+
+## Data Move — MOV
+
+Transfers data from source to destination. Supports `P` (pulse) and `D` (32-bit) variants.
+
+```iecst
+MOV(S, D);        // D := S (16-bit)
+
+MOV(K100, wOut);          // wOut := 100
+MOV(wInput, D200);        // D200 := wInput
+
+(* Variants *)
+MOVP(xTrig, K100, wOut); // Pulse: one-shot on rising edge
+DMOV(diSrc, diDst);      // 32-bit: DINT/DWORD
+DMOVP(xTrig, diSrc, diDst);
+```
+
+`MOV_E` not available; use `MOV` directly. For block/fill operations, use `BMOV` (copy N words) or `FMOV` (fill N words with same value).
+
+---
+
+## Comparison — CMP / ZCP
+
+Compare two values or check if a value falls within a zone. Results written to 3 consecutive bit devices starting from the destination.
+
+```iecst
+(* CMP: compare S1 vs S2, results in D..D+2 *)
+(* D+0: ON when S1 > S2   *)
+(* D+1: ON when S1 = S2   *)
+(* D+2: ON when S1 < S2   *)
+CMP(S1, S2, D);
+
+CMP(wValue, K100, M0);
+// M0: wValue > 100
+// M1: wValue = 100
+// M2: wValue < 100
+
+IF M0 THEN xHigh := TRUE; END_IF;
+
+(* ZCP: zone compare S vs [Lower, Upper], results in D..D+2 *)
+(* D+0: ON when S < Lower  *)
+(* D+1: ON when Lower ≤ S ≤ Upper *)
+(* D+2: ON when S > Upper  *)
+ZCP(Lower, Upper, S, D);
+
+ZCP(K0, K100, wTemp, M10);
+// M10: wTemp < 0
+// M11: 0 ≤ wTemp ≤ 100
+// M12: wTemp > 100
+```
+
+| Variant | Example |
+|---------|---------|
+| 32-bit | `DCMP(diVal, K1000, M0)` |
+| 32-bit+pulse | `DCMPP(xTrig, diVal, K1000, M0)` |
+| Floating | `ECMP(rVal, E50.0, M0)`, `EZCP(E0.0, E100.0, rVal, M10)` |
+
+> In ST, native `IF` with `=`, `<`, `>`, `<=`, `>=`, `<>` is usually cleaner. Use CMP/ZCP when you need all three comparison results simultaneously.
+
+---
+
+## Increment / Decrement — INC / DEC
+
+Add or subtract 1 from a value in-place. Supports `P` (pulse) and `D` (32-bit) variants.
+
+```iecst
+INC(D);     // D := D + 1 (16-bit)
+DEC(D);     // D := D - 1 (16-bit)
+
+INC(iCount);             // iCount := iCount + 1
+DEC(wRemaining);         // wRemaining := wRemaining - 1
+
+(* Variants *)
+INCP(xTrig, iCount);     // Pulse: one-shot
+DINC(diPosition);        // 32-bit increment
+DINCP(xTrig, diPosition);
+DDEC(diTotal);           // 32-bit decrement
+```
+
+No `_E` variant. No CSV declaration needed.
+
+---
+
+## Word Logic — WAND / WOR / WXOR
+
+Bitwise logic operations on 16-bit WORD values. Required because ST logical operators (`AND`, `OR`, `XOR`) work on BOOL only.
+
+```iecst
+WAND(S1, S2, D);     // D := S1 AND S2 (bitwise)
+WOR(S1, S2, D);      // D := S1 OR S2  (bitwise)
+WXOR(S1, S2, D);     // D := S1 XOR S2 (bitwise)
+
+(* Bit masking examples *)
+WAND(wStatus, H00FF, wLowByte);    // Extract lower 8 bits
+WXOR(wFlags, HFFFF, wInverted);    // Invert all 16 bits
+WOR(wOutput, H0001, wOutput);      // Set bit 0 without affecting others
+
+(* Variants *)
+WAND_E(xTrig, wA, wB, wResult);    // Triggered
+WANDP(xTrig, wA, wB, wResult);     // Pulse
+DAND(dwA, dwB, dwResult);          // 32-bit
+DAND_E(xTrig, dwA, dwB, dwResult);
+```
+
+| Base   | `_E`      | `P`      | `D` (32-bit)       | `DP` (32-bit pulse) |
+|--------|-----------|----------|--------------------|----------------------|
+| `WAND` | `WAND_E`  | `WANDP`  | `DAND`, `DAND_E`   | `DANDP`              |
+| `WOR`  | `WOR_E`   | `WORP`   | `DOR`, `DOR_E`     | `DORP`               |
+| `WXOR` | `WXOR_E`  | `WXORP`  | `DXOR`, `DXOR_E`   | `DXORP`              |
+
+> No `WNEG` (word negate). Use `WXOR(wVal, HFFFF, wResult)` for bitwise NOT.
+
+---
+
+## Negation — NEG
+
+Two's complement: `D := 0 − D`. Supports `P` (pulse) and `D` (32-bit) variants.
+
+```iecst
+NEG(iVal);               // iVal := -iVal
+NEGP(xTrig, iVal);       // Pulse
+DNEG(diVal);             // 32-bit
+
+(* Floating point negation *)
+ENEG(rVal);              // rVal := -rVal
+```
+
+> In ST, `iVal := -iVal;` is equivalent and preferred for INT/DINT. Use `NEG` when pulse execution is needed (`NEGP`).
+
+---
+
+## Bit Test — BON
+
+Check if bit N of source is ON/OFF, result written to destination bit.
+
+```iecst
+BON(S, N, D);     // D := (bit N of S) ? TRUE : FALSE
+
+BON(wStatus, K3, M20);     // M20 := bit 3 of wStatus
+BON(dwEncoder, K15, xBit15);
+
+(* Variants *)
+BON_E(xTrig, wStatus, K3, M20);   // Triggered
+BONP(xTrig, wStatus, K3, M20);    // Pulse
+DBON(dwVal, K31, xBit31);         // 32-bit
+```
+
+> In ST, `xResult := (wVal AND H0008) <> WORD#0;` is equivalent for simple bit tests. Use BON when pulse/triggered execution is needed.
+
+---
+
+## Byte Swap — SWAP
+
+Swaps high and low byte of a 16-bit word. Supports `P` (pulse) and `D` (32-bit) variants.
+
+```iecst
+SWAP(wData);             // Swap bytes: 0xAABB → 0xBBAA
+
+SWAPP(xTrig, wData);     // Pulse
+DSWAP(dwData);           // 32-bit (swaps high/low word)
+```
+
+Common uses: endianness conversion for communication protocols, rearranging data from network byte order.
+
+---
+
+## BCD / BIN Conversion
+
+Convert between binary and BCD (Binary Coded Decimal) representations.
+
+```iecst
+BCD(S, D);    // Binary → BCD (e.g., 123 → H0123)
+BIN(S, D);    // BCD → Binary (e.g., H0123 → 123)
+
+BCD(iCount, wBcdOut);     // wBcdOut := BCD of iCount
+BIN(wBcdIn, iResult);     // iResult := decimal value of BCD
+
+(* Variants *)
+BCDP(xTrig, iCount, wBcdOut);  // Pulse
+DBCD(diCount, dwBcdOut);       // 32-bit BCD
+DBIN(dwBcdIn, diResult);       // 32-bit BIN
+```
+
+> BCD is used for thumbwheel switches, 7-segment displays, and legacy devices. For ST with no BCD peripherals, prefer `INT_TO_BCD`/`BCD_TO_INT` function blocks or keep values in native binary.
+
+---
+
+## Decode / Encode — DECO / ENCO
+
+Decode an integer to a single bit position, or encode a bit position to an integer.
+
+```iecst
+(* DECO: decode N bits of S → set a single bit in D *)
+(* D is a bit device (M, Y). D is set at position = value of S *)
+DECO(S, D, N);
+
+DECO(iStep, M0, K3);     // If iStep=5 → M5 ON, others OFF (3 bits → 0–7)
+
+(* ENCO: encode bit position of S → D (N bits) *)
+(* S is a bit device, D is a word device *)
+ENCO(S, D, N);
+
+ENCO(M0, iPos, K3);      // If M5 is ON → iPos := 5 (2^N bits of S encoded)
+```
+
+| Param | DECO | ENCO |
+|-------|------|------|
+| S | Word: integer value | Bit device start: bit group to scan |
+| D | Bit device: destination bit | Word: result integer |
+| N | Number of bits to decode (1–8) | Number of bits to encode (1–8, 2^N bits scanned) |
+
+> N=3 → 8 values (0–7), N=4 → 16 values (0–15), etc. `DECOP`/`ENCOP` for pulse.
+
+---
+
+## Bit Shift Register — SFTR / SFTL
+
+Multi-word shift register. Shifts N bits across a range of consecutive word devices.
+
+```iecst
+(* SFTR: shift right through N words, shift-in bit from S *)
+SFTR(S, D, N1, N2);
+(* S: shift-in data source (bit device)
+   D: head of shift register (bit device)
+   N1: length of shift register (words)
+   N2: number of bits to shift *)
+
+SFTR(xNewBit, M0, K4, K1); // Shift M0–M63 right by 1, xNewBit → M0
+
+(* SFTL: shift left *)
+SFTL(xNewBit, M0, K4, K1); // Shift M0–M63 left by 1, xNewBit → M63
+```
+
+| Variant | Description |
+|---------|-------------|
+| `SFTRP` / `SFTLP` | Pulse execution |
+| `WSFR` / `WSFL` | Word shift register (shifts whole words, not bits) |
+
+> For simple bit shifts on a single WORD, use `SHL`/`SHR`. Use `SFTR`/`SFTL` for tracking sequences (conveyor tracking, FIFO history).
+
+---
+
+## Interrupt Control — EI / DI
+
+Enable or disable hardware interrupts.
+
+```iecst
+EI;    // Enable interrupts (after DI)
+DI;    // Disable interrupts (globally)
+
+(* Typical usage pattern *)
+DI;
+// ... critical section (cannot be interrupted) ...
+EI;
+```
+
+- Standalone statements — no parameters, no CSV declaration
+- `DI` disables all external interrupts until `EI` is executed
+- Interrupt POUs must end with `IRET;` (returns to main program)
+- Does NOT disable the scan watchdog timer
+
+---
+
+## Watchdog Timer — WDT
+
+Resets the scan watchdog timer to prevent a watchdog timeout during long operations.
+
+```iecst
+WDT;         // Reset watchdog timer
+WDTP;        // Pulse (one-shot on rising edge of implicit trigger)
+
+(* Typical use: inside long loops *)
+FOR i := 0 TO 10000 DO
+    // ... lengthy operation ...
+    IF (i MOD 100) = 0 THEN
+        WDT;  // Reset WDT every 100 iterations
+    END_IF;
+END_FOR;
+```
+
+- `WDT` is a standalone statement (no parameters)
+- `WDTP` is the pulse variant — use when called conditionally
+- Default scan watchdog: 200ms. Extended by `WDT` to 200ms from the point of execution
+- No CSV declaration needed
+
+---
+
+## FOR / NEXT
+
+Loop construct (IEC syntax) for repeating a block. See [common-rules.md](common-rules.md) for the full pattern.
+
+```iecst
+FOR iVar := Start TO End BY Step DO
+    // statements
+END_FOR;
+```
+
+- `BY Step` is optional (defaults to 1)
+- `EXIT;` exits the innermost loop immediately
+- Keep loops short to avoid scan time overrun — use `WDT` inside long loops
+- `CONTINUE` is **not available** on FX series — restructure with `IF/ELSE`
