@@ -81,8 +81,6 @@ gxw2-skill/
 │   ├── 11-edge-detection.st + .csv
 │   ├── 12-function-block/MotorControl.st + .csv
 │   └── 13-function/ScaleValue.st + .csv
-└── tools/
-    └── gen_csv.py                   # Regenerate all example CSV files
 ```
 
 ## Key Design Decisions
