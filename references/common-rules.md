@@ -18,6 +18,24 @@ Always load this file. These constraints apply to every code generation for GX W
 10. **Always generate CSV variable files** — never use inline `VAR...END_VAR` blocks.
 11. **No `ARRAY[*]` variable-length arrays.**
 
+## Missing IEC Constructs (FX Series)
+
+| Construct              | Status | Alternative                      |
+|------------------------|--------|----------------------------------|
+| `CONTINUE`             | ❌     | Restructure with IF/ELSE         |
+| `JMP`/`LBL` in ST      | ❌     | Use IF or CASE                   |
+| Named CASE labels      | ❌     | Integer labels + comments        |
+| CASE ranges (`1..5`)   | ❌     | Individual integer labels        |
+| `LREAL`                | ❌     | Use REAL                         |
+| `WSTRING`              | ❌     | Use STRING                       |
+| `SR`, `RS` FBs         | ❌     | Use SET/RST instructions         |
+| `VAR_IN_OUT`           | ❌     | Separate VAR_INPUT + VAR_OUTPUT  |
+| Function overloading   | ❌     | Unique FUN/FB names              |
+| `__NEW`/`__DELETE`     | ❌     | Not applicable (no dynamic mem)  |
+| `REF_TO`               | ❌     | Not available                    |
+| `ARRAY[*]`             | ❌     | Fixed-size arrays only           |
+| Bit-of-word (`D100.0`) | ❌     | Bit masking or M relays          |
+
 ## Always-Generate Rules
 
 - Every code output = ST file(s) + CSV variable file(s).
@@ -59,6 +77,76 @@ GX Works 2 uses `:=` for **ALL** parameters, including FB outputs. Never use `=>
 ```iecst
 tonDelay(IN := xStart, PT := T#5s, Q := xDone, ET := tElapsed);
 ```
+
+## Selection
+
+### IF Statement
+```iecst
+IF condition THEN
+    // statements
+ELSIF other_condition THEN
+    // statements
+ELSE
+    // statements
+END_IF;
+```
+
+### CASE Statement
+```iecst
+CASE IntVar OF
+    0: // Init
+        // statements
+    10: // Reset
+        // statements
+    20: // Idle
+        // statements
+ELSE
+        // statements
+END_CASE;
+```
+
+**Restrictions:**
+- Integer labels only — no named values, no ranges (`1..5`)
+- Use comments to label states
+
+## Iteration
+
+### FOR Loop
+```iecst
+FOR i := start TO end BY step DO
+    // statements
+END_FOR;
+```
+- `BY step` is optional (defaults to 1)
+- `FOR` loops in ST have no scan time watchdog. Keep loops short to avoid scan time overrun.
+
+### WHILE Loop
+```iecst
+WHILE condition DO
+    // statements
+END_WHILE;
+```
+
+### REPEAT Loop
+```iecst
+REPEAT
+    // statements
+UNTIL condition;
+END_REPEAT;
+```
+
+### EXIT
+```iecst
+EXIT;  // exits the innermost loop immediately
+```
+
+## Operators
+
+| Category     | Operators                                |
+|-------------|------------------------------------------|
+| Arithmetic  | `+`, `-`, `*`, `/`, `MOD`               |
+| Comparison  | `=`, `<>`, `<`, `>`, `<=`, `>=`          |
+| Logical     | `NOT`, `AND`, `OR`, `XOR`                |
 
 ## 3-Program Structure
 
