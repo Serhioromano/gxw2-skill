@@ -1,0 +1,19 @@
+(*
+  Function: ScaleValue
+  Purpose: Linear scaling of a raw INT value to engineering REAL units.
+           Converts iRaw from range [iRawMin..iRawMax] to [rEngMin..rEngMax].
+  Files:   ScaleValue.st (this file — code body only)
+           ScaleValue.csv (VAR_INPUT declarations)
+  Rules:   FUN has VAR_INPUT only — no VAR_OUTPUT.
+           Return value via function name assignment.
+           Calling FUN requires NO CSV declaration in the caller.
+           No VAR_IN_OUT on FX.
+  Usage:   rPressure := ScaleValue(iRaw := AI_Pressure,
+                                    iRawMin := K0, iRawMax := K4000,
+                                    rEngMin := E0.0, rEngMax := E100.0);
+*)
+
+(* Calculate span (REAL) to avoid integer division *)
+ScaleValue := rEngMin +
+    ((INT_TO_REAL(iRaw - iRawMin) / INT_TO_REAL(iRawMax - iRawMin)) *
+     (rEngMax - rEngMin));
