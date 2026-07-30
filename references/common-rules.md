@@ -59,8 +59,14 @@ Always load this file. These constraints apply to every code generation for GX W
 | `g_`   | Global | `g_xSystemReady`   |
 | `ai`   | ARR INT| `aiLookupTable`    |
 | `ar`   | ARR REAL|`arCalibration`    |
+| `fb`   | FB instance | `fbMotor`     |
+| `f`    | FUN call    | `fScaleValue` |
+| `c_`   | Constant    | `c_MAX_SPEED`  |
 
 Global variable name prefix: `g_`. I/O variable name prefix: `DI_`, `DO_`, `AI_`, `AO_`.
+FB instance names: prefix `fb` (e.g., `fbMotor`, `fbTimer`).
+FUN names: prefix `f` (e.g., `fScaleValue`, `fToCelsius`).
+Constant names: prefix `c_` with UPPER_SNAKE_CASE body (e.g., `c_MAX_SPEED`, `c_DEFAULT_TIMEOUT`).
 
 ## Literal Prefixes (Mitsubishi-Specific)
 
