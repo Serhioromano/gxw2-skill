@@ -127,12 +127,12 @@ DADDP(xTrig, dwVal1, dwVal2, dwResult);
 
 All bit shift instructions support `D` prefix for 32-bit (DWORD) operation.
 
-| Function       | `_E` Variant                    | `D` (32-bit)              | Description                    |
-|----------------|---------------------------------|---------------------------|--------------------------------|
-| `SHL(IN, N)`   | `SHL_E(Trig, IN, N, Result)`    | `DSHL`, `DSHL_E`          | Shift left by N bits           |
-| `SHR(IN, N)`   | `SHR_E(Trig, IN, N, Result)`    | `DSHR`, `DSHR_E`          | Shift right by N bits          |
-| `ROL(IN, N)`   | `ROL_E(Trig, IN, N, Result)`    | `DROL`, `DROL_E`          | Rotate left by N bits          |
-| `ROR(IN, N)`   | `ROR_E(Trig, IN, N, Result)`    | `DROR`, `DROR_E`          | Rotate right by N bits         |
+| Function            | `_E` Variant                    | `D` (32-bit)              | Description                    |
+|---------------------|---------------------------------|---------------------------|--------------------------------|
+| `SHL(IN, N, Result)`| `SHL_E(Trig, IN, N, Result)`    | `DSHL`, `DSHL_E`          | Shift left by N bits           |
+| `SHR(IN, N, Result)`| `SHR_E(Trig, IN, N, Result)`    | `DSHR`, `DSHR_E`          | Shift right by N bits          |
+| `ROL(IN, N, Result)`| `ROL_E(Trig, IN, N, Result)`    | `DROL`, `DROL_E`          | Rotate left by N bits          |
+| `ROR(IN, N, Result)`| `ROR_E(Trig, IN, N, Result)`    | `DROR`, `DROR_E`          | Rotate right by N bits         |
 
 ### Usage Examples
 ```iecst

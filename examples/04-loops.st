@@ -47,7 +47,8 @@ iBitPos := 0;
 xBitSet := FALSE;
 
 WHILE (iBitPos < 16) AND NOT xBitSet DO
-    IF (wBitMask AND SHL(K1, iBitPos)) <> H0 THEN
+    SHL(K1, iBitPos, wShiftTemp);       (* Build bit mask at position *)
+    IF (wBitMask AND wShiftTemp) <> H0 THEN
         xBitSet := TRUE;
         EXIT;  (* Found a set bit *)
     END_IF;

@@ -81,7 +81,7 @@ write_csv('examples/pou-local.csv', [
     ['VAR', 'rtStartEdge', 'R_TRIG', '', '', '', 'Start button edge detector'],
     ['VAR', 'iInputValue', 'INT', '', '', '', 'Raw input value from sensor'],
     ['VAR', 'rScaledValue', 'REAL', '', '', '', 'Scaled output value'],
-    ['VAR_CONSTANT', 'iMaxRetries', 'INT', '', '', '', 'Maximum retry attempts (constant)'],
+    ['VAR_CONSTANT', 'iMaxRetries', 'INT', '3', '', '', 'Maximum retry attempts (constant)'],
 ])
 
 # structure.csv — 4 columns: Label Name, Data Type, Constant, Comment
@@ -154,6 +154,7 @@ write_csv('examples/04-loops.csv', [
     ['VAR', 'iSearchTarget', 'INT', '', '', '', 'Value to search for'],
     ['VAR', 'iTableSize', 'INT', '', '', '', 'Size of lookup table'],
     ['VAR', 'wBitMask', 'WORD', '', '', '', 'Bit mask for shifting'],
+    ['VAR', 'wShiftTemp', 'WORD', '', '', '', 'Temporary shift result for bit scanning'],
     ['VAR', 'iBitPos', 'INT', '', '', '', 'Current bit position'],
     ['VAR', 'xBitSet', 'BOOL', '', '', '', 'Flag: bit found set'],
     ['VAR', 'iResult', 'INT', '', '', '', 'Computed result'],

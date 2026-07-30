@@ -1,70 +1,106 @@
 # GXW2-ST Skill
 
-A skill for Pi Coding Agent that helps write Structured Text (ST) code for **GX Works 2** (Mitsubishi Electric PLCs).
+A skill for Pi Coding Agent that makes the agent an expert in writing **Structured Text (ST)** code for **Mitsubishi Electric FX series PLCs** (FX3U, FX3G, FX3S, FX5U) in **GX Works 2**.
 
 ## What This Skill Does
 
-- Writes correct ST code compatible with GX Works 2
-- Provides syntax guidance and dialect specifics for Mitsubishi ST (FX / Q / L series)
-- Generates function blocks (FB), functions (FUN), and structured programs
-- Understands GX Works 2 constraints: supported data types, instructions, built-in functions
-- Accounts for GX Works 2 compiler quirks and IEC compatibility
+- Generates correct ST code compatible with GX Works 2 FX series compiler
+- Generates **CSV variable files** for the GX Works 2 Label Editor (UTF-16 LE, tab-separated)
+- Creates function blocks (FB), functions (FUN), and structured programs with proper 2-file pattern (`.st` + `.csv`)
+- Knows every GX Works 2 FX-specific constraint:
+  - Forbidden constructs (`CONTINUE`, `LREAL`, `SR`/`RS`, named CASE, `VAR_IN_OUT`)
+  - Correct Mitsubishi function names (`RND` not `ROUND`, `MAXIMUM` not `MAX`, `LIMITATION` not `LIMIT`)
+  - Postfix variants (`_E` triggered, `P` pulse, `D` prefix 32-bit)
+  - `:=` for ALL FB parameters including outputs
+  - MEP/MEF preferred over R_TRIG/F_TRIG
+  - K/H/E/T# literal prefix notation
+- Provides state machine patterns (Init→Reset→Idle) and 3-program structure (INIT/ROUTINE/MAIN)
 
 ## Versions & Compatibility
 
 | Target Environment | Support |
 |--------------------|---------|
 | GX Works 2         | ✅ Primary |
-| GX Works 3         | ⚠️ Partial (ST syntax is similar, but differences exist) |
-| FX Series          | ✅ FX3U, FX3G |
+| FX3U               | ✅ Full (STRING, all FBs) |
+| FX3G               | ✅ (no STRING) |
+| FX3S               | ✅ (no STRING, limited I/O) |
+| FX5U               | ✅ (use GX Works 3 for primary tooling) |
+| Q-series, L-series | ❌ Not covered |
 
 ## Installation
 
 ```bash
-# Clone the repository
 git clone https://github.com/Serhioromano/gxw2-skill.git
-
-# Copy the skill into Pi's skills folder
 cp -r gxw2-skill ~/.pi/agent/skills/gxw2-st/
 ```
 
-Alternatively, use as an external skill via Pi configuration.
-
 ## Usage
 
-Once the skill is installed, ask Pi about ST programming tasks:
+Once the skill is installed, the agent activates on triggers like "GX Works 2", "FX3U", "Mitsubishi ST", or device addresses (X, Y, M, D). It always produces both ST code and CSV variable files.
 
-- "Write a function block for a PID controller in ST for GX Works 2"
-- "Convert this ladder diagram to ST for Mitsubishi FX3U"
-- "Check this ST code for GX Works 2 compatibility"
-- "Explain how timers work in ST for Q-series"
+Example prompts:
+
+- "Write a motor control function block with feedback monitoring for FX3U"
+- "Create a state machine for a pump station in ST for GX Works 2"
+- "Generate IO.csv and GVL.csv for a 5-pump cascade system"
+- "Show me how to use TON/TOF timers in Mitsubishi ST"
+- "How do I cast INT to REAL in GX Works 2 ST?"
 
 ## Repository Structure
 
 ```
 gxw2-skill/
-├── README.md           # This file
-├── SKILL.md            # Skill definition for Pi
-├── prompts/            # Prompts for various scenarios
-│   ├── st-syntax.md    # ST syntax reference
-│   ├── fb-generator.md # Function block generation
-│   └── debug.md        # ST code debugging
-└── examples/           # ST code examples
-    ├── basics/         # Basic examples
-    └── advanced/       # Advanced examples
+├── README.md                        # This file
+├── SKILL.md                         # Main skill (triggers, lazy-load index, critical constraints)
+├── plans/
+│   └── feature-plan.md              # Full specification and implementation plan
+├── references/                      # Detailed reference files (loaded on-demand by SKILL.md)
+│   ├── common-rules.md              # Mandatory constraints, naming, literal prefixes
+│   ├── csv-variables.md             # CSV file formats and Label Editor rules
+│   ├── devices.md                   # Device address space (X, Y, M, D, T, C, etc.)
+│   ├── system-devices.md            # Special relays (M8000+) and registers (D8000+)
+│   ├── instructions.md              # ST instructions: IF, CASE, FOR, operators, SET/RST
+│   ├── data-types.md                # Types, K/H/E/REAL#/T# literals, casting functions
+│   ├── functions.md                 # Built-in FUN/FB catalog: timers, counters, math, strings
+│   └── compatibility.md             # FX series feature matrix (FX3U vs FX3G vs FX3S vs FX5U)
+├── examples/                        # 13 example pairs (.st + .csv) plus standalone CSVs
+│   ├── io.csv                       # Standalone: I/O variable list (DI_/DO_/AI_/AO_)
+│   ├── gvl.csv                      # Standalone: Global variable list (g_ prefix)
+│   ├── pou-local.csv                # Standalone: Local POU variable template
+│   ├── structure.csv                # Standalone: Structure definition example
+│   ├── 01-io-assignment.st + .csv
+│   ├── 02-conditionals.st + .csv
+│   ├── 03-case-state-machine.st + .csv
+│   ├── 04-loops.st + .csv
+│   ├── 05-timers.st + .csv
+│   ├── 06-counters.st + .csv
+│   ├── 07-math.st + .csv
+│   ├── 08-strings.st + .csv
+│   ├── 09-bit-operations.st + .csv
+│   ├── 10-type-casting.st + .csv
+│   ├── 11-edge-detection.st + .csv
+│   ├── 12-function-block/MotorControl.st + .csv
+│   └── 13-function/ScaleValue.st + .csv
+└── tools/
+    └── gen_csv.py                   # Regenerate all example CSV files
 ```
 
-## GX Works 2 ST Specifics
+## Key Design Decisions
 
-The ST dialect in GX Works 2 differs from standard IEC 61131-3 ST:
+### CSV-First Variable Management
+GX Works 2 uses the **Label Editor** for variables, not inline `VAR...END_VAR` blocks. This skill always generates paired `.st` code files and `.csv` label files in **UTF-16 LE with BOM, tab-separated, all values quoted** — exactly the format GX Works 2 expects for CSV import.
 
-- Limited data type set (no LREAL, WSTRING, etc.)
-- Device-specific syntax for bit operations (SET/RST)
-- Specific variable declaration rules (VAR, VAR_GLOBAL, VAR_INPUT/OUTPUT)
-- Array and string handling constraints
-- Missing certain modern constructs (CONTINUE, named CASE steps)
+### FX Series Only
+No Q-series, L-series, or iQ-R constructs. The skill targets the FX compiler's specific limitations: no `CONTINUE`, no `LREAL`, no `SR`/`RS` FBs, no `VAR_IN_OUT`, no named CASE labels, and no trigonometric functions (`SIN`, `COS`, `TAN`, etc.).
 
-This skill accounts for all these specifics and generates code that compiles without errors.
+### Three Programs Per Project
+Every project follows the INIT → ROUTINE → MAIN structure:
+- **INIT** — runs once on first scan (M8002)
+- **ROUTINE** — runs every 100ms for non-critical tasks
+- **MAIN** — runs every scan with all business logic
+
+### State Machine Convention
+All state machines start with states 0 (Init), 10 (Reset), 20 (Idle). Integer values only, no CONSTANT declarations for state names.
 
 ## Author
 

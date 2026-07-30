@@ -115,11 +115,13 @@ Programs support only `VAR` and `VAR_CONSTANT`. No `VAR_INPUT`, no `VAR_OUTPUT`.
 "VAR"	"rSetpoint"	"REAL"	""	""	""	"Target setpoint"
 "VAR"	"xDone"	"BOOL"	""	""	""	"Operation complete flag"
 "VAR"	"tDelay"	"TIME"	""	""	""	"Delay duration"
-"VAR_CONSTANT"	"iMaxRetries"	"INT"	""	""	""	"Maximum retry attempts"
+"VAR_CONSTANT"	"iMaxRetries"	"INT"	"3"	""	""	"Maximum retry attempts"
 ```
 
 **Rules:**
 - `Class`: `VAR` for local variables, `VAR_CONSTANT` for compile-time constants
+- For `VAR_CONSTANT`, the **Constant column must contain the value** (e.g. `"3"`, `"E3.14"`, `"TRUE"`)
+- For `VAR`, the Constant column is left empty (`""`)
 - Device and Address columns are **left empty** (`""`) for local variables
 - Hungarian prefixes recommended but not enforced for local variables
 

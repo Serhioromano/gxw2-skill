@@ -840,10 +840,10 @@ All state machines have these 3 mandatory initial states:
 ### Phase 5: Examples
 10. All 13 example pairs (.st + .csv)
 
-### Phase 6: Polish
-11. Update README.md
-12. Cross-reference validation
-13. Test with diverse prompts
+### Phase 6: Polish ✅ (COMPLETE)
+11. ✅ Update README.md — full rewrite matching actual structure
+12. ✅ Cross-reference validation — 5 issues found and fixed (see plans/validation.md)
+13. ✅ Test with diverse prompts — 12 scenarios validated (see plans/validation.md)
 
 ---
 

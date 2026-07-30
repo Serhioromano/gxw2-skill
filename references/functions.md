@@ -45,11 +45,11 @@ Combined: `DABS_E` (32-bit + triggered), `DADDP` (32-bit + pulse), etc.
 
 | Function   | Signature            | `_E`      | `P`      | `D` (32-bit)              | Notes                         |
 |------------|---------------------|-----------|----------|---------------------------|-------------------------------|
-| `ABS`      | `ABS(IN)`           | `ABS_E`   | —        | `DABS`, `DABS_E`          | Absolute value                |
-| `SQRT`     | `SQRT(IN)` — REAL   | —         | `SQRTP`  | `DSQRT`, `DSQRT_E`        | Square root                   |
-| `EXPT`     | `EXPT(Base, Exp)`   | `EXPT_E`  | —        | `DEXPT`, `DEXPT_E`        | Base^Exp                      |
-| `MOD`      | `MOD(IN1, IN2)`     | `MOD_E`   | —        | `DMOD`, `DMOD_E`          | Modulo                        |
-| `RND`      | `RND(IN)` — REAL→INT| —         | `RNDP`   | `DRND`, `DRNDP`           | Round. **NOT `ROUND`.**       |
+| `ABS`      | `ABS(IN)`           | `ABS_E`   | —        | `DABS`, `DABS_E`          | Absolute value. D prefix for DINT. |
+| `SQRT`     | `SQRT(IN)` — REAL   | —         | `SQRTP`  | —                         | Square root. REAL only — no D prefix. |
+| `EXPT`     | `EXPT(Base, Exp)`   | `EXPT_E`  | —        | —                         | Base^Exp. REAL only — no D prefix. |
+| `MOD`      | `MOD(IN1, IN2)`     | `MOD_E`   | —        | —                         | Modulo. INT only — no D prefix. |
+| `RND`      | `RND(IN)` — REAL→INT| —         | `RNDP`   | —                         | Round. REAL→INT. **NOT `ROUND`.** No D prefix. |
 
 > **NOT supported on FX series:** `LN`, `LOG`, `EXP`, `SIN`, `COS`, `TAN`, `ASIN`, `ACOS`, `ATAN`, `TRUNC`.
 
