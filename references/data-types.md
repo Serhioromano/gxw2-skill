@@ -125,7 +125,7 @@ All casting functions support the `_E` postfix for triggered execution. Non-`_E`
 
 For all casting functions, the `_E` variant adds a trigger as the first parameter and stores the result in the **last** parameter:
 
-```pascal
+```iecst
 (* Non-triggered: returns value directly *)
 rResult := INT_TO_REAL(iValue);
 
@@ -133,20 +133,3 @@ rResult := INT_TO_REAL(iValue);
 INT_TO_REAL_E(xTrig, iValue, rResult);
 ```
 
----
-
-## Naming Convention Prefixes
-
-| Prefix | Type     | Example              |
-|--------|----------|----------------------|
-| `x`    | BOOL     | `xMotorRunning`      |
-| `i`    | INT      | `iCount`, `iIndex`   |
-| `di`   | DINT     | `diPosition`         |
-| `w`    | WORD     | `wStatus`            |
-| `dw`   | DWORD    | `dwEncoder`          |
-| `r`    | REAL     | `rTemperature`       |
-| `s`    | STRING   | `sMessage`           |
-| `t`    | TIME     | `tDelay`             |
-| `g_`   | Global   | `g_xSystemReady`     |
-| `ai`   | ARR INT  | `aiLookupTable`      |
-| `ar`   | ARR REAL | `arCalibration`      |

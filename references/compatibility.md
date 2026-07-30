@@ -85,7 +85,7 @@ Load when targeting a specific FX CPU model to verify feature availability.
 
 When the user specifies a target model, apply these rules:
 
-```pascal
+```iecst
 // FX3U/FX5U — STRING OK
 sMessage := CONCAT(sPrefix, sValue);
 

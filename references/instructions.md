@@ -19,7 +19,7 @@ Load when writing control flow, operators, or ST statements. This covers all ST 
 ## Selection
 
 ### IF Statement
-```pascal
+```iecst
 IF condition THEN
     // statements
 ELSIF other_condition THEN
@@ -30,7 +30,7 @@ END_IF;
 ```
 
 ### CASE Statement
-```pascal
+```iecst
 CASE IntVar OF
     0: // Init
         // statements
@@ -52,7 +52,7 @@ END_CASE;
 ## Iteration
 
 ### FOR Loop
-```pascal
+```iecst
 FOR i := start TO end BY step DO
     // statements
 END_FOR;
@@ -61,14 +61,14 @@ END_FOR;
 - `FOR` loops in ST have no scan time watchdog. Keep loops short to avoid scan time overrun.
 
 ### WHILE Loop
-```pascal
+```iecst
 WHILE condition DO
     // statements
 END_WHILE;
 ```
 
 ### REPEAT Loop
-```pascal
+```iecst
 REPEAT
     // statements
 UNTIL condition;
@@ -76,7 +76,7 @@ END_REPEAT;
 ```
 
 ### EXIT
-```pascal
+```iecst
 EXIT;  // exits the innermost loop immediately
 ```
 
@@ -104,7 +104,7 @@ For WORD and DWORD types, use dedicated arithmetic instructions. These have 4 va
 | `DIV` | `DIV_E`          | `DIVP`      | `DDIV`       | `DDIVP`              |
 
 ### Usage Examples
-```pascal
+```iecst
 (* Direct: wResult := wVal1 + wVal2 *)
 ADD(wVal1, wVal2, wResult);
 
@@ -135,7 +135,7 @@ All bit shift instructions support `D` prefix for 32-bit (DWORD) operation.
 | `ROR(IN, N)`   | `ROR_E(Trig, IN, N, Result)`    | `DROR`, `DROR_E`          | Rotate right by N bits         |
 
 ### Usage Examples
-```pascal
+```iecst
 (* 16-bit *)
 SHL(wVal, K4, wResult);                  // wResult := wVal shifted left 4
 SHL_E(xTrig, wVal, K4, wResult);         // triggered
@@ -156,7 +156,7 @@ DSHL_E(xTrig, dwVal, K8, dwResult);      // 32-bit triggered
 
 **These are preferred** over R_TRIG/F_TRIG FBs — no CSV declaration needed, inline usage:
 
-```pascal
+```iecst
 IF MEP(xStart) THEN
     iCount := iCount + 1;       // Increment once per rising edge
 END_IF;
@@ -190,7 +190,7 @@ xPulse := MEP(xSensor);         // Use directly in assignment
 
 For direct hardware timer access without FB declaration:
 
-```pascal
+```iecst
 OUT_T(TRUE, TC1, K20);    // Start timer TC1: 20 × 100ms = 2s preset
 ```
 
@@ -218,7 +218,7 @@ OUT_T(TRUE, TC1, K20);    // Start timer TC1: 20 × 100ms = 2s preset
 
 ### Instructions
 
-```pascal
+```iecst
 (* 16-bit counters (C0–C199) *)
 OUT_C(TRUE, CC0, K200);       // Start 16-bit counter, preset 200
 

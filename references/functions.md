@@ -43,13 +43,13 @@ Combined: `DABS_E` (32-bit + triggered), `DADDP` (32-bit + pulse), etc.
 
 ## Arithmetic & Math Functions
 
-| Function   | Signature            | `_E`      | `P`      | `D` (32-bit)        | Notes                         |
-|------------|---------------------|-----------|----------|---------------------|-------------------------------|
-| `ABS`      | `ABS(IN)`           | `ABS_E`   | —        | `DABS`, `DABS_E`    | Absolute value                |
-| `SQRT`     | `SQRT(IN)` — REAL   | —         | `SQRTP`  | —                   | Square root                   |
-| `EXPT`     | `EXPT(Base, Exp)`   | `EXPT_E`  | —        | —                   | Base^Exp                      |
-| `MOD`      | `MOD(IN1, IN2)`     | `MOD_E`   | —        | —                   | Modulo                        |
-| `RND`      | `RND(IN)` — REAL→INT| —         | `RNDP`   | —                   | Round. **NOT `ROUND`.**       |
+| Function   | Signature            | `_E`      | `P`      | `D` (32-bit)              | Notes                         |
+|------------|---------------------|-----------|----------|---------------------------|-------------------------------|
+| `ABS`      | `ABS(IN)`           | `ABS_E`   | —        | `DABS`, `DABS_E`          | Absolute value                |
+| `SQRT`     | `SQRT(IN)` — REAL   | —         | `SQRTP`  | `DSQRT`, `DSQRT_E`        | Square root                   |
+| `EXPT`     | `EXPT(Base, Exp)`   | `EXPT_E`  | —        | `DEXPT`, `DEXPT_E`        | Base^Exp                      |
+| `MOD`      | `MOD(IN1, IN2)`     | `MOD_E`   | —        | `DMOD`, `DMOD_E`          | Modulo                        |
+| `RND`      | `RND(IN)` — REAL→INT| —         | `RNDP`   | `DRND`, `DRNDP`           | Round. **NOT `ROUND`.**       |
 
 > **NOT supported on FX series:** `LN`, `LOG`, `EXP`, `SIN`, `COS`, `TAN`, `ASIN`, `ACOS`, `ATAN`, `TRUNC`.
 
@@ -60,25 +60,25 @@ Combined: `DABS_E` (32-bit + triggered), `DADDP` (32-bit + pulse), etc.
 | Function      | Signature                                      | `_E`           |
 |---------------|------------------------------------------------|----------------|
 | `SEL`         | `SEL(G, IN0, IN1)` — G=FALSE→IN0, G=TRUE→IN1  | `SEL_E`        |
-| `MAXIMUM`     | `MAXIMUM(IN1, IN2, ...)` — max of up to 28 inputs | `MAXIMUM_E` |
-| `MINIMUM`     | `MINIMUM(IN1, IN2, ...)` — min of up to 28 inputs | `MINIMUM_E` |
+| `MAXIMUM`     | `MAXIMUM(IN1, IN2)` — max of two values           | `MAXIMUM_E` |
+| `MINIMUM`     | `MINIMUM(IN1, IN2)` — min of two values           | `MINIMUM_E` |
 | `LIMITATION`  | `LIMITATION(MIN, IN, MAX)` — clamp value       | `LIMITATION_E` |
 | `MUX`         | `MUX(K, IN0, IN1, ...)` — select K-th (0-based)| `MUX_E`        |
 
 > **Critical naming:** These are `MAXIMUM`, `MINIMUM`, `LIMITATION` — NOT `MAX`, `MIN`, `LIMIT` as in standard IEC 61131-3.
 
 ### Selection Examples
-```pascal
+```iecst
 (* Non-triggered *)
-iResult := MAXIMUM(10, 20);
-iResult := MINIMUM(iA, iB, iC);
-iResult := LIMITATION(iMin, iInput, iMax);
+iResult := MAXIMUM(iA, iB);                 // max of two values
+iResult := MINIMUM(iA, iB);                 // min of two values
+iResult := LIMITATION(iMin, iInput, iMax);  // clamp
 iResult := SEL(xSelect, iVal0, iVal1);
 iResult := MUX(iChoice, iOpt0, iOpt1, iOpt2, iOpt3);
 
 (* Triggered *)
-MAXIMUM_E(xTrig, 10, 20, iResult);
-MINIMUM_E(xTrig, iA, iB, iC, iResult);
+MAXIMUM_E(xTrig, iA, iB, iResult);
+MINIMUM_E(xTrig, iA, iB, iResult);
 LIMITATION_E(xTrig, iMin, iInput, iMax, iResult);
 SEL_E(xTrig, xSelect, iVal0, iVal1, iResult);
 MUX_E(xTrig, iChoice, iOpt0, iOpt1, iOpt2, iResult);
@@ -99,7 +99,7 @@ All timer FBs support `_E`. **Must be declared as VAR in CSV before use.**
 | `TP` | `TP_E`      | Pulse (fixed-width). Parameters same as TON                    |
 
 **GX Works 2 uses `:=` for ALL parameters, including outputs:**
-```pascal
+```iecst
 (* Declare in CSV: VAR, tonDelay, TON *)
 tonDelay(IN := xStart, PT := T#5s, Q := xDone, ET := tElapsed);
 
@@ -109,14 +109,7 @@ TON_E(xEnable, xStart, T#5s, xDone, tElapsed);
 
 ### Hardware Timer (OUT_T)
 
-Direct hardware timer access — no CSV declaration needed. Timer value is in **100ms units**.
-
-```pascal
-OUT_T(TRUE, TC1, K20);    // Start TC1: 20 × 100ms = 2s preset
-```
-
-- `TN1` — current timer value (elapsed, 100ms units)
-- `TS1` — timer contact (TRUE when done)
+See `instructions.md` — Hardware Timer Instructions. Direct hardware timer access, no CSV declaration needed.
 
 ---
 
@@ -133,7 +126,7 @@ All counter FBs support `_E`. **Must be declared as VAR in CSV before use.**
 | `CTUD`| `CTUD_E`    | Up-down. CU/CD: pulses, RESET/LOAD, PV: preset, QU/QD: outputs, CV: current |
 
 Usage (all parameters use `:=`):
-```pascal
+```iecst
 (* Declare in CSV: VAR, ctParts, CTU *)
 ctParts(CU := xPulse, RESET := xReset, PV := K100, Q := xFull, CV := iCount);
 
@@ -143,16 +136,7 @@ CTU_E(xEnable, xPulse, xReset, K100, xFull, iCount);
 
 ### Hardware Counter (OUT_C / OUT_C_32)
 
-Direct hardware counter access — no CSV declaration needed.
-
-```pascal
-OUT_C(TRUE, CC235, K200);      // Start 16-bit counter CC235, preset 200
-OUT_C_32(TRUE, CC235, K200);   // Start 32-bit counter
-RST(TRUE, CC235);              // Reset counter to 0
-```
-
-- `CN235` — current counter value
-- `CS235` — counter contact (TRUE when count ≥ preset)
+See `instructions.md` — Hardware Counter Instructions. Direct hardware counter access with full counter type/range table. No CSV declaration needed.
 
 ---
 
@@ -167,7 +151,7 @@ Support `_E`. **Must be declared as VAR in CSV before use.**
 | `R_TRIG` | `R_TRIG_E`   | Rising edge. CLK: input, Q: one-scan pulse on rising edge      |
 | `F_TRIG` | `F_TRIG_E`   | Falling edge. CLK: input, Q: one-scan pulse on falling edge    |
 
-```pascal
+```iecst
 (* Declare in CSV: VAR, rtStart, R_TRIG *)
 rtStart(CLK := xSignal, Q := xRisingEdge);
 
@@ -177,15 +161,7 @@ R_TRIG_E(xEnable, xSignal, xRisingEdge);
 
 ### Edge Detection Instructions (MEP / MEF)
 
-**Preferred** — no CSV declaration, work inline in expressions:
-
-```pascal
-IF MEP(xStart) THEN
-    iCount := iCount + 1;
-END_IF;
-xPulse := MEP(xSensor);      // assignment
-xNegEdge := MEF(xStop);       // falling edge
-```
+See `instructions.md` — Edge Detection Instructions. Preferred over R_TRIG/F_TRIG: no CSV declaration, work inline.
 
 ---
 
@@ -206,7 +182,7 @@ xNegEdge := MEF(xStop);       // falling edge
 | `FIND`     | `FIND(IN1, IN2)`             | —           | `FIND_E`      | Returns position (0 = not found) |
 
 ### P Variant (Pulse) Examples
-```pascal
+```iecst
 LENP(xTrig, sIn, iLength);           // iLength := LEN(sIn) on rising edge
 LEFTP(xTrig, sIn, 5, sOut);          // sOut := LEFT(sIn, 5) on rising edge
 RIGHTP(xTrig, sIn, 3, sOut);         // sOut := RIGHT(sIn, 3)
@@ -215,7 +191,7 @@ CONCATP(xTrig, sFirst, sLast, sFull);// sFull := CONCAT(sFirst, sLast)
 ```
 
 ### `_E` Variant (Triggered) Examples
-```pascal
+```iecst
 INSERT_E(xTrig, sBase, sInsert, 3, sResult);
 DELETE_E(xTrig, sBase, 5, 2, sResult);
 REPLACE_E(xTrig, sBase, sNew, 4, 3, sResult);
@@ -233,12 +209,12 @@ FIND_E(xTrig, sBase, sSearch, iPosition);
 **All parameters use `:=` — including outputs.**
 
 Inside FB code:
-```pascal
+```iecst
 xMotor := xStart AND NOT xStop AND NOT xFault;
 ```
 
 Calling (outputs also use `:=`):
-```pascal
+```iecst
 fbMotor(xStart := DI_Start, xStop := DI_Stop, xFeedback := DI_Feedback,
         xMotor := DO_Pump, xFault := g_xMotorFault);
 ```
@@ -247,15 +223,17 @@ fbMotor(xStart := DI_Start, xStop := DI_Stop, xFeedback := DI_Feedback,
 
 ## User-Defined Functions (FUN)
 
-Same 2-file pattern. VAR_INPUT only (no VAR_OUTPUT). Return via function result:
+**Functions are called directly — no instance declaration needed in CSV.** Unlike FBs, you do not need a VAR entry to use a FUN. Just call it by name.
 
-```pascal
+FUN has VAR_INPUT only (no VAR_OUTPUT). Return via function result:
+
+```iecst
 (* Inside ScaleValue.st *)
 ScaleValue := INT_TO_REAL(iRaw) * rGain + rOffset;
 ```
 
-Calling:
-```pascal
+Calling — no CSV declaration required:
+```iecst
 rResult := ScaleValue(iRaw := g_iRawValue, rGain := rGain, rOffset := rOffset);
 ```
 
@@ -269,7 +247,7 @@ rResult := ScaleValue(iRaw := g_iRawValue, rGain := rGain, rOffset := rOffset);
 | `CTU`, `CTD`, `CTUD`        | Yes — VAR declaration     |
 | `R_TRIG`, `F_TRIG`          | Yes — VAR declaration     |
 | User-defined FB             | Yes — VAR declaration     |
-| User-defined FUN            | Yes — CSV file for inputs |
+| User-defined FUN            | **No** — called directly  |
 | `MEP`, `MEF`                | **No** — inline only      |
 | `OUT_T`, `OUT_C`            | **No** — direct hardware  |
 | `SET`, `RST`, `PLS`, `PLF`  | **No** — direct instructions |

@@ -56,7 +56,7 @@ Global variable name prefix: `g_`. I/O variable name prefix: `DI_`, `DO_`, `AI_`
 
 GX Works 2 uses `:=` for **ALL** parameters, including FB outputs. Never use `=>`.
 
-```pascal
+```iecst
 tonDelay(IN := xStart, PT := T#5s, Q := xDone, ET := tElapsed);
 ```
 
@@ -80,7 +80,7 @@ Use integer comments for state names. No `CONSTANT` declarations for state names
 
 Prefer `MEP`/`MEF` instructions over `R_TRIG`/`F_TRIG` FBs — they require no CSV declaration and work inline:
 
-```pascal
+```iecst
 IF MEP(xStart) THEN
     iCount := iCount + 1;
 END_IF;

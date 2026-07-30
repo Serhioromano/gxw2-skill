@@ -66,7 +66,7 @@ Load when using special relays (M8000+) or special registers (D8000+) for diagno
 
 Special relays and registers are one of the **few exceptions** to the "no direct device access" rule. They may be used directly in ST code:
 
-```pascal
+```iecst
 // INIT program — runs on first scan
 IF M8002 THEN
     g_iState := 0;
@@ -86,7 +86,7 @@ g_iCurrentScan := D8010;  // 0.1ms units
 
 ## Error Handling Pattern
 
-```pascal
+```iecst
 IF M8067 THEN
     g_iErrorCode := D8067;
     g_iState := 40;  // Fault state

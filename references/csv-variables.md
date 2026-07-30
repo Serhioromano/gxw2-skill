@@ -108,7 +108,7 @@ VAR, rtStart, R_TRIG,,,, "Rising edge detector instance"
 ```
 
 **MotorControl.st:**
-```pascal
+```iecst
 (* Motor control with feedback monitoring *)
 rtStart(CLK := xStart, Q := xRisingEdge);
 // ... body uses VAR_INPUT, VAR_OUTPUT, and VAR names directly
@@ -118,9 +118,11 @@ rtStart(CLK := xStart, Q := xRisingEdge);
 
 ## Function CSV Pattern
 
-Same 2-file pattern. FUN has VAR_INPUT only — no VAR_OUTPUT (result is function return).
+**Functions are called directly — no instance declaration needed.** Unlike FBs, calling a FUN does not require a VAR entry in any CSV. The FUN's own inputs are defined in its own CSV file for the function definition itself, but the **caller** needs no declaration.
 
-**ScaleValue.csv:**
+FUN has VAR_INPUT only — no VAR_OUTPUT (result is function return).
+
+**ScaleValue.csv** (defines the function's inputs):
 ```csv
 "My Project"
 Class, Label Name, Data Type, Constant, Device, Address, Comment
@@ -131,9 +133,14 @@ VAR_INPUT, rEngMax, REAL,,,, "Engineering maximum"
 ```
 
 **ScaleValue.st:**
-```pascal
+```iecst
 (* Returns scaled REAL value *)
 ScaleValue := INT_TO_REAL(iRaw) * rGain + rOffset;
+```
+
+**Calling (no CSV declaration needed):**
+```iecst
+rResult := ScaleValue(iRaw := g_iRawValue, rGain := rGain, rOffset := rOffset);
 ```
 
 ---
@@ -188,7 +195,7 @@ xEnabled, BOOL,, "Recipe enabled flag"
 | FB input          | {FB}.csv     | (free)         | Empty         | Empty          |
 | FB output         | {FB}.csv     | (free)         | Empty         | Empty          |
 | FB local          | {FB}.csv     | (free)         | Empty         | Empty          |
-| FUN input         | {FUN}.csv    | (free)         | Empty         | Empty          |
+| FUN input (definition only) | {FUN}.csv | (free)      | Empty         | Empty          |
 
 ---
 
