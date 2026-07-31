@@ -558,32 +558,6 @@ END_FOR;
 
 ---
 
-## Annunciator — ANS / ANR
-
-Timed annunciator set and reset for alarm management.
-
-```iecst
-(* ANS: set annunciator after delay *)
-ANS(EN, S, m, D);
-(* EN: enable execution
-   S:  timer number (T0–T511)
-   m:  delay time (×100ms units)
-   D:  annunciator flag (bit device, set TRUE after delay) *)
-
-ANS(TRUE, T10, K50, M100);  // After 5s (50×100ms), M100 turns ON
-
-(* ANR: reset all annunciator flags *)
-ANR(TRUE);                   // Reset all annunciator flags
-ANRP(xTrig);                 // Pulse: reset on rising edge
-```
-
-- `ANS` sets D TRUE after EN has been TRUE continuously for m×100ms
-- `ANR` resets all annunciator-set flags at once
-- No `_E` or `D` variants
-- No CSV declaration needed
-
----
-
 ## Hour Meter — HOUR
 
 Accumulates ON time of an input signal. Useful for run-time tracking, maintenance scheduling.
@@ -651,26 +625,55 @@ Linear scaling using coordinate point data. SCL uses a multi-point table; SCL2 u
 SCL(EN, S1, S2, D);
 (* EN: enable execution
    S1: source value (input to scale)
-   S2: head address of point-data table
+   S2: head address of point-data table (see format below)
    D:  scaled output value *)
 
 SCL(TRUE, wRawValue, D300, wScaled);
 SCLP(xTrig, wRawValue, D300, wScaled);  // Pulse
+```
 
+**SCL point-data table format (S2):**
+
+| Set item | Device assignment |
+|---|---|
+| Number of coordinate points | (s2) |
+| Point 1: X coordinate | (s2) + 1 |
+| Point 1: Y coordinate | (s2) + 2 |
+| Point 2: X coordinate | (s2) + 3 |
+| Point 2: Y coordinate | (s2) + 4 |
+| Point 3: X coordinate | (s2) + 5 |
+| Point 3: Y coordinate | (s2) + 6 |
+| … | … |
+| Point N: X coordinate | (s2) + (2N − 1) |
+| Point N: Y coordinate | (s2) + 2N |
+
+General formula: first word at `(s2)` holds the point count N. Then each point n (1-indexed) occupies two words — X at `(s2) + (2n − 1)`, Y at `(s2) + 2n`. The total table length is `1 + 2N` words.
+
+```iecst
 (* SCL2: scale using 2-point X/Y coordinates *)
 SCL2(EN, S1, S2, D);
 (* EN: enable execution
    S1: source value (input to scale)
-   S2: head address of X/Y coordinate table (4 consecutive words)
-       S2[0]=X1, S2[1]=Y1, S2[2]=X2, S2[3]=Y2
+   S2: head address of X/Y coordinate table (5 consecutive words)
+       (s2)+0 = number of points (= 2)
+       (s2)+1 = X1, (s2)+2 = Y1, (s2)+3 = X2, (s2)+4 = Y2
    D:  scaled output value *)
 
 SCL2(TRUE, wRawValue, D400, wScaled);
 SCL2P(xTrig, wRawValue, D400, wScaled); // Pulse
 ```
 
-- SCL point table format: first word = number of points (N), followed by N pairs of (X, Y)
-- SCL2 uses exactly 2 points: defines a linear segment from (X1,Y1) to (X2,Y2)
+**SCL2 point-data table format (S2):**
+
+| Set item | Device assignment |
+|---|---|
+| Number of coordinate points (= 2) | (s2) + 0 |
+| Point 1: X coordinate | (s2) + 1 |
+| Point 1: Y coordinate | (s2) + 2 |
+| Point 2: X coordinate | (s2) + 3 |
+| Point 2: Y coordinate | (s2) + 4 |
+
+- SCL interpolates the source value between the nearest X breakpoints; SCL2 uses a single linear segment
 - No `_E` or `D` variants
 - No CSV declaration needed
 
