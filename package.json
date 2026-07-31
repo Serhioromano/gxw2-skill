@@ -1,0 +1,27 @@
+{
+  "name": "gxw2-skill",
+  "version": "1.0.0",
+  "description": "Skill to develop Structured Text programs in GX Works IDE",
+  "keywords": [
+    "PLC",
+    "GX",
+    "Works",
+    "2",
+    "FX3G"
+  ],
+  "homepage": "https://github.com/Serhioromano/gxw2-skill#readme",
+  "bugs": {
+    "url": "https://github.com/Serhioromano/gxw2-skill/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Serhioromano/gxw2-skill.git"
+  },
+  "license": "MIT",
+  "author": "Sergey Romanov",
+  "type": "commonjs",
+  "main": "SKILL.md",
+  "directories": {
+    "example": "examples"
+  }
+}

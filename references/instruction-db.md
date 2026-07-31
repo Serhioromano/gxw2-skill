@@ -24,7 +24,7 @@ Legend:
 
 | Instruction | Parameters | Description | `_E` | `P` | `D` |
 |-------------|------------|-------------|:---:|:---:|:---:|
-| `MOV` | `EN, ANY16_s, ANY16_d` | Move data: (S) → (D) | ✅ | `MOVP` | `DMOV`, `DMOVP` |
+| `MOV` | `EN, ANY16_s, ANY16_d` | Move data: (S) → (D) | — | `MOVP` | `DMOV`, `DMOVP` |
 | `SMOV` | `EN, ANY16_s, ANY16_m1, ANY16_m2, ANY16_n, ANY16_d` | Shift move (digit-wise): m1=digit pos in S, m2=#digits, n=start digit in D | — | `SMOVP` | — |
 | `CML` | `EN, ANY16_s, ANY16_d` | Complement (bit-invert then move) | — | `CMLP` | `DCML`, `DCMLP` |
 | `BMOV` | `EN, ANY16_s, ANY16_n, ANY16_d` | Block move: copy n words from S to D | — | `BMOVP` | — |

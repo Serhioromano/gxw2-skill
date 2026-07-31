@@ -57,65 +57,63 @@
 
 (* ==========================================================================
    Section 1: Initialize PID Parameter Table on First Scan
-   M8002 = first-scan pulse. MOV takes EN (condition) as first parameter.
-   All 29 parameter registers are written once and persist through scan cycles.
+   M8002 = first-scan pulse. All parameter registers are written once.
    ========================================================================== *)
-
-(* +0: Sampling time Ts = 500ms *)
-MOV(M8002, K500, D500);
-
-(* +1: ACT — reverse action, output limit mode, no autotune *)
-MOV(M8002, 2#0000_0000_0000_0001, D501);
-
-(* +2: Input filter α = 70% *)
-MOV(M8002, K70, D502);
-
-(* +3: Proportional gain Kp = 200% *)
-MOV(M8002, K200, D503);
-
-(* +4: Integral time Ti = 30 (×100ms → 3.0s) *)
-MOV(M8002, K30, D504);
-
-(* +5: Derivative gain Kd = 0% (PI-only control) *)
-MOV(M8002, K0, D505);
-
-(* +6: Derivative time Td = 0 (×10ms) *)
-MOV(M8002, K0, D506);
-
-(* +7: SCAN: autotune operation cycle = 1000ms *)
-MOV(M8002, K1000, D507);
-
-(* +8..+19 D508–D519: Internal work area. PID manages these — do not write. *)
-
-(* +20: Input variation alarm (incremental) = max → disabled *)
-MOV(M8002, K32767, D520);
-
-(* +21: Input variation alarm (decremental) = max → disabled *)
-MOV(M8002, K32767, D521);
-
-(* +22: Output upper limit = 1000 (100.0%) *)
-MOV(M8002, K1000, D522);
-
-(* +23: Output lower limit = 0 (0.0%) *)
-MOV(M8002, K0, D523);
-
-(* +24: Alarm output flags — cleared on init *)
-MOV(M8002, K0, D524);
-
-(* +25: SHPV — PV threshold hysteresis width for limit cycle *)
-MOV(M8002, K10, D525);
-
-(* +26: ULV — output upper limit for limit cycle method *)
-MOV(M8002, K1000, D526);
-
-(* +27: LLV — output lower limit for limit cycle method *)
-MOV(M8002, K0, D527);
-
-(* +28: KW — wait from autotune end to PID start (0% = no wait) *)
-MOV(M8002, K0, D528);
-
-(* Mark init complete *)
 IF M8002 THEN
+    (* +0: Sampling time Ts = 500ms *)
+    MOV(K500, D500);
+
+    (* +1: ACT — reverse action, output limit mode, no autotune *)
+    MOV(2#0000_0000_0000_0001, D501);
+
+    (* +2: Input filter α = 70% *)
+    MOV(K70, D502);
+
+    (* +3: Proportional gain Kp = 200% *)
+    MOV(K200, D503);
+
+    (* +4: Integral time Ti = 30 (×100ms → 3.0s) *)
+    MOV(K30, D504);
+
+    (* +5: Derivative gain Kd = 0% (PI-only control) *)
+    MOV(K0, D505);
+
+    (* +6: Derivative time Td = 0 (×10ms) *)
+    MOV(K0, D506);
+
+    (* +7: SCAN — autotune operation cycle = 1000ms *)
+    MOV(K1000, D507);
+
+    (* +8..+19 D508–D519: Internal work area. PID manages these — do not write. *)
+
+    (* +20: Input variation alarm (incremental) = max → disabled *)
+    MOV(K32767, D520);
+
+    (* +21: Input variation alarm (decremental) = max → disabled *)
+    MOV(K32767, D521);
+
+    (* +22: Output upper limit = 1000 (100.0%) *)
+    MOV(K1000, D522);
+
+    (* +23: Output lower limit = 0 (0.0%) *)
+    MOV(K0, D523);
+
+    (* +24: Alarm output flags — cleared on init *)
+    MOV(K0, D524);
+
+    (* +25: SHPV — PV threshold hysteresis width for limit cycle *)
+    MOV(K10, D525);
+
+    (* +26: ULV — output upper limit for limit cycle method *)
+    MOV(K1000, D526);
+
+    (* +27: LLV — output lower limit for limit cycle method *)
+    MOV(K0, D527);
+
+    (* +28: KW — wait from autotune end to PID start (0% = no wait) *)
+    MOV(K0, D528);
+
+    (* Mark init complete *)
     xInitComplete := TRUE;
 END_IF;
 
@@ -154,8 +152,11 @@ END_IF;
    ========================================================================== *)
 xPIDActive := g_xAutoMode AND xInitComplete;
 PID(xPIDActive, g_iSetpoint, AI_Pressure, D500, g_iPIDOutput);
-(* Sometimes after PID stops it freezes output we need to reset it. *)
-MOV(NOT xPIDActive, 0, g_iPIDOutput);  
+
+(* Reset output to 0 when PID is not active *)
+IF NOT xPIDActive THEN
+    g_iPIDOutput := K0;
+END_IF;
 
 (* Route PID output to physical analog output *)
 AO_SpeedRef := g_iPIDOutput;

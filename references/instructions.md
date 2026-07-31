@@ -258,18 +258,23 @@ RST(TRUE, CC235);             // Reset counter to 0
 Transfers data from source to destination. Supports `P` (pulse) and `D` (32-bit) variants.
 
 ```iecst
-MOV(S, D);        // D := S (16-bit)
+(* Base form: unconditional execution *)
+MOV(S, D);                // D := S (16-bit)
 
 MOV(K100, wOut);          // wOut := 100
 MOV(wInput, D200);        // D200 := wInput
 
+(* Conditional execution: add EN as first parameter *)
+MOV(xEnable, K100, wOut); // Execute only when xEnable is TRUE
+MOV(M8002, K500, D500);   // Execute on first scan only
+
 (* Variants *)
-MOVP(xTrig, K100, wOut); // Pulse: one-shot on rising edge
-DMOV(diSrc, diDst);      // 32-bit: DINT/DWORD
-DMOVP(xTrig, diSrc, diDst);
+MOVP(xTrig, K100, wOut);  // Pulse: one-shot on rising edge of xTrig
+DMOV(diSrc, diDst);       // 32-bit: DINT/DWORD
+DMOVP(xTrig, diSrc, diDst);// 32-bit pulse
 ```
 
-`MOV_E` not available; use `MOV` directly. For block/fill operations, use `BMOV` (copy N words) or `FMOV` (fill N words with same value).
+`MOV_E` not available; use conditional `MOV(EN, S, D)` instead. For block/fill operations, use `BMOV` (copy N words) or `FMOV` (fill N words with same value).
 
 ---
 
@@ -350,17 +355,16 @@ WXOR(wFlags, HFFFF, wInverted);    // Invert all 16 bits
 WOR(wOutput, H0001, wOutput);      // Set bit 0 without affecting others
 
 (* Variants *)
-WAND_E(xTrig, wA, wB, wResult);    // Triggered
 WANDP(xTrig, wA, wB, wResult);     // Pulse
 DAND(dwA, dwB, dwResult);          // 32-bit
-DAND_E(xTrig, dwA, dwB, dwResult);
+DANDP(xTrig, dwA, dwB, dwResult);  // 32-bit pulse
 ```
 
-| Base   | `_E`      | `P`      | `D` (32-bit)       | `DP` (32-bit pulse) |
-|--------|-----------|----------|--------------------|----------------------|
-| `WAND` | `WAND_E`  | `WANDP`  | `DAND`, `DAND_E`   | `DANDP`              |
-| `WOR`  | `WOR_E`   | `WORP`   | `DOR`, `DOR_E`     | `DORP`               |
-| `WXOR` | `WXOR_E`  | `WXORP`  | `DXOR`, `DXOR_E`   | `DXORP`              |
+| Base   | `P`      | `D` (32-bit) | `DP` (32-bit pulse) |
+|--------|----------|--------------|----------------------|
+| `WAND` | `WANDP`  | `DAND`       | `DANDP`              |
+| `WOR`  | `WORP`   | `DOR`        | `DORP`               |
+| `WXOR` | `WXORP`  | `DXOR`       | `DXORP`              |
 
 > No `WNEG` (word negate). Use `WXOR(wVal, HFFFF, wResult)` for bitwise NOT.
 

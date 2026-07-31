@@ -4,11 +4,12 @@ description: >
   Generates Structured Text (ST) code and CSV variable import files for
   Mitsubishi Electric FX series PLCs (FX3U, FX3G, FX3S, FX5U) in GX Works 2.
   Covers ST syntax, built-in FUN/FB, timers, counters, edge detection, type
-  casting, and CSV-based label management. Trigger when used "GX Works 2" 
-  "Mitsubishi FX" "FX3U" / "FX3G" / "FX3S" / "FX5U" ST code for Mitsubishi 
-  PLC Device addresses: X, Y, M, D, T, C Mitsubishi ST syntax or built-in 
-  functions Factory automation / industrial control ST code
-version: 1.0.0
+  casting, and CSV-based label management.
+  Triggers: "GX Works 2", "Mitsubishi FX", "FX3U", "FX3G", "FX3S", "FX5U",
+  ST code for Mitsubishi PLC, device addresses X/Y/M/D/T/C,
+  Mitsubishi ST syntax, built-in functions, factory automation,
+  industrial control ST code, PLC Structured Text.
+version: 1.1.0
 compatibility: GX Works 2, FX series (FX3U, FX3G, FX3S, FX5U)
 ---
 
