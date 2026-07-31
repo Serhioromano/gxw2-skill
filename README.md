@@ -104,6 +104,7 @@ All state machines start with states 0 (Init), 10 (Reset), 20 (Idle). Integer va
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 1.3.0 | 2025-07-31 | Added ANS, HOUR, RAMP, SCL, PWM sections; EI/DI/WDT use EN parameter; removed FOR/NEXT (IEC syntax, covered in common-rules.md) |
 | 1.2.0 | 2025-07-31 | All instruction signatures use EN as first parameter; SHL/SHR/ROL/ROR return values (function-style); PID example uses EN-first MOV |
 | 1.1.0 | 2025-07-31 | Clarified MOV instruction docs (2-param base + optional EN), removed non-existent `_E` variants from WAND/WOR/WXOR, cleaned PID example, improved SKILL.md triggers |
 | 1.0.1 | 2025-07-31 | Fixed MOV `_E` in instruction-db, added CSV UTF-16 LE warning, initial SKILL.md trigger improvement |

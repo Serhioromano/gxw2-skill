@@ -517,19 +517,20 @@ SFTL(TRUE, xNewBit, M0, K4, K1); // Shift M0–M63 left by 1, xNewBit → M63
 Enable or disable hardware interrupts.
 
 ```iecst
-EI;    // Enable interrupts (after DI)
-DI;    // Disable interrupts (globally)
+EI(TRUE);    // Enable interrupts (after DI)
+DI(TRUE);    // Disable interrupts (globally)
 
 (* Typical usage pattern *)
-DI;
+DI(TRUE);
 // ... critical section (cannot be interrupted) ...
-EI;
+EI(TRUE);
 ```
 
-- Standalone statements — no parameters, no CSV declaration
-- `DI` disables all external interrupts until `EI` is executed
+- `EI(EN)` — enables interrupts when EN is TRUE
+- `DI(EN)` — disables interrupts when EN is TRUE
 - Interrupt POUs must end with `IRET;` (returns to main program)
 - Does NOT disable the scan watchdog timer
+- No CSV declaration needed
 
 ---
 
@@ -538,36 +539,162 @@ EI;
 Resets the scan watchdog timer to prevent a watchdog timeout during long operations.
 
 ```iecst
-WDT;         // Reset watchdog timer
-WDTP;        // Pulse (one-shot on rising edge of implicit trigger)
+WDT(TRUE);    // Reset watchdog timer (unconditional)
+WDTP(xTrig);  // Pulse (one-shot on rising edge)
 
 (* Typical use: inside long loops *)
 FOR i := 0 TO 10000 DO
     // ... lengthy operation ...
     IF (i MOD 100) = 0 THEN
-        WDT;  // Reset WDT every 100 iterations
+        WDT(TRUE);  // Reset WDT every 100 iterations
     END_IF;
 END_FOR;
 ```
 
-- `WDT` is a standalone statement (no parameters)
-- `WDTP` is the pulse variant — use when called conditionally
+- `WDT(EN)` — resets watchdog when EN is TRUE
+- `WDTP(EN)` — pulse variant, resets once on rising edge
 - Default scan watchdog: 200ms. Extended by `WDT` to 200ms from the point of execution
 - No CSV declaration needed
 
 ---
 
-## FOR / NEXT
+## Annunciator — ANS / ANR
 
-Loop construct (IEC syntax) for repeating a block. See [common-rules.md](common-rules.md) for the full pattern.
+Timed annunciator set and reset for alarm management.
 
 ```iecst
-FOR iVar := Start TO End BY Step DO
-    // statements
-END_FOR;
+(* ANS: set annunciator after delay *)
+ANS(EN, S, m, D);
+(* EN: enable execution
+   S:  timer number (T0–T511)
+   m:  delay time (×100ms units)
+   D:  annunciator flag (bit device, set TRUE after delay) *)
+
+ANS(TRUE, T10, K50, M100);  // After 5s (50×100ms), M100 turns ON
+
+(* ANR: reset all annunciator flags *)
+ANR(TRUE);                   // Reset all annunciator flags
+ANRP(xTrig);                 // Pulse: reset on rising edge
 ```
 
-- `BY Step` is optional (defaults to 1)
-- `EXIT;` exits the innermost loop immediately
-- Keep loops short to avoid scan time overrun — use `WDT` inside long loops
-- `CONTINUE` is **not available** on FX series — restructure with `IF/ELSE`
+- `ANS` sets D TRUE after EN has been TRUE continuously for m×100ms
+- `ANR` resets all annunciator-set flags at once
+- No `_E` or `D` variants
+- No CSV declaration needed
+
+---
+
+## Hour Meter — HOUR
+
+Accumulates ON time of an input signal. Useful for run-time tracking, maintenance scheduling.
+
+```iecst
+HOUR(EN, S, D1, D2);
+(* EN: enable execution
+   S:  input signal (BOOL, monitored for ON time)
+   D1: accumulated hours (2 consecutive word devices, 32-bit value in hours)
+   D2: overflow flag (BOOL, TRUE when D1 exceeds 32-bit range) *)
+
+HOUR(TRUE, xMotorRun, D100, M50);      // Track motor run hours → D100–D101, overflow → M50
+
+(* Variants *)
+HOURP(xTrig, xMotorRun, D100, M50);    // Pulse
+DHOUR(TRUE, xMotorRun, D200, M51);     // 32-bit (DINT accumulator)
+DHOURP(xTrig, xMotorRun, D200, M51);   // 32-bit pulse
+```
+
+- D1 occupies 2 consecutive word devices (e.g., D100–D101)
+- Accumulated value is in **hours**
+- Overflow flag D2 stays ON once set — use `RST` to clear
+- No CSV declaration needed
+
+---
+
+## Ramp — RAMP
+
+Gradually changes a value from current to target with configurable step size and interval. Useful for soft-start, setpoint ramping.
+
+```iecst
+RAMP(EN, S1, S2, n, D);
+(* EN: enable execution
+   S1: target value (final desired value)
+   S2: step size (amount to change per interval)
+   n:  interval (number of scans between steps)
+   D:  current value + flags (2 consecutive word devices)
+       D[0] = current ramp value
+       D[1] = status flags *)
+
+RAMP(TRUE, K1000, K10, K5, D200);
+// Ramps D200 from current value toward 1000,
+// changing by ±10 every 5 scans
+
+(* Check if ramp complete *)
+IF (D201 AND H0001) <> WORD#0 THEN
+    xRampDone := TRUE;
+END_IF;
+```
+
+- D occupies 2 consecutive word devices: D[0]=current value, D[1]=flags (b0=ramp complete)
+- No `_E`, `P`, or `D` variants
+- Ramp stops when current value reaches target
+- Works with signed values (positive and negative steps)
+- No CSV declaration needed
+
+---
+
+## Scaling — SCL / SCL2
+
+Linear scaling using coordinate point data. SCL uses a multi-point table; SCL2 uses 2-point X/Y data.
+
+```iecst
+(* SCL: scale using point table *)
+SCL(EN, S1, S2, D);
+(* EN: enable execution
+   S1: source value (input to scale)
+   S2: head address of point-data table
+   D:  scaled output value *)
+
+SCL(TRUE, wRawValue, D300, wScaled);
+SCLP(xTrig, wRawValue, D300, wScaled);  // Pulse
+
+(* SCL2: scale using 2-point X/Y coordinates *)
+SCL2(EN, S1, S2, D);
+(* EN: enable execution
+   S1: source value (input to scale)
+   S2: head address of X/Y coordinate table (4 consecutive words)
+       S2[0]=X1, S2[1]=Y1, S2[2]=X2, S2[3]=Y2
+   D:  scaled output value *)
+
+SCL2(TRUE, wRawValue, D400, wScaled);
+SCL2P(xTrig, wRawValue, D400, wScaled); // Pulse
+```
+
+- SCL point table format: first word = number of points (N), followed by N pairs of (X, Y)
+- SCL2 uses exactly 2 points: defines a linear segment from (X1,Y1) to (X2,Y2)
+- No `_E` or `D` variants
+- No CSV declaration needed
+
+---
+
+## Pulse Width Modulation — PWM
+
+Generates a PWM pulse train on a specified output.
+
+```iecst
+PWM(EN, S1, S2, D);
+(* EN: enable execution
+   S1: pulse width (in ms or scan units — see note)
+   S2: period (must be > S1)
+   D:  output bit device (Y) *)
+
+PWM(TRUE, K500, K1000, Y0);
+// Y0 outputs PWM: 500ms ON, 500ms OFF (50% duty, 1s period)
+```
+
+- D must be a transistor output (Y0–Y4 for FX3U)
+- Period and pulse width units depend on PLC model
+- PWM runs continuously once started — use `RST` to stop the output
+- No `_E`, `P`, or `D` variants
+- No CSV declaration needed
+
+> **Note:** PWM parameters (S1, S2) and specific output availability vary by FX model. Consult the FX3U Hardware Manual for output limitations and frequency ranges.
