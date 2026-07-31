@@ -4,6 +4,14 @@ Always load this file. GX Works 2 does **not** use inline `VAR ... END_VAR` bloc
 
 ---
 
+## ⚠️ MANDATORY: Create ALL CSV Files in UTF-16 LE Encoding
+
+> **Every CSV file you generate MUST be written in UTF-16 Little Endian encoding with BOM (`FF FE`).**
+>
+> GX Works 2 will **reject** any file that is not UTF-16 LE. This is non-negotiable. Before saving the file, explicitly set the encoding to **UTF-16 LE** in your editor or write tool. Do NOT use UTF-8, ASCII, or any other encoding — the import will fail silently or with an error.
+
+---
+
 ## Critical: File Format
 
 GX Works 2 exports and imports CSV files in **UTF-16 LE with BOM, tab-separated, all values quoted**. Any deviation will fail to import.
