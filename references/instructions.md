@@ -13,32 +13,32 @@ Most-used instructions in everyday ST programming. Each has `_E` (triggered), `P
 
 | Instruction | Description | Quick Example |
 |-------------|-------------|---------------|
-| `SET(Cond, Dev)` | Latch bit ON | `SET(xAlarm, Y0);` |
-| `RST(Cond, Dev)` | Reset bit OFF | `RST(xReset, Y0);` |
-| `PLS(Cond, Dev)` | One-scan pulse on rising edge | `PLS(xTrig, M50);` |
-| `PLF(Cond, Dev)` | One-scan pulse on falling edge | `PLF(xTrig, M51);` |
+| `SET(EN, Dev)` | Latch bit ON | `SET(xAlarm, Y0);` |
+| `RST(EN, Dev)` | Reset bit OFF | `RST(xReset, Y0);` |
+| `PLS(EN, Dev)` | One-scan pulse on rising edge | `PLS(xTrig, M50);` |
+| `PLF(EN, Dev)` | One-scan pulse on falling edge | `PLF(xTrig, M51);` |
 | `MEP(IN)` | Rising edge detect (inline, returns BOOL) | `IF MEP(xStart) THEN ...` |
 | `MEF(IN)` | Falling edge detect (inline, returns BOOL) | `xPulse := MEF(xStop);` |
-| `MOV(S, D)` | Move value | `MOV(K100, wOut);` |
-| `INC(D)` | Increment by 1 | `INC(iCount);` |
-| `DEC(D)` | Decrement by 1 | `DEC(iCount);` |
-| `CMP(S1, S2, D)` | Compare, result bits in D | `CMP(wVal, K100, M0);` |
-| `ZCP(Lo, Hi, S, D)` | Zone compare | `ZCP(K0, K100, wVal, M10);` |
-| `WAND(S1, S2, D)` | Word bitwise AND | `WAND(wIn, H00FF, wOut);` |
-| `WOR(S1, S2, D)` | Word bitwise OR | `WOR(wIn, HFF00, wOut);` |
-| `WXOR(S1, S2, D)` | Word bitwise XOR | `WXOR(wIn, HFFFF, wOut);` |
-| `NEG(D)` | Two's complement negation | `NEG(iVal);` |
-| `BON(S, N, D)` | Test bit N of S → D | `BON(wStatus, K3, M20);` |
-| `SWAP(D)` | Swap high/low byte | `SWAP(wData);` |
-| `BCD(S, D)` | Binary → BCD | `BCD(iVal, wBcd);` |
-| `BIN(S, D)` | BCD → Binary | `BIN(wBcd, iVal);` |
-| `DECO(S, D, N)` | Decode N bits of S → bit in D | `DECO(iStep, M0, K3);` |
-| `ENCO(S, D, N)` | Encode bit position of S → D | `ENCO(M0, iPos, K3);` |
-| `OUT_T(Cond, TCx, Preset)` | Hardware timer start | `OUT_T(TRUE, TC1, K20);` |
-| `OUT_C(Cond, CCx, Preset)` | Hardware counter (16-bit) | `OUT_C(TRUE, CC0, K200);` |
-| `OUT_C_32(Cond, CCx, Preset)` | Hardware counter (32-bit) | `OUT_C_32(TRUE, CC235, K200);` |
-| `SHL(IN, N, D)` | Shift left by N bits | `SHL(wVal, K4, wOut);` |
-| `SHR(IN, N, D)` | Shift right by N bits | `SHR(wVal, K4, wOut);` |
+| `MOV(EN, S, D)` | Move value | `MOV(TRUE, K100, wOut);` |
+| `INC(EN, D)` | Increment by 1 | `INC(TRUE, iCount);` |
+| `DEC(EN, D)` | Decrement by 1 | `DEC(TRUE, iCount);` |
+| `CMP(EN, S1, S2, D)` | Compare, result bits in D | `CMP(TRUE, wVal, K100, M0);` |
+| `ZCP(EN, Lo, Hi, S, D)` | Zone compare | `ZCP(TRUE, K0, K100, wVal, M10);` |
+| `WAND(EN, S1, S2, D)` | Word bitwise AND | `WAND(TRUE, wIn, H00FF, wOut);` |
+| `WOR(EN, S1, S2, D)` | Word bitwise OR | `WOR(TRUE, wIn, HFF00, wOut);` |
+| `WXOR(EN, S1, S2, D)` | Word bitwise XOR | `WXOR(TRUE, wIn, HFFFF, wOut);` |
+| `NEG(EN, D)` | Two's complement negation | `NEG(TRUE, iVal);` |
+| `BON(EN, S, N, D)` | Test bit N of S → D | `BON(TRUE, wStatus, K3, M20);` |
+| `SWAP(EN, D)` | Swap high/low byte | `SWAP(TRUE, wData);` |
+| `BCD(EN, S, D)` | Binary → BCD | `BCD(TRUE, iVal, wBcd);` |
+| `BIN(EN, S, D)` | BCD → Binary | `BIN(TRUE, wBcd, iVal);` |
+| `DECO(EN, S, D, N)` | Decode N bits of S → bit in D | `DECO(TRUE, iStep, M0, K3);` |
+| `ENCO(EN, S, D, N)` | Encode bit position of S → D | `ENCO(TRUE, M0, iPos, K3);` |
+| `OUT_T(EN, TCx, Preset)` | Hardware timer start | `OUT_T(TRUE, TC1, K20);` |
+| `OUT_C(EN, CCx, Preset)` | Hardware counter (16-bit) | `OUT_C(TRUE, CC0, K200);` |
+| `OUT_C_32(EN, CCx, Preset)` | Hardware counter (32-bit) | `OUT_C_32(TRUE, CC235, K200);` |
+| `wResult := SHL(IN, N)` | Shift left by N bits (returns) | `wResult := SHL(wVal, K4);` |
+| `wResult := SHR(IN, N)` | Shift right by N bits (returns) | `wResult := SHR(wVal, K4);` |
 | `EI` | Enable interrupts | `EI;` |
 | `DI` | Disable interrupts | `DI;` |
 | `WDT` | Reset watchdog timer | `WDT;` |
@@ -47,22 +47,22 @@ Most-used instructions in everyday ST programming. Each has `_E` (triggered), `P
 
 ## SET / RST
 
-SET and RST replace the SR and RS function blocks (not available on FX series). Both accept two parameters: a condition and a destination bit device.
+SET and RST replace the SR and RS function blocks (not available on FX series). Both accept an enable (`EN`) as the first parameter and a destination bit device as the second.
 
 ```iecst
-(* SET: latches destination TRUE when condition is TRUE *)
-(* Destination stays TRUE even after condition drops *)
+(* SET: latches destination TRUE when EN is TRUE *)
+(* Destination stays TRUE even after EN drops *)
 SET(xAlarmCondition, Y0);        // Y0 latches ON when xAlarmCondition rises
 SET(xStart, M100);               // M100 latches ON
 
-(* RST: resets destination to FALSE when condition is TRUE *)
+(* RST: resets destination to FALSE when EN is TRUE *)
 RST(xResetButton, Y0);           // Y0 cleared when xResetButton is TRUE
 RST(xStop, M100);                // M100 cleared
 ```
 
 **Key behavior:**
-- When condition is TRUE, destination is set/reset **every scan** (not edge-triggered)
-- If both SET and RST conditions are TRUE in the same scan, the **last one executed wins**
+- When EN is TRUE, destination is set/reset **every scan** (not edge-triggered)
+- If both SET and RST EN are TRUE in the same scan, the **last one executed wins**
 - SET has priority over OUT/`:=` assignment to the same device — a SET device cannot be cleared by `:= FALSE`
 - No CSV declaration needed
 
@@ -115,8 +115,8 @@ For WORD and DWORD types, use dedicated arithmetic instructions. These have 4 va
 
 ### Usage Examples
 ```iecst
-(* Direct: wResult := wVal1 + wVal2 *)
-ADD(wVal1, wVal2, wResult);
+(* Direct (unconditional): EN = TRUE *)
+ADD(TRUE, wVal1, wVal2, wResult);
 
 (* Triggered: only when xTrig is TRUE *)
 ADD_E(xTrig, wVal1, wVal2, wResult);
@@ -125,7 +125,7 @@ ADD_E(xTrig, wVal1, wVal2, wResult);
 ADDP(xTrig, wVal1, wVal2, wResult);
 
 (* 32-bit *)
-DADD(dwVal1, dwVal2, dwResult);
+DADD(TRUE, dwVal1, dwVal2, dwResult);
 
 (* 32-bit pulse *)
 DADDP(xTrig, dwVal1, dwVal2, dwResult);
@@ -137,21 +137,30 @@ DADDP(xTrig, dwVal1, dwVal2, dwResult);
 
 All bit shift instructions support `D` prefix for 32-bit (DWORD) operation.
 
-| Function            | `_E` Variant                    | `D` (32-bit)              | Description                    |
-|---------------------|---------------------------------|---------------------------|--------------------------------|
-| `SHL(IN, N, Result)`| `SHL_E(Trig, IN, N, Result)`    | `DSHL`, `DSHL_E`          | Shift left by N bits           |
-| `SHR(IN, N, Result)`| `SHR_E(Trig, IN, N, Result)`    | `DSHR`, `DSHR_E`          | Shift right by N bits          |
-| `ROL(IN, N, Result)`| `ROL_E(Trig, IN, N, Result)`    | `DROL`, `DROL_E`          | Rotate left by N bits          |
-| `ROR(IN, N, Result)`| `ROR_E(Trig, IN, N, Result)`    | `DROR`, `DROR_E`          | Rotate right by N bits         |
+**Without `_E`: returns a value (function-style). With `_E`: triggered, stores in last parameter.**
+
+| Function            | `_E` Variant                       | `D` (32-bit)              | Description                    |
+|---------------------|------------------------------------|---------------------------|--------------------------------|
+| `SHL(IN, N)`        | `SHL_E(EN, IN, N, Result)`         | `DSHL`, `DSHL_E`          | Shift left by N bits           |
+| `SHR(IN, N)`        | `SHR_E(EN, IN, N, Result)`         | `DSHR`, `DSHR_E`          | Shift right by N bits          |
+| `ROL(IN, N)`        | `ROL_E(EN, IN, N, Result)`         | `DROL`, `DROL_E`          | Rotate left by N bits          |
+| `ROR(IN, N)`        | `ROR_E(EN, IN, N, Result)`         | `DROR`, `DROR_E`          | Rotate right by N bits         |
 
 ### Usage Examples
 ```iecst
-(* 16-bit *)
-SHL(wVal, K4, wResult);                  // wResult := wVal shifted left 4
-SHL_E(xTrig, wVal, K4, wResult);         // triggered
+(* 16-bit — returns value *)
+wResult := SHL(wVal, K4);                // wResult := wVal shifted left 4
+wResult := SHR(wVal, K4);                // wResult := wVal shifted right 4
+wResult := ROL(wVal, K4);                // wResult := wVal rotated left 4
+wResult := ROR(wVal, K4);                // wResult := wVal rotated right 4
+
+(* 16-bit triggered — stores in last parameter *)
+SHL_E(xTrig, wVal, K4, wResult);         // triggered shift left
+SHR_E(xTrig, wVal, K4, wResult);         // triggered shift right
 
 (* 32-bit *)
-DSHL(dwVal, K8, dwResult);               // 32-bit shift left 8
+dwResult := DSHL(dwVal, K8);             // 32-bit shift left 8
+dwResult := DSHR(dwVal, K8);             // 32-bit shift right 8
 DSHL_E(xTrig, dwVal, K8, dwResult);      // 32-bit triggered
 ```
 
@@ -179,10 +188,10 @@ xPulse := MEP(xSensor);         // Use directly in assignment
 PLS and PLF are edge-detection instructions that **write a one-scan pulse to a destination variable**. Unlike MEP/MEF (which return a boolean value for inline use), PLS/PLF set a specified bit device TRUE for one scan.
 
 ```iecst
-(* PLS: sets dest TRUE for one scan on rising edge of condition *)
+(* PLS: sets dest TRUE for one scan on rising edge of EN *)
 PLS(xStartButton, M50);          // M50 pulses ON for 1 scan when button pressed
 
-(* PLF: sets dest TRUE for one scan on falling edge of condition *)
+(* PLF: sets dest TRUE for one scan on falling edge of EN *)
 PLF(xStopButton, M51);           // M51 pulses ON for 1 scan when button released
 
 (* Typical use: triggering actions on edge *)
@@ -198,7 +207,7 @@ END_IF;
 
 **PLS vs MEP, PLF vs MEF:**
 - `MEP(IN)` / `MEF(IN)` — return TRUE for one scan; ideal for inline use in IF/assignment
-- `PLS(cond, dest)` / `PLF(cond, dest)` — set a destination bit TRUE for one scan; useful when the pulse needs to be referenced in multiple places or across POU boundaries
+- `PLS(EN, dest)` / `PLF(EN, dest)` — set a destination bit TRUE for one scan; useful when the pulse needs to be referenced in multiple places or across POU boundaries
 - No CSV declaration needed for PLS/PLF
 
 ---
@@ -258,23 +267,23 @@ RST(TRUE, CC235);             // Reset counter to 0
 Transfers data from source to destination. Supports `P` (pulse) and `D` (32-bit) variants.
 
 ```iecst
-(* Base form: unconditional execution *)
-MOV(S, D);                // D := S (16-bit)
+(* MOV(EN, S, D) — EN is always the first parameter *)
 
-MOV(K100, wOut);          // wOut := 100
-MOV(wInput, D200);        // D200 := wInput
+(* Unconditional: use TRUE as EN *)
+MOV(TRUE, K100, wOut);          // wOut := 100 (always executes)
+MOV(TRUE, wInput, D200);        // D200 := wInput (always executes)
 
-(* Conditional execution: add EN as first parameter *)
-MOV(xEnable, K100, wOut); // Execute only when xEnable is TRUE
-MOV(M8002, K500, D500);   // Execute on first scan only
+(* Conditional: EN controls execution *)
+MOV(xEnable, K100, wOut);       // Execute only when xEnable is TRUE
+MOV(M8002, K500, D500);         // Execute on first scan only
 
 (* Variants *)
-MOVP(xTrig, K100, wOut);  // Pulse: one-shot on rising edge of xTrig
-DMOV(diSrc, diDst);       // 32-bit: DINT/DWORD
-DMOVP(xTrig, diSrc, diDst);// 32-bit pulse
+MOVP(xTrig, K100, wOut);        // Pulse: one-shot on rising edge of xTrig
+DMOV(TRUE, diSrc, diDst);       // 32-bit: DINT/DWORD, unconditional
+DMOVP(xTrig, diSrc, diDst);     // 32-bit pulse
 ```
 
-`MOV_E` not available; use conditional `MOV(EN, S, D)` instead. For block/fill operations, use `BMOV` (copy N words) or `FMOV` (fill N words with same value).
+`MOV_E` not available; use `MOV(EN, S, D)` with a BOOL EN. For block/fill operations, use `BMOV` (copy N words) or `FMOV` (fill N words with same value).
 
 ---
 
@@ -287,9 +296,9 @@ Compare two values or check if a value falls within a zone. Results written to 3
 (* D+0: ON when S1 > S2   *)
 (* D+1: ON when S1 = S2   *)
 (* D+2: ON when S1 < S2   *)
-CMP(S1, S2, D);
+CMP(EN, S1, S2, D);
 
-CMP(wValue, K100, M0);
+CMP(TRUE, wValue, K100, M0);
 // M0: wValue > 100
 // M1: wValue = 100
 // M2: wValue < 100
@@ -300,9 +309,9 @@ IF M0 THEN xHigh := TRUE; END_IF;
 (* D+0: ON when S < Lower  *)
 (* D+1: ON when Lower ≤ S ≤ Upper *)
 (* D+2: ON when S > Upper  *)
-ZCP(Lower, Upper, S, D);
+ZCP(EN, Lower, Upper, S, D);
 
-ZCP(K0, K100, wTemp, M10);
+ZCP(TRUE, K0, K100, wTemp, M10);
 // M10: wTemp < 0
 // M11: 0 ≤ wTemp ≤ 100
 // M12: wTemp > 100
@@ -310,9 +319,9 @@ ZCP(K0, K100, wTemp, M10);
 
 | Variant | Example |
 |---------|---------|
-| 32-bit | `DCMP(diVal, K1000, M0)` |
+| 32-bit | `DCMP(TRUE, diVal, K1000, M0)` |
 | 32-bit+pulse | `DCMPP(xTrig, diVal, K1000, M0)` |
-| Floating | `ECMP(rVal, E50.0, M0)`, `EZCP(E0.0, E100.0, rVal, M10)` |
+| Floating | `ECMP(TRUE, rVal, E50.0, M0)`, `EZCP(TRUE, E0.0, E100.0, rVal, M10)` |
 
 > In ST, native `IF` with `=`, `<`, `>`, `<=`, `>=`, `<>` is usually cleaner. Use CMP/ZCP when you need all three comparison results simultaneously.
 
@@ -323,17 +332,18 @@ ZCP(K0, K100, wTemp, M10);
 Add or subtract 1 from a value in-place. Supports `P` (pulse) and `D` (32-bit) variants.
 
 ```iecst
-INC(D);     // D := D + 1 (16-bit)
-DEC(D);     // D := D - 1 (16-bit)
+INC(EN, D);     // D := D + 1 (16-bit), EN enables execution
+DEC(EN, D);     // D := D - 1 (16-bit), EN enables execution
 
-INC(iCount);             // iCount := iCount + 1
-DEC(wRemaining);         // wRemaining := wRemaining - 1
+INC(TRUE, iCount);             // iCount := iCount + 1 (always)
+INC(xTrig, iCount);            // iCount := iCount + 1 when xTrig TRUE
+DEC(TRUE, wRemaining);         // wRemaining := wRemaining - 1 (always)
 
 (* Variants *)
 INCP(xTrig, iCount);     // Pulse: one-shot
-DINC(diPosition);        // 32-bit increment
+DINC(TRUE, diPosition);  // 32-bit increment
 DINCP(xTrig, diPosition);
-DDEC(diTotal);           // 32-bit decrement
+DDEC(TRUE, diTotal);     // 32-bit decrement
 ```
 
 No `_E` variant. No CSV declaration needed.
@@ -345,18 +355,18 @@ No `_E` variant. No CSV declaration needed.
 Bitwise logic operations on 16-bit WORD values. Required because ST logical operators (`AND`, `OR`, `XOR`) work on BOOL only.
 
 ```iecst
-WAND(S1, S2, D);     // D := S1 AND S2 (bitwise)
-WOR(S1, S2, D);      // D := S1 OR S2  (bitwise)
-WXOR(S1, S2, D);     // D := S1 XOR S2 (bitwise)
+WAND(EN, S1, S2, D);     // D := S1 AND S2 (bitwise)
+WOR(EN, S1, S2, D);      // D := S1 OR S2  (bitwise)
+WXOR(EN, S1, S2, D);     // D := S1 XOR S2 (bitwise)
 
 (* Bit masking examples *)
-WAND(wStatus, H00FF, wLowByte);    // Extract lower 8 bits
-WXOR(wFlags, HFFFF, wInverted);    // Invert all 16 bits
-WOR(wOutput, H0001, wOutput);      // Set bit 0 without affecting others
+WAND(TRUE, wStatus, H00FF, wLowByte);    // Extract lower 8 bits
+WXOR(TRUE, wFlags, HFFFF, wInverted);    // Invert all 16 bits
+WOR(TRUE, wOutput, H0001, wOutput);      // Set bit 0 without affecting others
 
 (* Variants *)
 WANDP(xTrig, wA, wB, wResult);     // Pulse
-DAND(dwA, dwB, dwResult);          // 32-bit
+DAND(TRUE, dwA, dwB, dwResult);    // 32-bit
 DANDP(xTrig, dwA, dwB, dwResult);  // 32-bit pulse
 ```
 
@@ -375,12 +385,14 @@ DANDP(xTrig, dwA, dwB, dwResult);  // 32-bit pulse
 Two's complement: `D := 0 − D`. Supports `P` (pulse) and `D` (32-bit) variants.
 
 ```iecst
-NEG(iVal);               // iVal := -iVal
-NEGP(xTrig, iVal);       // Pulse
-DNEG(diVal);             // 32-bit
+NEG(EN, D);              // D := -D (EN enables execution)
+
+NEG(TRUE, iVal);               // iVal := -iVal (always)
+NEGP(xTrig, iVal);             // Pulse
+DNEG(TRUE, diVal);             // 32-bit
 
 (* Floating point negation *)
-ENEG(rVal);              // rVal := -rVal
+ENEG(TRUE, rVal);              // rVal := -rVal
 ```
 
 > In ST, `iVal := -iVal;` is equivalent and preferred for INT/DINT. Use `NEG` when pulse execution is needed (`NEGP`).
@@ -392,15 +404,15 @@ ENEG(rVal);              // rVal := -rVal
 Check if bit N of source is ON/OFF, result written to destination bit.
 
 ```iecst
-BON(S, N, D);     // D := (bit N of S) ? TRUE : FALSE
+BON(EN, S, N, D);     // D := (bit N of S) ? TRUE : FALSE
 
-BON(wStatus, K3, M20);     // M20 := bit 3 of wStatus
-BON(dwEncoder, K15, xBit15);
+BON(TRUE, wStatus, K3, M20);     // M20 := bit 3 of wStatus
+BON(TRUE, dwEncoder, K15, xBit15);
 
 (* Variants *)
 BON_E(xTrig, wStatus, K3, M20);   // Triggered
 BONP(xTrig, wStatus, K3, M20);    // Pulse
-DBON(dwVal, K31, xBit31);         // 32-bit
+DBON(TRUE, dwVal, K31, xBit31);   // 32-bit
 ```
 
 > In ST, `xResult := (wVal AND H0008) <> WORD#0;` is equivalent for simple bit tests. Use BON when pulse/triggered execution is needed.
@@ -412,10 +424,11 @@ DBON(dwVal, K31, xBit31);         // 32-bit
 Swaps high and low byte of a 16-bit word. Supports `P` (pulse) and `D` (32-bit) variants.
 
 ```iecst
-SWAP(wData);             // Swap bytes: 0xAABB → 0xBBAA
+SWAP(EN, D);             // Swap bytes when EN is TRUE
 
-SWAPP(xTrig, wData);     // Pulse
-DSWAP(dwData);           // 32-bit (swaps high/low word)
+SWAP(TRUE, wData);             // Swap bytes: 0xAABB → 0xBBAA (always)
+SWAPP(xTrig, wData);           // Pulse
+DSWAP(TRUE, dwData);           // 32-bit (swaps high/low word)
 ```
 
 Common uses: endianness conversion for communication protocols, rearranging data from network byte order.
@@ -427,16 +440,16 @@ Common uses: endianness conversion for communication protocols, rearranging data
 Convert between binary and BCD (Binary Coded Decimal) representations.
 
 ```iecst
-BCD(S, D);    // Binary → BCD (e.g., 123 → H0123)
-BIN(S, D);    // BCD → Binary (e.g., H0123 → 123)
+BCD(EN, S, D);    // Binary → BCD (e.g., 123 → H0123)
+BIN(EN, S, D);    // BCD → Binary (e.g., H0123 → 123)
 
-BCD(iCount, wBcdOut);     // wBcdOut := BCD of iCount
-BIN(wBcdIn, iResult);     // iResult := decimal value of BCD
+BCD(TRUE, iCount, wBcdOut);     // wBcdOut := BCD of iCount
+BIN(TRUE, wBcdIn, iResult);     // iResult := decimal value of BCD
 
 (* Variants *)
 BCDP(xTrig, iCount, wBcdOut);  // Pulse
-DBCD(diCount, dwBcdOut);       // 32-bit BCD
-DBIN(dwBcdIn, diResult);       // 32-bit BIN
+DBCD(TRUE, diCount, dwBcdOut); // 32-bit BCD
+DBIN(TRUE, dwBcdIn, diResult); // 32-bit BIN
 ```
 
 > BCD is used for thumbwheel switches, 7-segment displays, and legacy devices. For ST with no BCD peripherals, prefer `INT_TO_BCD`/`BCD_TO_INT` function blocks or keep values in native binary.
@@ -450,15 +463,15 @@ Decode an integer to a single bit position, or encode a bit position to an integ
 ```iecst
 (* DECO: decode N bits of S → set a single bit in D *)
 (* D is a bit device (M, Y). D is set at position = value of S *)
-DECO(S, D, N);
+DECO(EN, S, D, N);
 
-DECO(iStep, M0, K3);     // If iStep=5 → M5 ON, others OFF (3 bits → 0–7)
+DECO(TRUE, iStep, M0, K3);     // If iStep=5 → M5 ON, others OFF (3 bits → 0–7)
 
 (* ENCO: encode bit position of S → D (N bits) *)
 (* S is a bit device, D is a word device *)
-ENCO(S, D, N);
+ENCO(EN, S, D, N);
 
-ENCO(M0, iPos, K3);      // If M5 is ON → iPos := 5 (2^N bits of S encoded)
+ENCO(TRUE, M0, iPos, K3);      // If M5 is ON → iPos := 5 (2^N bits of S encoded)
 ```
 
 | Param | DECO | ENCO |
@@ -477,16 +490,17 @@ Multi-word shift register. Shifts N bits across a range of consecutive word devi
 
 ```iecst
 (* SFTR: shift right through N words, shift-in bit from S *)
-SFTR(S, D, N1, N2);
-(* S: shift-in data source (bit device)
+SFTR(EN, S, D, N1, N2);
+(* EN: enable execution
+   S: shift-in data source (bit device)
    D: head of shift register (bit device)
    N1: length of shift register (words)
    N2: number of bits to shift *)
 
-SFTR(xNewBit, M0, K4, K1); // Shift M0–M63 right by 1, xNewBit → M0
+SFTR(TRUE, xNewBit, M0, K4, K1); // Shift M0–M63 right by 1, xNewBit → M0
 
 (* SFTL: shift left *)
-SFTL(xNewBit, M0, K4, K1); // Shift M0–M63 left by 1, xNewBit → M63
+SFTL(TRUE, xNewBit, M0, K4, K1); // Shift M0–M63 left by 1, xNewBit → M63
 ```
 
 | Variant | Description |

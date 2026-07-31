@@ -61,57 +61,57 @@
    ========================================================================== *)
 IF M8002 THEN
     (* +0: Sampling time Ts = 500ms *)
-    MOV(K500, D500);
+    MOV(TRUE, K500, D500);
 
     (* +1: ACT — reverse action, output limit mode, no autotune *)
-    MOV(2#0000_0000_0000_0001, D501);
+    MOV(TRUE, 2#0000_0000_0000_0001, D501);
 
     (* +2: Input filter α = 70% *)
-    MOV(K70, D502);
+    MOV(TRUE, K70, D502);
 
     (* +3: Proportional gain Kp = 200% *)
-    MOV(K200, D503);
+    MOV(TRUE, K200, D503);
 
     (* +4: Integral time Ti = 30 (×100ms → 3.0s) *)
-    MOV(K30, D504);
+    MOV(TRUE, K30, D504);
 
     (* +5: Derivative gain Kd = 0% (PI-only control) *)
-    MOV(K0, D505);
+    MOV(TRUE, K0, D505);
 
     (* +6: Derivative time Td = 0 (×10ms) *)
-    MOV(K0, D506);
+    MOV(TRUE, K0, D506);
 
     (* +7: SCAN — autotune operation cycle = 1000ms *)
-    MOV(K1000, D507);
+    MOV(TRUE, K1000, D507);
 
     (* +8..+19 D508–D519: Internal work area. PID manages these — do not write. *)
 
     (* +20: Input variation alarm (incremental) = max → disabled *)
-    MOV(K32767, D520);
+    MOV(TRUE, K32767, D520);
 
     (* +21: Input variation alarm (decremental) = max → disabled *)
-    MOV(K32767, D521);
+    MOV(TRUE, K32767, D521);
 
     (* +22: Output upper limit = 1000 (100.0%) *)
-    MOV(K1000, D522);
+    MOV(TRUE, K1000, D522);
 
     (* +23: Output lower limit = 0 (0.0%) *)
-    MOV(K0, D523);
+    MOV(TRUE, K0, D523);
 
     (* +24: Alarm output flags — cleared on init *)
-    MOV(K0, D524);
+    MOV(TRUE, K0, D524);
 
     (* +25: SHPV — PV threshold hysteresis width for limit cycle *)
-    MOV(K10, D525);
+    MOV(TRUE, K10, D525);
 
     (* +26: ULV — output upper limit for limit cycle method *)
-    MOV(K1000, D526);
+    MOV(TRUE, K1000, D526);
 
     (* +27: LLV — output lower limit for limit cycle method *)
-    MOV(K0, D527);
+    MOV(TRUE, K0, D527);
 
     (* +28: KW — wait from autotune end to PID start (0% = no wait) *)
-    MOV(K0, D528);
+    MOV(TRUE, K0, D528);
 
     (* Mark init complete *)
     xInitComplete := TRUE;
