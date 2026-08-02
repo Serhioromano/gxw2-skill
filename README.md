@@ -2,16 +2,6 @@
 
 A **package for the [Pi Coding Agent](https://github.com/earendil-works/pi)** that makes the agent an expert in writing **Structured Text (ST)** code for **Mitsubishi Electric FX series PLCs** (FX3U, FX3G, FX3S, FX5U) in **GX Works 2**.
 
-> **Pi extension only.** This is a package for the Pi Coding Agent. It is not a
-> standalone program, and it is not intended for other agent harnesses
-> (Claude Code, Codex, etc.). It installs via `pi install`, and Pi auto-discovers
-> it as the `gxw2-st` skill.
-
-## Requirements
-
-- [Pi Coding Agent](https://github.com/earendil-works/pi)
-- Node.js / npm (used for npm- and git-based installs)
-
 ## What This Skill Does
 
 - Generates correct ST code compatible with GX Works 2 FX series compiler
@@ -103,48 +93,6 @@ Example prompts:
 - "Show me how to use TON/TOF timers in Mitsubishi ST"
 - "How do I cast INT to REAL in GX Works 2 ST?"
 
-## Repository Structure
-
-```
-gxw2-skill/                          # repo root = Pi package (npm/git)
-├── package.json                     # pi.skills manifest, pi-package keyword
-├── README.md                        # This file
-├── LICENSE                          # MIT
-├── plans/                           # Development plans
-└── skills/
-    └── gxw2-st/                     # The skill itself
-        ├── SKILL.md                 # Main skill (triggers, lazy-load index, critical constraints)
-        ├── references/              # Detailed reference files (loaded on-demand by SKILL.md)
-        │   ├── common-rules.md      # Mandatory constraints, naming, literal prefixes
-        │   ├── csv-variables.md     # CSV file formats and Label Editor rules
-        │   ├── devices.md           # Device address space (X, Y, M, D, T, C, etc.)
-        │   ├── system-devices.md    # Special relays (M8000+) and registers (D8000+)
-        │   ├── DB/                   # Per-instruction files (ST syntax, operands, examples)
-        │   │   └── 00_Instruction_List.md    # Index of all instruction files + how to load them
-        │   ├── data-types.md        # Types, K/H/E/REAL#/T# literals, casting functions
-        │   ├── functions.md         # Built-in FUN/FB catalog: timers, counters, math, strings
-        │   └── compatibility.md     # FX series feature matrix (FX3U vs FX3G vs FX3S vs FX5U)
-        └── examples/                # 14 example pairs (.st + .csv) plus standalone CSVs
-            ├── io.csv               # Standalone: I/O variable list (DI_/DO_/AI_/AO_)
-            ├── gvl.csv              # Standalone: Global variable list (g_ prefix)
-            ├── pou-local.csv        # Standalone: Local POU variable template
-            ├── structure.csv        # Standalone: Structure definition example
-            ├── 01-io-assignment.st + .csv
-            ├── 02-conditionals.st + .csv
-            ├── 03-case-state-machine.st + .csv
-            ├── 04-loops.st + .csv
-            ├── 05-timers.st + .csv
-            ├── 06-counters.st + .csv
-            ├── 07-math.st + .csv
-            ├── 08-strings.st + .csv
-            ├── 09-bit-operations.st + .csv
-            ├── 10-type-casting.st + .csv
-            ├── 11-edge-detection.st + .csv
-            ├── 12-function-block/MotorControl.st + .csv
-            ├── 13-function/ScaleValue.st + .csv
-            └── 14-pid-control.st + .csv
-```
-
 ## Development
 
 - The skill lives in `skills/gxw2-st/`; all its internal links are relative to
@@ -170,16 +118,6 @@ Every project follows the INIT → ROUTINE → MAIN structure:
 
 ### State Machine Convention
 All state machines start with states 0 (Init), 10 (Reset), 20 (Idle). Integer values only, no CONSTANT declarations for state names.
-
-## Version History
-
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.3.0 | 2025-07-31 | Added ANS, HOUR, RAMP, SCL, PWM sections; EI/DI/WDT use EN parameter; removed FOR/NEXT (IEC syntax, covered in common-rules.md) |
-| 1.2.0 | 2025-07-31 | All instruction signatures use EN as first parameter; SHL/SHR/ROL/ROR return values (function-style); PID example uses EN-first MOV |
-| 1.1.0 | 2025-07-31 | Clarified MOV instruction docs (2-param base + optional EN), removed non-existent `_E` variants from WAND/WOR/WXOR, cleaned PID example, improved SKILL.md triggers |
-| 1.0.1 | 2025-07-31 | Fixed MOV `_E` in instruction-db, added CSV UTF-16 LE warning, initial SKILL.md trigger improvement |
-| 1.0.0 | 2025-07-30 | Initial release |
 
 ## Author
 
