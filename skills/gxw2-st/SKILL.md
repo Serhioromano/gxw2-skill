@@ -19,6 +19,19 @@ Generate ST code and CSV variable import files for Mitsubishi FX series PLCs
 in GX Works 2. Every code output must include both `.st` code files and `.csv`
 variable files for the Label Editor.
 
+## Target Platform
+
+This skill always writes code for **Mitsubishi FX series PLCs** (FX3U, FX3G,
+FX3S, FX5U) in **GX Works 2** — never for other vendors or for Q/L/iQ-R series.
+
+- **Generating new code:** if the user did not name a controller, state the
+  assumption explicitly: the code targets Mitsubishi FX in GX Works 2.
+- **Modifying existing code:** before touching provided ST, verify it is
+  Mitsubishi-compatible — device addresses X/Y/M/D/T/C/Z/V/R, Mitsubishi
+  function names (`RND` not `ROUND`, `MAXIMUM` not `MAX`), no forbidden
+  constructs from [references/common-rules.md](references/common-rules.md).
+  If the code is not Mitsubishi ST, say so instead of "fixing" it with FX syntax.
+
 ## Workflow: Plan → Generate
 
 This skill uses a **two-phase workflow** to avoid context overload from the
@@ -38,7 +51,10 @@ heavy instruction catalog.
    - **Original task** — restate the user's request in your own words
    - **POU list** — which Program/FB/FUN units to create, their responsibilities
    - **Instruction selection** — exactly which instructions to use (with full
-     signatures, variants `_E`/`P`/`D`, and why this variant fits the task)
+     signatures, variants `_E`/`P`/`D`, and why this variant fits the task).
+     Record the **File** column from the index for each selected instruction
+     (e.g. `MOV` → `references/DB/MOV.md`) so Phase 2 can load instruction
+     files directly without reloading the index.
    - **Data layout** — which data types, device ranges, and CSV variables are
      needed. Sketch variable names and types.
    - **Code skeletons** — key structures pre-drafted: state machine outline,
@@ -58,7 +74,7 @@ heavy instruction catalog.
    - [references/common-rules.md](references/common-rules.md) — always first
    - [references/csv-variables.md](references/csv-variables.md) — always second
 2. Load on-demand references as needed by the plan:
-   - [references/DB/00_Instruction_List.md](references/DB/00_Instruction_List.md) — instruction index; load it to find the instruction file you need
+   - instruction files recorded in the plan (e.g. `references/DB/MOV.md`) — load only those, never the index
    - [references/data-types.md](references/data-types.md) — type declarations and casting
    - [references/functions.md](references/functions.md) — built-in FUN/FB (timers, counters, strings, etc.)
    - [references/devices.md](references/devices.md) — device addresses (X, Y, M, D, etc.)
@@ -66,6 +82,23 @@ heavy instruction catalog.
 3. Generate `.st` and `.csv` files according to the plan.
 4. **Do not re-load `references/DB/00_Instruction_List.md`** during code generation — use your plan
    and the lightweight reference files.
+
+---
+
+## Workflow: Modify
+
+When the user asks to **change existing ST code** (fix a bug, add a timer,
+rework a state machine), do not regenerate from scratch:
+
+1. Read the existing `.st`/`.csv` pair(s) named in the request. Confirm the
+   target platform first (see Target Platform above).
+2. Produce a **delta plan** — what logic changes, which instructions/FBs are
+   added or removed, which CSV variables and FB instances are affected.
+3. Load only the instruction files involved (see Instruction File Path Rule).
+4. Edit **both** files of each pair — `.st` (code) and `.csv` (variables).
+   A device or address changed in one file must be changed in the other.
+5. Keep the delta plan small; re-run the full Plan → Generate only if the
+   change touches program structure (POU list, INIT/ROUTINE/MAIN split).
 
 ---
 
@@ -92,7 +125,7 @@ code generation.
 
 | File | Load When |
 |------|-----------|
-| [references/DB/00_Instruction_List.md](references/DB/00_Instruction_List.md) | Using ST instructions from your plan: load this index, find the instruction in the table, then load its individual file (see path rule below) |
+| Instruction files from the plan (`references/DB/{File}`) | Load only the instruction files the plan recorded; never the index (see path rule below) |
 | [references/data-types.md](references/data-types.md) | Declaring variables, choosing types, writing K/H/E literals, or type casting |
 | [references/functions.md](references/functions.md) | Using built-in FUN/FB: timers, counters, edge detection, math, strings, selection, type casting, user-defined FB/FUN |
 | [references/devices.md](references/devices.md) | Code uses device addresses (X, Y, M, D, T, C, Z, V, R) or digit-specified addressing (`K4X0`) |
@@ -107,11 +140,18 @@ code generation.
 Each instruction has its own file in `references/DB/`. To get full details
 (ST syntax, operands, variants, examples, support):
 
-1. Load [references/DB/00_Instruction_List.md](references/DB/00_Instruction_List.md) — the index of all instruction files.
-2. Find the instruction in the table (by name or short description) and read the **File** column.
-3. Load the file at `references/DB/{File}` — e.g. instruction `MOV` → `references/DB/MOV.md`, `ADD` → `references/DB/ADD.md`.
+1. Read the **File** column from your plan (recorded during Phase 1) — e.g. `MOV` → `references/DB/MOV.md`, `ADD` → `references/DB/ADD.md`.
+2. If the plan lacks the file name, load [references/DB/00_Instruction_List.md](references/DB/00_Instruction_List.md) **once**, look up the instruction, then drop the index from context again.
+3. Load the file at `references/DB/{File}` — the instruction's own file. Never keep the index loaded just to read one instruction.
 
 > Some instructions share one file with a paired instruction (e.g. `SET`/`RST` in `SET.md`, `PLS`/`PLF` in `PLS.md`, `MEP`/`MEF` in `MEP.md`). The File column always shows the exact filename to load.
+
+> **Single source of truth:** every instruction is documented in **exactly
+> one** file — its own `{INSTR}.md` in `references/DB/`, or its group section
+> (30–38) when no individual file exists. The index lists each instruction
+> once; group sections summarize and link but never restate syntax or
+> examples from an instruction's own file. Never add a second description of
+> an existing instruction to another file — update its own file instead.
 
 > **All constraints (forbidden constructs, naming, postfix patterns, state
 > machine rules, literal prefixes, variable naming) are in
