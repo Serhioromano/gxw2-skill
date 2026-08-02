@@ -1,6 +1,16 @@
-# GXW2-ST Skill
+# GXW2-ST — Pi Package (Extension)
 
-A skill for Pi Coding Agent that makes the agent an expert in writing **Structured Text (ST)** code for **Mitsubishi Electric FX series PLCs** (FX3U, FX3G, FX3S, FX5U) in **GX Works 2**.
+A **package for the [Pi Coding Agent](https://github.com/earendil-works/pi)** that makes the agent an expert in writing **Structured Text (ST)** code for **Mitsubishi Electric FX series PLCs** (FX3U, FX3G, FX3S, FX5U) in **GX Works 2**.
+
+> **Pi extension only.** This is a package for the Pi Coding Agent. It is not a
+> standalone program, and it is not intended for other agent harnesses
+> (Claude Code, Codex, etc.). It installs via `pi install`, and Pi auto-discovers
+> it as the `gxw2-st` skill.
+
+## Requirements
+
+- [Pi Coding Agent](https://github.com/earendil-works/pi)
+- Node.js / npm (used for npm- and git-based installs)
 
 ## What This Skill Does
 
@@ -28,38 +38,62 @@ A skill for Pi Coding Agent that makes the agent an expert in writing **Structur
 
 ## Installation
 
-This repository is a **Pi package** — the skill installs with one command and is
-auto-discovered by the Pi coding agent as `/skill:gxw2-st`.
+This repository is a **Pi package**. It installs with one command and is
+auto-discovered by the Pi Coding Agent as the `gxw2-st` skill.
+
+### From GitHub (recommended)
 
 ```bash
-# From GitHub (recommended)
 pi install git:github.com/Serhioromano/gxw2-skill
+```
 
-# From npm (once published)
+### From npm
+
+```bash
 pi install npm:gxw2-skill
+```
 
-# From a local checkout (development)
+### From a local checkout (development)
+
+```bash
 pi install /path/to/gxw2-skill
 ```
 
-Then verify:
+### Project-local install
+
+Install for a specific project instead of globally; Pi installs missing
+packages automatically on startup after the project is trusted:
 
 ```bash
-pi list      # package appears in the list
-pi config    # skill gxw2-st is enabled
+pi install -l git:github.com/Serhioromano/gxw2-skill
 ```
 
-Force-load the skill in any session with `/skill:gxw2-st`.
+### Verify
 
-> **Legacy manual install (fallback):**
-> ```bash
-> git clone https://github.com/Serhioromano/gxw2-skill.git
-> cp -r gxw2-skill/skills/gxw2-st ~/.agents/skills/
-> ```
+```bash
+pi list      # the package appears in the list
+pi config    # the gxw2-st skill is enabled
+```
+
+Load the skill on demand with `/skill:gxw2-st`, or just describe your task —
+the agent auto-activates the skill on topics like "GX Works 2", "FX3U",
+"Mitsubishi ST", or device addresses (X, Y, M, D).
+
+### Update
+
+```bash
+pi update git:github.com/Serhioromano/gxw2-skill
+```
+
+### Remove
+
+```bash
+pi remove git:github.com/Serhioromano/gxw2-skill
+```
 
 ## Usage
 
-Once the skill is installed, the agent activates on triggers like "GX Works 2", "FX3U", "Mitsubishi ST", or device addresses (X, Y, M, D). It always produces both ST code and CSV variable files.
+Once installed, the agent activates on triggers like "GX Works 2", "FX3U", "Mitsubishi ST", or device addresses (X, Y, M, D). It always produces both ST code and CSV variable files.
 
 Example prompts:
 
