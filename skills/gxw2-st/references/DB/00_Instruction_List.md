@@ -27,10 +27,10 @@ operands, variants, examples, support):
 | OUT_T.md | [OUT_T.md](OUT_T.md) | OUT_T / Hardware Timer Start | Hardware Timer Start | 62 | ✓ | ✓ |
 | OUT_C.md | [OUT_C.md](OUT_C.md) | OUT_C, OUT_C_32 / Hardware Counter Start | Hardware Counter Start (16-bit / 32-bit) | 66 / 68 | ✓ | ✓ |
 | MPS.md | [MPS.md](MPS.md) | MPS, MRD, MPP |  | 73 | ✓ | ✓ |
-| INV.md | [INV.md](INV.md) | INV |  | 77 | ✓ | ✓ |
-| MEP.md | [MEP.md](MEP.md) | MEP, MEF |  | 79 | ✓ | — |
+| INV.md | [INV.md](INV.md) | INV | | 77 | ✓ | ✓ |
+| MEP.md | [MEP.md](MEP.md) | MEP, MEF | Raise and fall adge detection  | 79 | ✓ | ✓ |
 | SET.md | [SET.md](SET.md) | SET, RST |  | 81 | ✓ | ✓ |
-| PLS.md | [PLS.md](PLS.md) | PLS, PLF |  | 85 | ✓ | ✓ |
+| PLS.md | [PLS.md](PLS.md) | PLS, PLF | Raise and fall adge detection | 85 | ✓ | ✓ |
 | MC.md | [MC.md](MC.md) | MC, MCR |  | 87 | ✓ | ✓ |
 ### 6. Step Ladder Instructions
 
