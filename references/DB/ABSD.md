@@ -3,7 +3,7 @@
 Manual section: **13.3**, page **327**. Index names: ABSD.
 
 ## Purpose
-Processing) (High Speed  Applied Instructions This is a command for creating multiple output patterns corresponding to the present value of the counter.
+Processing High Speed Applied Instructions This is a command for creating multiple output patterns corresponding to the present value of the counter.
 
 ## ST Syntax (GX Works 2)
 - `ABSD(EN,s1,s2,n,d);`

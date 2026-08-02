@@ -26,7 +26,7 @@ heavy instruction catalog.
 
 ### Phase 1 — Planning
 
-1. Load [references/instruction-db.md](references/instruction-db.md) — the full
+1. Load [references/DB/00_Instruction_List.md](references/DB/00_Instruction_List.md) — the full
    180+ instruction catalog.
 2. Analyze the task. Identify which instructions are needed, their exact
    signatures, variant availability (`_E`/`P`/`D`), and any model-specific
@@ -49,7 +49,7 @@ heavy instruction catalog.
 5. **No size limit.** The plan is as long as it needs to be. A complex task may
    produce a 60–100 line plan. The plan is the bridge between the catalog and
    the final code — make it thorough.
-6. **Drop `instruction-db.md` from context after planning.** The plan is all you
+6. **Drop `references/DB/00_Instruction_List.md` from context after planning.** The plan is all you
    need for Phase 2.
 
 ### Phase 2 — Code Generation
@@ -64,7 +64,7 @@ heavy instruction catalog.
    - [references/devices.md](references/devices.md) — device addresses (X, Y, M, D, etc.)
    - [references/system-devices.md](references/system-devices.md) — special relays/registers (M8000+, D8000+)
 3. Generate `.st` and `.csv` files according to the plan.
-4. **Do not re-load `instruction-db.md`** during code generation — use your plan
+4. **Do not re-load `references/DB/00_Instruction_List.md`** during code generation — use your plan
    and the lightweight reference files.
 
 ---
@@ -75,7 +75,7 @@ heavy instruction catalog.
 
 | File | When | Size |
 |------|------|------|
-| [references/instruction-db.md](references/instruction-db.md) | **Phase 1 only.** Full catalog of 180+ instructions with variant tables. Drop after planning. | Heavy (~400 lines) |
+| [references/DB/00_Instruction_List.md](references/DB/00_Instruction_List.md) | **Phase 1 only.** Full catalog of 180+ instructions with variant tables. Drop after planning. | Heavy (~400 lines) |
 | [references/compatibility.md](references/compatibility.md) | **Phase 1 only** if targeting a specific FX model. | Light |
 
 ### Always Load (mandatory for every code generation — Phase 2)
@@ -98,7 +98,7 @@ code generation.
 | [references/devices.md](references/devices.md) | Code uses device addresses (X, Y, M, D, T, C, Z, V, R) or digit-specified addressing (`K4X0`) |
 | [references/system-devices.md](references/system-devices.md) | Code uses M8000+ special relays or D8000+ special registers |
 
-> **After planning:** Do NOT load `instruction-db.md` again. Trust your plan.
+> **After planning:** Do NOT load `references/DB/00_Instruction_List.md` again. Trust your plan.
 > If the plan is missing an instruction detail, consult the instruction files in
 > `references/DB/` — see the path rule below.
 
@@ -111,7 +111,7 @@ Each instruction has its own file in `references/DB/`. To get full details
 2. Find the instruction in the table (by name or short description) and read the **File** column.
 3. Load the file at `references/DB/{File}` — e.g. instruction `MOV` → `references/DB/MOV.md`, `ADD` → `references/DB/ADD.md`.
 
-> Some instructions share one file with a paired instruction (e.g. `SET`/`RST` in `SET.md`, `PLS`/`PLF` in `PLS.md`, `MEP`/`MEF` in `MEP.md`, `SWAP` in `SWA.md`, `RAMP` in `RAM.md`). The File column always shows the exact filename to load.
+> Some instructions share one file with a paired instruction (e.g. `SET`/`RST` in `SET.md`, `PLS`/`PLF` in `PLS.md`, `MEP`/`MEF` in `MEP.md`). The File column always shows the exact filename to load.
 
 > **All constraints (forbidden constructs, naming, postfix patterns, state
 > machine rules, literal prefixes, variable naming) are in

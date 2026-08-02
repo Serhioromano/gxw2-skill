@@ -14,7 +14,7 @@ operands, variants, examples, support):
 1. Find the instruction in the tables below (by name or short description) and read the **File** column.
 2. Load the file at `references/DB/{File}` — e.g. instruction `MOV` → `MOV.md`, `ADD` → `ADD.md`.
 
-> Some instructions share one file with a paired instruction (e.g. `SET`/`RST` in `SET.md`, `PLS`/`PLF` in `PLS.md`, `MEP`/`MEF` in `MEP.md`, `SWAP` in `SWA.md`, `RAMP` in `RAM.md`). The File column always shows the exact filename to load.
+> Some instructions share one file with a paired instruction (e.g. `SET`/`RST` in `SET.md`, `PLS`/`PLF` in `PLS.md`, `MEP`/`MEF` in `MEP.md`). The File column always shows the exact filename to load.
 
 ## Part 1 — Basic & Applied Instruction
 
