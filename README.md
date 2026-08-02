@@ -28,10 +28,34 @@ A skill for Pi Coding Agent that makes the agent an expert in writing **Structur
 
 ## Installation
 
+This repository is a **Pi package** — the skill installs with one command and is
+auto-discovered by the Pi coding agent as `/skill:gxw2-st`.
+
 ```bash
-git clone https://github.com/Serhioromano/gxw2-skill.git
-cp -r gxw2-skill ~/.pi/agent/skills/gxw2-st/
+# From GitHub (recommended)
+pi install git:github.com/Serhioromano/gxw2-skill
+
+# From npm (once published)
+pi install npm:gxw2-skill
+
+# From a local checkout (development)
+pi install /path/to/gxw2-skill
 ```
+
+Then verify:
+
+```bash
+pi list      # package appears in the list
+pi config    # skill gxw2-st is enabled
+```
+
+Force-load the skill in any session with `/skill:gxw2-st`.
+
+> **Legacy manual install (fallback):**
+> ```bash
+> git clone https://github.com/Serhioromano/gxw2-skill.git
+> cp -r gxw2-skill/skills/gxw2-st ~/.agents/skills/
+> ```
 
 ## Usage
 
@@ -48,40 +72,53 @@ Example prompts:
 ## Repository Structure
 
 ```
-gxw2-skill/
+gxw2-skill/                          # repo root = Pi package (npm/git)
+├── package.json                     # pi.skills manifest, pi-package keyword
 ├── README.md                        # This file
-├── SKILL.md                         # Main skill (triggers, lazy-load index, critical constraints)
-├── references/                      # Detailed reference files (loaded on-demand by SKILL.md)
-│   ├── common-rules.md              # Mandatory constraints, naming, literal prefixes
-│   ├── csv-variables.md             # CSV file formats and Label Editor rules
-│   ├── devices.md                   # Device address space (X, Y, M, D, T, C, etc.)
-│   ├── system-devices.md            # Special relays (M8000+) and registers (D8000+)
-│   ├── instruction-db.md            # Complete 180+ instruction catalog (planning phase only)
-│   ├── DB/                           # Per-instruction files (ST syntax, operands, examples)
-│   │   └── 00_Instruction_List.md    # Index of all instruction files + how to load them
-│   ├── data-types.md                # Types, K/H/E/REAL#/T# literals, casting functions
-│   ├── functions.md                 # Built-in FUN/FB catalog: timers, counters, math, strings
-│   └── compatibility.md             # FX series feature matrix (FX3U vs FX3G vs FX3S vs FX5U)
-├── examples/                        # 14 example pairs (.st + .csv) plus standalone CSVs
-│   ├── io.csv                       # Standalone: I/O variable list (DI_/DO_/AI_/AO_)
-│   ├── gvl.csv                      # Standalone: Global variable list (g_ prefix)
-│   ├── pou-local.csv                # Standalone: Local POU variable template
-│   ├── structure.csv                # Standalone: Structure definition example
-│   ├── 01-io-assignment.st + .csv
-│   ├── 02-conditionals.st + .csv
-│   ├── 03-case-state-machine.st + .csv
-│   ├── 04-loops.st + .csv
-│   ├── 05-timers.st + .csv
-│   ├── 06-counters.st + .csv
-│   ├── 07-math.st + .csv
-│   ├── 08-strings.st + .csv
-│   ├── 09-bit-operations.st + .csv
-│   ├── 10-type-casting.st + .csv
-│   ├── 11-edge-detection.st + .csv
-│   ├── 12-function-block/MotorControl.st + .csv
-│   ├── 13-function/ScaleValue.st + .csv
-│   └── 14-pid-control.st + .csv
+├── LICENSE                          # MIT
+├── plans/                           # Development plans
+└── skills/
+    └── gxw2-st/                     # The skill itself
+        ├── SKILL.md                 # Main skill (triggers, lazy-load index, critical constraints)
+        ├── references/              # Detailed reference files (loaded on-demand by SKILL.md)
+        │   ├── common-rules.md      # Mandatory constraints, naming, literal prefixes
+        │   ├── csv-variables.md     # CSV file formats and Label Editor rules
+        │   ├── devices.md           # Device address space (X, Y, M, D, T, C, etc.)
+        │   ├── system-devices.md    # Special relays (M8000+) and registers (D8000+)
+        │   ├── DB/                   # Per-instruction files (ST syntax, operands, examples)
+        │   │   └── 00_Instruction_List.md    # Index of all instruction files + how to load them
+        │   ├── data-types.md        # Types, K/H/E/REAL#/T# literals, casting functions
+        │   ├── functions.md         # Built-in FUN/FB catalog: timers, counters, math, strings
+        │   └── compatibility.md     # FX series feature matrix (FX3U vs FX3G vs FX3S vs FX5U)
+        └── examples/                # 14 example pairs (.st + .csv) plus standalone CSVs
+            ├── io.csv               # Standalone: I/O variable list (DI_/DO_/AI_/AO_)
+            ├── gvl.csv              # Standalone: Global variable list (g_ prefix)
+            ├── pou-local.csv        # Standalone: Local POU variable template
+            ├── structure.csv        # Standalone: Structure definition example
+            ├── 01-io-assignment.st + .csv
+            ├── 02-conditionals.st + .csv
+            ├── 03-case-state-machine.st + .csv
+            ├── 04-loops.st + .csv
+            ├── 05-timers.st + .csv
+            ├── 06-counters.st + .csv
+            ├── 07-math.st + .csv
+            ├── 08-strings.st + .csv
+            ├── 09-bit-operations.st + .csv
+            ├── 10-type-casting.st + .csv
+            ├── 11-edge-detection.st + .csv
+            ├── 12-function-block/MotorControl.st + .csv
+            ├── 13-function/ScaleValue.st + .csv
+            └── 14-pid-control.st + .csv
 ```
+
+## Development
+
+- The skill lives in `skills/gxw2-st/`; all its internal links are relative to
+  that directory, so moving/installing the folder keeps them valid.
+- The package manifest (`pi.skills`) points at `./skills`; pi discovers
+  `SKILL.md` recursively there.
+- Version numbers in `package.json` and `skills/gxw2-st/SKILL.md` frontmatter
+  must stay in sync.
 
 ## Key Design Decisions
 

@@ -16,21 +16,29 @@
 
 ## Структура навыка
 
-Навык должен следовать стандарту [Agent Skills](https://agentskills.io/specification):
+Навык следует стандарту [Agent Skills](https://agentskills.io/specification) и упакован как **Pi package** (npm/git), устанавливается командой `pi install`.
 
 ```
-gxw2-skill/
-├── README.md               # Human-facing description
-├── SKILL.md                # Main skill file (frontmatter + instructions)
-├── references/             # Detailed references
-│   ├── devices.md          # Device map (X, Y, M, D, T, C, ...)
-│   ├── DB/                 # Per-instruction files
-│   │   └── 00_Instruction_List.md  # Index of all instruction files
-│   ├── data-types.md       # Data types and casting
-│   ├── functions.md        # Built-in functions and FB
-│   └── compatibility.md    # Compatibility table by PLC series
-└── examples/               # Code examples
-    ├── basics/             # Simple examples
-    └── advanced/           # Complex examples (PID, comms, etc.)
+gxw2-skill/                          # корень репо = корень Pi-пакета
+├── package.json                     # pi.skills: ["./skills"], keyword pi-package
+├── README.md                        # Human-facing description + установка через pi install
+├── LICENSE                          # MIT
+├── .pi/                             # dev-инструкции (этот файл) — НЕ входят в навык
+├── plans/                           # планы разработки
+└── skills/
+    └── gxw2-st/                     # директория навыка (имя = frontmatter name)
+        ├── SKILL.md                 # Main skill file (frontmatter + instructions)
+        ├── references/              # Detailed references
+        │   ├── devices.md           # Device map (X, Y, M, D, T, C, ...)
+        │   ├── DB/                  # Per-instruction files
+        │   │   └── 00_Instruction_List.md  # Index of all instruction files
+        │   ├── data-types.md        # Data types and casting
+        │   ├── functions.md         # Built-in functions and FB
+        │   └── compatibility.md     # Compatibility table by PLC series
+        └── examples/                # Code examples
+            ├── basics/              # Simple examples
+            └── advanced/            # Complex examples (PID, comms, etc.)
 ```
+
+> Все внутренние ссылки навыка относительны от `skills/gxw2-st/` — перенос/установка директории не ломает их. Версии в `package.json` и frontmatter `SKILL.md` держать синхронными.
 
