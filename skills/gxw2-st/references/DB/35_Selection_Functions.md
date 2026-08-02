@@ -14,12 +14,17 @@ Functions from the [Application Functions] manual (doc2), section **10**. Index 
 
 > Mitsubishi names: `MAXIMUM` (not `MAX`), `MINIMUM` (not `MIN`), `LIMITATION` (not `LIMIT`).
 
-## Syntax (GX Works 2)
+## SEL
 
-All functions share the same `_E` pattern — first parameter is the condition (`EN`), result goes to the last parameter:
+Full syntax, operands, variants and examples — see [SEL.md](SEL.md).
+
+## MAXIMUM / MINIMUM / LIMITATION / MUX
+
+These functions have no separate instruction file — full details live here.
+
+Syntax (GX Works 2) — all share the same `_E` pattern, first parameter is the condition (`EN`), result goes to the last parameter:
 
 ```iecst
-SEL_E(EN, G, IN0, IN1, d);          (* G = FALSE → IN0, G = TRUE → IN1 *)
 MAXIMUM_E(EN, IN1, IN2, d);         (* max *)
 MINIMUM_E(EN, IN1, IN2, d);         (* min *)
 LIMITATION_E(EN, MN, IN, MX, d);    (* clamp IN to [MN, MX] *)
@@ -31,7 +36,7 @@ MUX_E(EN, K, IN1, IN2, ..., d);     (* K = index, selects INk *)
 - `ENO`: Execution status [Bit]
 - `d`: Selection/operation result [ANY_SIMPLE]
 
-> With the `_E` form the function returns **only the ENO flag** (executed or not); the result is written to the last parameter `d`. Without `_E` — returns the result directly: `g := SEL(G, IN0, IN1);`
+> With the `_E` form the function returns **only the ENO flag** (executed or not); the result is written to the last parameter `d`. Without `_E` — returns the result directly: `g := MAXIMUM(IN1, IN2);`
 
 ## Support
 
@@ -41,8 +46,6 @@ MUX_E(EN, K, IN1, IN2, ..., d);     (* K = index, selects INk *)
 ## Examples (ST, from the manual)
 
 ```iecst
-g_word3 := SEL(g_bool1, g_word1, g_word2);
-g_bool3 := SEL_E(g_bool1, g_bool2, g_word1, g_word2, g_word3);
 g_int3 := MAXIMUM(g_int1, g_int2);
 g_bool3 := MAXIMUM_E(g_bool1, g_int1, g_int2, g_int3);
 g_int4 := LIMITATION(g_int1, g_int2, g_int3);
