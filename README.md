@@ -25,7 +25,6 @@ A skill for Pi Coding Agent that makes the agent an expert in writing **Structur
 | FX3G               | ✅ (no STRING) |
 | FX3S               | ✅ (no STRING, limited I/O) |
 | FX5U               | ✅ (use GX Works 3 for primary tooling) |
-| Q-series, L-series | ❌ Not covered |
 
 ## Installation
 
@@ -58,7 +57,8 @@ gxw2-skill/
 │   ├── devices.md                   # Device address space (X, Y, M, D, T, C, etc.)
 │   ├── system-devices.md            # Special relays (M8000+) and registers (D8000+)
 │   ├── instruction-db.md            # Complete 180+ instruction catalog (planning phase only)
-│   ├── instructions.md              # ST instructions: IF, CASE, FOR, operators, SET/RST
+│   ├── DB/                           # Per-instruction files (ST syntax, operands, examples)
+│   │   └── 00_Instruction_List.md    # Index of all instruction files + how to load them
 │   ├── data-types.md                # Types, K/H/E/REAL#/T# literals, casting functions
 │   ├── functions.md                 # Built-in FUN/FB catalog: timers, counters, math, strings
 │   └── compatibility.md             # FX series feature matrix (FX3U vs FX3G vs FX3S vs FX5U)

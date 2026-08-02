@@ -20,16 +20,17 @@
 
 ```
 gxw2-skill/
-├── README.md               # Описание для людей
-├── SKILL.md                # Основной файл навыка (frontmatter + инструкции)
-├── references/             # Подробные справочники
-│   ├── devices.md          # Карта устройств (X, Y, M, D, T, C, ...)
-│   ├── instructions.md     # Полный список ST-инструкций
-│   ├── data-types.md       # Типы данных и приведение
-│   ├── functions.md        # Встроенные функции и FB
-│   └── compatibility.md    # Таблица совместимости по сериям ПЛК
-└── examples/               # Примеры кода
-    ├── basics/             # Простые примеры
-    └── advanced/           # Сложные примеры (PID, comms, etc.)
+├── README.md               # Human-facing description
+├── SKILL.md                # Main skill file (frontmatter + instructions)
+├── references/             # Detailed references
+│   ├── devices.md          # Device map (X, Y, M, D, T, C, ...)
+│   ├── DB/                 # Per-instruction files
+│   │   └── 00_Instruction_List.md  # Index of all instruction files
+│   ├── data-types.md       # Data types and casting
+│   ├── functions.md        # Built-in functions and FB
+│   └── compatibility.md    # Compatibility table by PLC series
+└── examples/               # Code examples
+    ├── basics/             # Simple examples
+    └── advanced/           # Complex examples (PID, comms, etc.)
 ```
 

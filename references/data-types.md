@@ -49,7 +49,7 @@ Load when declaring variables, choosing types, or casting between types.
 
 ## WORD and DWORD Arithmetic Considerations
 
-WORD and DWORD are unsigned. When arithmetic is needed, cast to INT/DINT first, or use the dedicated `ADD_E`/`DADD` etc. instructions (see `instructions.md`).
+WORD and DWORD are unsigned. When arithmetic is needed, cast to INT/DINT first, or use the dedicated `ADD_E`/`DADD` etc. instructions (see the per-instruction files in [DB/00_Instruction_List.md](DB/00_Instruction_List.md)).
 
 ---
 
@@ -123,13 +123,13 @@ All casting functions support the `_E` postfix for triggered execution. Non-`_E`
 
 ## `_E` Postfix Pattern
 
-For all casting functions, the `_E` variant adds a trigger as the first parameter and stores the result in the **last** parameter:
+For all casting functions, the `_E` variant adds a trigger as the first parameter and stores the result in the **last** parameter. The `_E` function returns **only the ENO flag** (executed or not), not the result:
 
 ```iecst
 (* Non-triggered: returns value directly *)
 rResult := INT_TO_REAL(iValue);
 
 (* Triggered: only converts when xTrig is TRUE *)
-INT_TO_REAL_E(xTrig, iValue, rResult);
+bFlag := INT_TO_REAL_E(xTrig, iValue, rResult);  (* rResult = result, bFlag = ENO *)
 ```
 

@@ -58,7 +58,7 @@ heavy instruction catalog.
    - [references/common-rules.md](references/common-rules.md) — always first
    - [references/csv-variables.md](references/csv-variables.md) — always second
 2. Load on-demand references as needed by the plan:
-   - [references/instructions.md](references/instructions.md) — ST syntax for the instructions in your plan
+   - [references/DB/00_Instruction_List.md](references/DB/00_Instruction_List.md) — instruction index; load it to find the instruction file you need
    - [references/data-types.md](references/data-types.md) — type declarations and casting
    - [references/functions.md](references/functions.md) — built-in FUN/FB (timers, counters, strings, etc.)
    - [references/devices.md](references/devices.md) — device addresses (X, Y, M, D, etc.)
@@ -92,15 +92,26 @@ code generation.
 
 | File | Load When |
 |------|-----------|
-| [references/instructions.md](references/instructions.md) | Using ST instructions from your plan: control flow, operators, SET/RST/PLS/PLF, WORD/DWORD arithmetic, MOV, CMP, INC/DEC, WAND/WOR/WXOR, etc. |
+| [references/DB/00_Instruction_List.md](references/DB/00_Instruction_List.md) | Using ST instructions from your plan: load this index, find the instruction in the table, then load its individual file (see path rule below) |
 | [references/data-types.md](references/data-types.md) | Declaring variables, choosing types, writing K/H/E literals, or type casting |
 | [references/functions.md](references/functions.md) | Using built-in FUN/FB: timers, counters, edge detection, math, strings, selection, type casting, user-defined FB/FUN |
 | [references/devices.md](references/devices.md) | Code uses device addresses (X, Y, M, D, T, C, Z, V, R) or digit-specified addressing (`K4X0`) |
 | [references/system-devices.md](references/system-devices.md) | Code uses M8000+ special relays or D8000+ special registers |
 
 > **After planning:** Do NOT load `instruction-db.md` again. Trust your plan.
-> If the plan is missing an instruction detail, consult
-> `instructions.md` — it covers the most common instructions with ST examples.
+> If the plan is missing an instruction detail, consult the instruction files in
+> `references/DB/` — see the path rule below.
+
+### Instruction File Path Rule
+
+Each instruction has its own file in `references/DB/`. To get full details
+(ST syntax, operands, variants, examples, support):
+
+1. Load [references/DB/00_Instruction_List.md](references/DB/00_Instruction_List.md) — the index of all instruction files.
+2. Find the instruction in the table (by name or short description) and read the **File** column.
+3. Load the file at `references/DB/{File}` — e.g. instruction `MOV` → `references/DB/MOV.md`, `ADD` → `references/DB/ADD.md`.
+
+> Some instructions share one file with a paired instruction (e.g. `SET`/`RST` in `SET.md`, `PLS`/`PLF` in `PLS.md`, `MEP`/`MEF` in `MEP.md`, `SWAP` in `SWA.md`, `RAMP` in `RAM.md`). The File column always shows the exact filename to load.
 
 > **All constraints (forbidden constructs, naming, postfix patterns, state
 > machine rules, literal prefixes, variable naming) are in

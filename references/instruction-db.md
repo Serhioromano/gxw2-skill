@@ -2,15 +2,16 @@
 
 > **Planning-phase only.** Load this file during Phase 1 to select instructions
 > and build a plan. Drop it before Phase 2 (code generation). Do NOT keep in
-> context while writing code — use your plan and the lighter
-> [instructions.md](instructions.md) instead.
+> context while writing code — use your plan and the per-instruction files in
+> [DB/00_Instruction_List.md](DB/00_Instruction_List.md).
 
 Full catalog of GX Works 2 instructions with variant availability
 (`_E`, `P`, `D`) and typed input parameters.
 
 > **ST focus:** Instructions marked ❌ ladder-only are not usable in ST.
 > Instructions marked ⚠️ have special ST syntax or limited variant support.
-> For ST code examples and usage patterns, see [instructions.md](instructions.md).
+> For ST code examples and usage patterns, load the per-instruction files from
+> [DB/00_Instruction_List.md](DB/00_Instruction_List.md).
 
 Legend:
 - `_E` = triggered (16-bit only; 32-bit `D` variants do **not** have `_E`), `P` = pulse, `D` = 32-bit (prefix), `DP` = 32-bit + pulse.
@@ -74,7 +75,7 @@ Legend:
 
 > For WORD/DWORD arithmetic in ST, prefer `+`, `-`, `*`, `/` operators on INT/DINT types.
 > Use `ADD_E`/`DADD` etc. only when dealing with unsigned WORD/DWORD types or when
-> pulse/triggered execution is required. See [instructions.md](instructions.md).
+> pulse/triggered execution is required. See the per-instruction files in [DB/](DB/00_Instruction_List.md).
 
 ---
 
@@ -102,7 +103,7 @@ Legend:
 | `RCL` | `EN, ANY16_n, ANY16_d` | Rotate left with carry: includes M8022 carry flag | — | `RCLP` | `DRCL`, `DRCLP` |
 
 > ST aliases: `SHL`, `SHR`, `ROL`, `ROR` with `_E` and `D` variants.
-> See [instructions.md](instructions.md) for ST syntax.
+> See the per-instruction files in [DB/](DB/00_Instruction_List.md) for ST syntax.
 
 ---
 

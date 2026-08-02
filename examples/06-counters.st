@@ -1,9 +1,10 @@
 (*
   Program: Counters
-  Purpose: Demonstrates IEC counter FBs (CTU, CTD, CTUD) and their _E
-           variants. Also shows hardware OUT_C / OUT_C_32 instructions.
+  Purpose: Demonstrates IEC counter FBs (CTU, CTD, CTUD).
+           Also shows hardware OUT_C / OUT_C_32 instructions.
   Critical: GX Works 2 uses := for ALL parameters, including outputs.
             All counter FB instances must be declared as VAR in CSV.
+            No _E variants exist for counter FBs.
 *)
 
 (*
@@ -15,11 +16,14 @@ ctParts(CU := MEP(DI_PhotoEye), RESET := xBatchComplete,
         PV := K100, Q := xPartsFull, CV := iPartsCount);
 
 (*
-  Example 2: CTU_E (_E trigger variant)
-  Same count-up, but only active when xEnable is TRUE.
-  First param = trigger, result in last params.
+  Example 2: CTU with enable condition
+  Same count-up, but the call is guarded by an IF instead of an _E variant
+  (counter FBs have no _E form; they are called via a declared instance).
 *)
-(* CTU_E(xEnable, MEP(DI_PhotoEye), xBatchComplete, K100, xPartsFull, iPartsCount); *)
+IF xEnable THEN
+    ctParts(CU := MEP(DI_PhotoEye), RESET := xBatchComplete,
+            PV := K100, Q := xPartsFull, CV := iPartsCount);
+END_IF;
 
 (*
   Example 3: CTD — Count-Down Counter

@@ -90,26 +90,23 @@ MUX_E(xTrig, iChoice, iOpt0, iOpt1, iOpt2, iResult);
 
 ### IEC Timer FBs (TON/TOF/TP)
 
-All timer FBs support `_E`. **Must be declared as VAR in CSV before use.**
+**Must be declared as VAR in CSV before use.** No `_E` variants — these are FBs, not callable functions.
 
-| FB   | `_E` Variant | Description                                                    |
-|------|-------------|----------------------------------------------------------------|
-| `TON`| `TON_E`     | On-delay. IN: trigger, PT: preset TIME, Q: output, ET: elapsed |
-| `TOF`| `TOF_E`     | Off-delay. Parameters same as TON                              |
-| `TP` | `TP_E`      | Pulse (fixed-width). Parameters same as TON                    |
+| FB  | Description                                                    |
+|-----|----------------------------------------------------------------|
+| `TON`| On-delay. IN: trigger, PT: preset TIME, Q: output, ET: elapsed |
+| `TOF`| Off-delay. Parameters same as TON                              |
+| `TP` | Pulse (fixed-width). Parameters same as TON                    |
 
 **GX Works 2 uses `:=` for ALL parameters, including outputs:**
 ```iecst
 (* Declare in CSV: VAR, tonDelay, TON *)
 tonDelay(IN := xStart, PT := T#5s, Q := xDone, ET := tElapsed);
-
-(* _E variant: first param is trigger *)
-TON_E(xEnable, xStart, T#5s, xDone, tElapsed);
 ```
 
 ### Hardware Timer (OUT_T)
 
-See `instructions.md` — Hardware Timer Instructions. Direct hardware timer access, no CSV declaration needed.
+See the per-instruction files in `DB/` — Hardware Timer Instructions. Direct hardware timer access, no CSV declaration needed.
 
 ---
 
@@ -117,26 +114,23 @@ See `instructions.md` — Hardware Timer Instructions. Direct hardware timer acc
 
 ### IEC Counter FBs (CTU/CTD/CTUD)
 
-All counter FBs support `_E`. **Must be declared as VAR in CSV before use.**
+**Must be declared as VAR in CSV before use.** No `_E` variants — these are FBs, not callable functions.
 
-| FB    | `_E` Variant | Description                                                       |
-|-------|-------------|-------------------------------------------------------------------|
-| `CTU` | `CTU_E`     | Count-up. CU: pulse, RESET: reset, PV: preset, Q: output, CV: current |
-| `CTD` | `CTD_E`     | Count-down. CD: pulse, LOAD: load preset, PV: preset, Q: output, CV: current |
-| `CTUD`| `CTUD_E`    | Up-down. CU/CD: pulses, RESET/LOAD, PV: preset, QU/QD: outputs, CV: current |
+| FB    | Description                                                       |
+|-------|-------------------------------------------------------------------|
+| `CTU` | Count-up. CU: pulse, RESET: reset, PV: preset, Q: output, CV: current |
+| `CTD` | Count-down. CD: pulse, LOAD: load preset, PV: preset, Q: output, CV: current |
+| `CTUD`| Up-down. CU/CD: pulses, RESET/LOAD, PV: preset, QU/QD: outputs, CV: current |
 
 Usage (all parameters use `:=`):
 ```iecst
 (* Declare in CSV: VAR, ctParts, CTU *)
 ctParts(CU := xPulse, RESET := xReset, PV := K100, Q := xFull, CV := iCount);
-
-(* _E variant *)
-CTU_E(xEnable, xPulse, xReset, K100, xFull, iCount);
 ```
 
 ### Hardware Counter (OUT_C / OUT_C_32)
 
-See `instructions.md` — Hardware Counter Instructions. Direct hardware counter access with full counter type/range table. No CSV declaration needed.
+See the per-instruction files in `DB/` — Hardware Counter Instructions. Direct hardware counter access with full counter type/range table. No CSV declaration needed.
 
 ---
 
@@ -144,24 +138,21 @@ See `instructions.md` — Hardware Counter Instructions. Direct hardware counter
 
 ### IEC Edge Detection FBs (R_TRIG / F_TRIG)
 
-Support `_E`. **Must be declared as VAR in CSV before use.**
+**Must be declared as VAR in CSV before use.** No `_E` variants — these are FBs, not callable functions.
 
-| FB       | `_E` Variant  | Signature                                                      |
-|----------|--------------|----------------------------------------------------------------|
-| `R_TRIG` | `R_TRIG_E`   | Rising edge. CLK: input, Q: one-scan pulse on rising edge      |
-| `F_TRIG` | `F_TRIG_E`   | Falling edge. CLK: input, Q: one-scan pulse on falling edge    |
+| FB       | Signature                                                      |
+|----------|----------------------------------------------------------------|
+| `R_TRIG` | Rising edge. CLK: input, Q: one-scan pulse on rising edge      |
+| `F_TRIG` | Falling edge. CLK: input, Q: one-scan pulse on falling edge    |
 
 ```iecst
 (* Declare in CSV: VAR, rtStart, R_TRIG *)
 rtStart(CLK := xSignal, Q := xRisingEdge);
-
-(* _E variant *)
-R_TRIG_E(xEnable, xSignal, xRisingEdge);
 ```
 
 ### Edge Detection Instructions (MEP / MEF)
 
-See `instructions.md` — Edge Detection Instructions. Preferred over R_TRIG/F_TRIG: no CSV declaration, work inline.
+See the per-instruction files in `DB/` — Edge Detection Instructions. Preferred over R_TRIG/F_TRIG: no CSV declaration, work inline.
 
 ---
 

@@ -1,10 +1,12 @@
 (*
   Program: Edge_Detection
   Purpose: Demonstrates edge detection using MEP/MEF (preferred) and
-           R_TRIG/F_TRIG FBs. Also shows _E variants.
+           R_TRIG/F_TRIG FBs.
   Preference: Use MEP/MEF for simple cases — no CSV declaration needed,
               works inline in expressions. Use R_TRIG/F_TRIG when you
               need to reuse the same edge detection in multiple places.
+  Note: R_TRIG/F_TRIG have no _E variants; they are called via declared
+        instances only.
 *)
 
 (* ─── MEP / MEF — Preferred Inline Edge Detection ─── *)
@@ -53,11 +55,6 @@ END_IF;
 IF xStopEdge THEN
     xEdgeTriggered := FALSE;
 END_IF;
-
-(* ─── _E Variants ─── *)
-(* R_TRIG_E(xEnable, CLK, Q); *)
-(* R_TRIG_E(g_xSystemReady, DI_Start, xStartEdge); *)
-(* F_TRIG_E(g_xSystemReady, DI_Stop, xStopEdge); *)
 
 (* ─── Edge-Triggered Counter Pattern ─── *)
 (* Only count on rising edge of photo eye, not every scan *)

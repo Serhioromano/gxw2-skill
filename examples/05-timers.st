@@ -1,9 +1,10 @@
 (*
   Program: Timers
-  Purpose: Demonstrates IEC timer FBs (TON, TOF, TP) and their _E variants.
+  Purpose: Demonstrates IEC timer FBs (TON, TOF, TP).
            Also shows hardware OUT_T instructions.
   Critical: GX Works 2 uses := for ALL parameters, including outputs.
             All timer FB instances must be declared as VAR in CSV.
+            No _E variants exist for timer FBs.
 *)
 
 (*
@@ -15,12 +16,15 @@ tonStartDelay(IN := DI_Start, PT := T#3s, Q := xMotorReady, ET := tMotorElapsed)
 xMotorOutput := xMotorReady AND g_xSystemReady;
 
 (*
-  Example 2: TON_E (_E trigger variant)
-  Same on-delay, but only executes when xEnable is TRUE.
-  First param = trigger, result stored in last param.
+  Example 2: TON with enable condition
+  Same on-delay, but the call is guarded by an IF instead of an _E variant
+  (timer FBs have no _E form; they are called via a declared instance).
 *)
-(* TON_E(xEnable, IN, PT, Q, ET); *)
-(* In practice: TON_E(M8000, DI_Start, T#3s, xMotorReady, tMotorElapsed); *)
+IF xEnable THEN
+    tonStartDelay(IN := DI_Start, PT := T#3s, Q := xMotorReady, ET := tMotorElapsed);
+ELSE
+    xMotorReady := FALSE;
+END_IF;
 
 (*
   Example 3: TOF — Off-Delay Timer
@@ -28,14 +32,12 @@ xMotorOutput := xMotorReady AND g_xSystemReady;
   Q goes FALSE only after the delay expires.
 *)
 tofStopDelay(IN := xMotorOutput, PT := T#10s, Q := xFanRunning, ET := tFanElapsed);
-(* TOF_E variant: TOF_E(xEnable, xMotorOutput, T#10s, xFanRunning, tFanElapsed); *)
 
 (*
   Example 4: TP — Pulse Timer
   Generates a fixed-width 500ms pulse on start button press.
 *)
 tpPulse(IN := MEP(DI_Start), PT := T#500ms, Q := xPulseOut, ET := tPulseElapsed);
-(* TP_E variant: TP_E(xEnable, MEP(DI_Start), T#500ms, xPulseOut, tPulseElapsed); *)
 
 (*
   Example 5: Hardware Timer OUT_T (no CSV declaration needed)
