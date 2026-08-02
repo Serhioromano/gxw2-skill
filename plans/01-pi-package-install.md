@@ -156,15 +156,34 @@ gxw2-skill/                      # корень репо = корень паке
 
 ## 7. Критерии готовности (чек-лист)
 
-- [ ] `pi install` (git и/или локальный путь) работает без ошибок
-- [ ] `pi list` показывает пакет; `pi config` показывает навык включённым
-- [ ] `/skill:gxw2-st` в сессии загружает навык
-- [ ] в списке available skills путь навыка — из пакета, дубликата `~/.agents/skills/gxw2-st` нет
-- [ ] все относительные ссылки внутри навыка (`references/`, `examples/`) валидны
-- [ ] `package.json` и `SKILL.md` версии синхронизированы
-- [ ] LICENSE присутствует; npm-тарболл (`npm pack --dry-run`) содержит только нужное (README, LICENSE, skills/, assets/)
-- [ ] `.pi/SYSTEM.md` обновлён под новую структуру
-- [ ] README обновлён (установка через `pi install`)
+> **Статус: ВЫПОЛНЕНО ✅ (2025-08-02)** — все пункты закрыты, пакет установлен на этой машине из git-источника.
+
+- [x] `pi install` (git и/или локальный путь) работает без ошибок
+- [x] `pi list` показывает пакет; `pi config` показывает навык включённым
+- [x] `/skill:gxw2-st` в сессии загружает навык
+- [x] в списке available skills путь навыка — из пакета, дубликата `~/.agents/skills/gxw2-st` нет
+- [x] все относительные ссылки внутри навыка (`references/`, `examples/`) валидны
+- [x] `package.json` и `SKILL.md` версии синхронизированы (1.3.0)
+- [x] LICENSE присутствует; npm-тарболл (`npm pack --dry-run`) содержит только нужное (README, LICENSE, skills/)
+- [x] `.pi/SYSTEM.md` обновлён под новую структуру
+- [x] README обновлён (установка через `pi install`)
+
+### Итог реализации
+
+- Реструктуризация: `git mv` → `skills/gxw2-st/` (история сохранена, 259 rename)
+- `package.json`: `pi.skills: ["./skills"]`, keyword `pi-package`, `files[]`, version 1.3.0
+- Добавлены `LICENSE` (MIT) и обновлён README (разделы Installation/Structure/Development)
+- Коммиты `dec5cf8`, `6baebbd` запушены в `main` на GitHub
+- Локальный тест: `pi install ./path` + функциональный прогон (TON-пример) — OK
+- Миграция: старая копия `~/.agents/skills/gxw2-st` удалена, пакет переустановлен из `git:github.com/Serhioromano/gxw2-skill`
+- Итоговая установка: `~/.pi/agent/git/github.com/Serhioromano/gxw2-skill/skills/gxw2-st/SKILL.md`
+- Функциональный smoke-тест из git-клона (MEP/rising edge) — OK
+
+### Осталось (опционально, не блокирует использование)
+
+- [ ] Опубликовать на npm: `npm publish` → `pi install npm:gxw2-skill` (имя свободно, проверено)
+- [ ] GitHub Actions: автопубликация npm по тегу `vX.Y.Z`
+- [ ] `assets/social-preview.png` + поле `pi.image` для галереи pi.dev/packages
 
 ---
 
