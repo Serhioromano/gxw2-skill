@@ -181,7 +181,8 @@ gxw2-skill/                      # корень репо = корень паке
 
 ### Осталось (опционально, не блокирует использование)
 
-- [ ] Опубликовать на npm: `npm publish` → `pi install npm:gxw2-skill` (имя свободно, проверено)
+- [x] Makefile `make publish v=<patch|minor|major|X.Y.Z>` — полный workflow публикации в npm + GitHub release (адаптирован из pi-defender), проверен `make test` и логика версий/CHANGELOG
+- [ ] Запустить реальную публикацию: `make publish v=patch` → `pi install npm:gxw2-skill` (нужен npm-логин)
 - [ ] GitHub Actions: автопубликация npm по тегу `vX.Y.Z`
 - [ ] `assets/social-preview.png` + поле `pi.image` для галереи pi.dev/packages
 
