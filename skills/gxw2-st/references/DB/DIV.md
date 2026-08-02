@@ -24,11 +24,11 @@ This instruction executes division by two values to obtain the result [A ÷ B = 
 
 ## Examples (ST, from the manual)
 ```iecst
-DIV(TRUE, wVal1, wVal2, wResult);      // unconditional
-DIV_E(xTrig, wVal1, wVal2, wResult);   // triggered (returns only ENO flag)
-DIVP(xTrig, wVal1, wVal2, wResult);    // pulse
-DDIV(TRUE, dwVal1, dwVal2, dwResult);  // 32-bit
-DDIVP(xTrig, dwVal1, dwVal2, dwResult);// 32-bit pulse
+DIV(TRUE, wVal1, wVal2, wResult);      (* unconditional *)
+DIV_E(xTrig, wVal1, wVal2, wResult);   (* triggered (returns only ENO flag) *)
+DIVP(xTrig, wVal1, wVal2, wResult);    (* pulse *)
+DDIV(TRUE, dwVal1, dwVal2, dwResult);  (* 32-bit *)
+DDIVP(xTrig, dwVal1, dwVal2, dwResult);(* 32-bit pulse *)
 ```
 
 ## Key Rules

@@ -23,9 +23,9 @@ Starts a hardware counter with a preset value. Direct hardware counter access â€
 
 ## Examples (ST, from the manual)
 ```iecst
-OUT_C(TRUE, CC0, K200);       // Start 16-bit counter, preset 200
-OUT_C_32(TRUE, CC235, K200);  // Start 32-bit counter, preset 200
-RST(TRUE, CC235);             // Reset counter to 0
+OUT_C(TRUE, CC0, K200);       (* Start 16-bit counter, preset 200 *)
+OUT_C_32(TRUE, CC235, K200);  (* Start 32-bit counter, preset 200 *)
+RST(TRUE, CC235);             (* Reset counter to 0 *)
 ```
 
 ## Key Rules

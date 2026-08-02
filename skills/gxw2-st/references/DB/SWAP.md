@@ -22,9 +22,9 @@ This instruction swaps higher 8 bits and lower 8 bits of word data.
 
 ## Examples (ST, from the manual)
 ```iecst
-SWAP(TRUE, wData);       // Swap bytes: 0xAABB → 0xBBAA (always)
-SWAPP(xTrig, wData);     // Pulse
-DSWAP(TRUE, dwData);     // 32-bit (swaps high/low word)
+SWAP(TRUE, wData);       (* Swap bytes: 0xAABB → 0xBBAA (always) *)
+SWAPP(xTrig, wData);     (* Pulse *)
+DSWAP(TRUE, dwData);     (* 32-bit (swaps high/low word) *)
 ```
 
 ## Key Rules

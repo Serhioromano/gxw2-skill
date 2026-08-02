@@ -158,7 +158,7 @@ FB requires two files with the same name:
 ```iecst
 (* Motor control with feedback monitoring *)
 rtStart(CLK := xStart, Q := xRisingEdge);
-// ... body uses VAR_INPUT, VAR_OUTPUT, and VAR names directly
+(* ... body uses VAR_INPUT, VAR_OUTPUT, and VAR names directly *)
 ```
 
 ---

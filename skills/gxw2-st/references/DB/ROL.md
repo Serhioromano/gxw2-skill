@@ -24,10 +24,10 @@ This instruction shifts and rotates the bit information leftward by the specifie
 
 ## Examples (ST, from the manual)
 ```iecst
-wResult := ROL(wVal, K4);                // rotated left 4 (returns value)
-ROL(TRUE, D0, K4, D0);                   // rotate D0 left by 4 bits
-DROL(TRUE, g_dword1, K8, g_dword1);      // 32-bit rotate left (32-bit variable required)
-DROLP(xTrig, dwVal, K8, dwResult);       // 32-bit pulse
+wResult := ROL(wVal, K4);                (* rotated left 4 (returns value) *)
+ROL(TRUE, D0, K4, D0);                   (* rotate D0 left by 4 bits *)
+DROL(TRUE, g_dword1, K8, g_dword1);      (* 32-bit rotate left (32-bit variable required) *)
+DROLP(xTrig, dwVal, K8, dwResult);       (* 32-bit pulse *)
 ```
 
 ## Key Rules

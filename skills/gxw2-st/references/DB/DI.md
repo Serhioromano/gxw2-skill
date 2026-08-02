@@ -18,8 +18,8 @@ This instruction disables interrupts after interrupts were enabled by EI instruc
 
 ## Examples (ST, from the manual)
 ```iecst
-DI(TRUE);    // Disable interrupts (globally)
-// ... critical section (cannot be interrupted) ...
+DI(TRUE);    (* Disable interrupts (globally) *)
+(* ... critical section (cannot be interrupted) ... *)
 EI(TRUE);
 ```
 

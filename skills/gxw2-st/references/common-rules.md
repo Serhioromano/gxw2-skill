@@ -16,7 +16,8 @@ Always load this file. These constraints apply to every code generation for GX W
 8. **No dynamic memory** — `__NEW`/`__DELETE` not supported.
 9. **No `REF_TO`** — pointers not available.
 10. **Always generate CSV variable files** — never use inline `VAR...END_VAR` blocks.
-11. **No `ARRAY[*]` variable-length arrays.**
+11. **No `ARRAY[*]` variable-length arrays.
+12. **Comments: `(* ... *)` only.** GX Works 2 ST does **not** support `//` line comments (nor `{ ... }` comments). Never generate `//` — use `(* ... *)` for inline and standalone comments.**
 
 ## Missing IEC Constructs (FX Series)
 
@@ -35,6 +36,7 @@ Always load this file. These constraints apply to every code generation for GX W
 | `REF_TO`               | ❌     | Not available                    |
 | `ARRAY[*]`             | ❌     | Fixed-size arrays only           |
 | Bit-of-word (`D100.0`) | ❌     | Bit masking or M relays          |
+| `//` line comments     | ❌     | `(* ... *)` block comments       |
 
 ## Always-Generate Rules
 
@@ -67,6 +69,20 @@ Global variable name prefix: `g_`. I/O variable name prefix: `DI_`, `DO_`, `AI_`
 FB instance names: prefix `fb` (e.g., `fbMotor`, `fbTimer`).
 FUN names: prefix `f` (e.g., `fScaleValue`, `fToCelsius`).
 Constant names: prefix `c_` with UPPER_SNAKE_CASE body (e.g., `c_MAX_SPEED`, `c_DEFAULT_TIMEOUT`).
+
+## Comment Style
+
+Only `(* ... *)` block comments are supported in GX Works 2 ST. `//` line comments and `{ ... }` comments are **not** supported and must never be generated.
+
+```iecst
+(* Motor control state machine *)
+iState := 10;  (* Reset *)
+
+(*
+  Multi-line comment.
+  POU purpose and I/O mapping go here.
+*)
+```
 
 ## Literal Prefixes (Mitsubishi-Specific)
 
@@ -104,25 +120,25 @@ tonDelay(IN := xStart, PT := T#5s, Q := xDone, ET := tElapsed);
 ### IF Statement
 ```iecst
 IF condition THEN
-    // statements
+    (* statements *)
 ELSIF other_condition THEN
-    // statements
+    (* statements *)
 ELSE
-    // statements
+    (* statements *)
 END_IF;
 ```
 
 ### CASE Statement
 ```iecst
 CASE IntVar OF
-    0: // Init
-        // statements
-    10: // Reset
-        // statements
-    20: // Idle
-        // statements
+    0: (* Init *)
+        (* statements *)
+    10: (* Reset *)
+        (* statements *)
+    20: (* Idle *)
+        (* statements *)
 ELSE
-        // statements
+        (* statements *)
 END_CASE;
 ```
 
@@ -135,7 +151,7 @@ END_CASE;
 ### FOR Loop
 ```iecst
 FOR i := start TO end BY step DO
-    // statements
+    (* statements *)
 END_FOR;
 ```
 - `BY step` is optional (defaults to 1)
@@ -144,21 +160,21 @@ END_FOR;
 ### WHILE Loop
 ```iecst
 WHILE condition DO
-    // statements
+    (* statements *)
 END_WHILE;
 ```
 
 ### REPEAT Loop
 ```iecst
 REPEAT
-    // statements
+    (* statements *)
 UNTIL condition;
 END_REPEAT;
 ```
 
 ### EXIT
 ```iecst
-EXIT;  // exits the innermost loop immediately
+EXIT;  (* exits the innermost loop immediately *)
 ```
 
 ## Operators

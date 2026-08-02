@@ -24,11 +24,11 @@ This instruction executes multiplication by two values to obtain the result (A Ã
 
 ## Examples (ST, from the manual)
 ```iecst
-MUL(TRUE, wVal1, wVal2, wResult);      // unconditional
-MUL_E(xTrig, wVal1, wVal2, wResult);   // triggered (returns only ENO flag)
-MULP(xTrig, wVal1, wVal2, wResult);    // pulse
-DMUL(TRUE, dwVal1, dwVal2, dwResult);  // 32-bit
-DMULP(xTrig, dwVal1, dwVal2, dwResult);// 32-bit pulse
+MUL(TRUE, wVal1, wVal2, wResult);      (* unconditional *)
+MUL_E(xTrig, wVal1, wVal2, wResult);   (* triggered (returns only ENO flag) *)
+MULP(xTrig, wVal1, wVal2, wResult);    (* pulse *)
+DMUL(TRUE, dwVal1, dwVal2, dwResult);  (* 32-bit *)
+DMULP(xTrig, dwVal1, dwVal2, dwResult);(* 32-bit pulse *)
 ```
 
 ## Key Rules

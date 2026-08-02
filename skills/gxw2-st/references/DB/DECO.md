@@ -22,8 +22,8 @@ This instruction converts numeric data into an ON bit. The bit number set to ON 
 
 ## Examples (ST, from the manual)
 ```iecst
-DECO(TRUE, iStep, M0, K3);     // If iStep=5 → M5 ON, others OFF (3 bits → 0–7)
-DECOP(xTrig, iStep, M0, K3);   // Pulse
+DECO(TRUE, iStep, M0, K3);     (* If iStep=5 → M5 ON, others OFF (3 bits → 0–7) *)
+DECOP(xTrig, iStep, M0, K3);   (* Pulse *)
 ```
 
 ## Key Rules

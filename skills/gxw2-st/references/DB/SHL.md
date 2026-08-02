@@ -22,10 +22,10 @@ This function shifts data of specified bit length leftward by the specified numb
 
 ## Examples (ST, from the manual)
 ```iecst
-wResult := SHL(wVal, K4);              // returns value
-g_bool3 := SHL_E(g_bool1, g_word1, g_const_word1, g_word2);  // triggered
-dwResult := DSHL(dwVal, K8);           // 32-bit
-DSHL_E(xTrig, dwVal, K8, dwResult);    // 32-bit triggered
+wResult := SHL(wVal, K4);              (* returns value *)
+g_bool3 := SHL_E(g_bool1, g_word1, g_const_word1, g_word2);  (* triggered *)
+dwResult := DSHL(dwVal, K8);           (* 32-bit *)
+DSHL_E(xTrig, dwVal, K8, dwResult);    (* 32-bit triggered *)
 ```
 
 ## Key Rules

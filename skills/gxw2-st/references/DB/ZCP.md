@@ -26,9 +26,9 @@ This instruction compares two values (zone) with the comparison source, and outp
 ## Examples (ST, from the manual)
 ```iecst
 ZCP(TRUE, K0, K100, wTemp, M10);
-// M10: wTemp < 0
-// M11: 0 ≤ wTemp ≤ 100
-// M12: wTemp > 100
+(* M10: wTemp < 0 *)
+(* M11: 0 ≤ wTemp ≤ 100 *)
+(* M12: wTemp > 100 *)
 ```
 
 ## Key Rules

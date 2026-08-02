@@ -67,19 +67,19 @@ Load when using special relays (M8000+) or special registers (D8000+) for diagno
 Special relays and registers are one of the **few exceptions** to the "no direct device access" rule. They may be used directly in ST code:
 
 ```iecst
-// INIT program — runs on first scan
+(* INIT program — runs on first scan *)
 IF M8002 THEN
     g_iState := 0;
     g_iCycleCount := K0;
 END_IF;
 
-// ROUTINE program — runs on 100ms clock
+(* ROUTINE program — runs on 100ms clock *)
 IF M8012 THEN
     g_iCounter := g_iCounter + K1;
 END_IF;
 
-// Scan time monitoring
-g_iCurrentScan := D8010;  // 0.1ms units
+(* Scan time monitoring *)
+g_iCurrentScan := D8010;  (* 0.1ms units *)
 ```
 
 ---
@@ -89,6 +89,6 @@ g_iCurrentScan := D8010;  // 0.1ms units
 ```iecst
 IF M8067 THEN
     g_iErrorCode := D8067;
-    g_iState := 40;  // Fault state
+    g_iState := 40;  (* Fault state *)
 END_IF;
 ```

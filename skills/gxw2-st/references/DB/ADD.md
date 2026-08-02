@@ -24,11 +24,11 @@ This instruction executes addition by two values to obtain the result (A + B = C
 
 ## Examples (ST, from the manual)
 ```iecst
-ADD(TRUE, wVal1, wVal2, wResult);      // unconditional
-ADD_E(xTrig, wVal1, wVal2, wResult);   // triggered (returns only ENO flag)
-ADDP(xTrig, wVal1, wVal2, wResult);    // pulse
-DADD(TRUE, dwVal1, dwVal2, dwResult);  // 32-bit
-DADDP(xTrig, dwVal1, dwVal2, dwResult);// 32-bit pulse
+ADD(TRUE, wVal1, wVal2, wResult);      (* unconditional *)
+ADD_E(xTrig, wVal1, wVal2, wResult);   (* triggered (returns only ENO flag) *)
+ADDP(xTrig, wVal1, wVal2, wResult);    (* pulse *)
+DADD(TRUE, dwVal1, dwVal2, dwResult);  (* 32-bit *)
+DADDP(xTrig, dwVal1, dwVal2, dwResult);(* 32-bit pulse *)
 ```
 
 ## Key Rules

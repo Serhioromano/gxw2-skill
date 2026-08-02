@@ -19,14 +19,14 @@ This instruction refreshes the watchdog timer in a sequence program.
 
 ## Examples (ST, from the manual)
 ```iecst
-WDT(TRUE);    // Reset watchdog timer (unconditional)
-WDTP(xTrig);  // Pulse (one-shot on rising edge)
+WDT(TRUE);    (* Reset watchdog timer (unconditional) *)
+WDTP(xTrig);  (* Pulse (one-shot on rising edge) *)
 
 (* Typical use: inside long loops *)
 FOR i := 0 TO 10000 DO
-    // ... lengthy operation ...
+    (* ... lengthy operation ... *)
     IF (i MOD 100) = 0 THEN
-        WDT(TRUE);  // Reset WDT every 100 iterations
+        WDT(TRUE);  (* Reset WDT every 100 iterations *)
     END_IF;
 END_FOR;
 ```

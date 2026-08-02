@@ -23,8 +23,8 @@ This instruction shifts bit devices of the specified bit length rightward by the
 
 ## Examples (ST, from the manual)
 ```iecst
-SFTR(TRUE, xNewBit, M0, K4, K1); // Shift M0–M63 right by 1, xNewBit → M0
-SFTRP(xTrig, xNewBit, M0, K4, K1); // Pulse
+SFTR(TRUE, xNewBit, M0, K4, K1); (* Shift M0–M63 right by 1, xNewBit → M0 *)
+SFTRP(xTrig, xNewBit, M0, K4, K1); (* Pulse *)
 ```
 
 ## Key Rules

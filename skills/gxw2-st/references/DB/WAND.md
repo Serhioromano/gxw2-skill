@@ -24,10 +24,10 @@ This instruction executes the logical product (AND) operation of two numeric val
 
 ## Examples (ST, from the manual)
 ```iecst
-WAND(TRUE, wStatus, H00FF, wLowByte);    // Extract lower 8 bits
-WANDP(xTrig, wA, wB, wResult);           // Pulse
-DAND(TRUE, dwA, dwB, dwResult);          // 32-bit
-DANDP(xTrig, dwA, dwB, dwResult);        // 32-bit pulse
+WAND(TRUE, wStatus, H00FF, wLowByte);    (* Extract lower 8 bits *)
+WANDP(xTrig, wA, wB, wResult);           (* Pulse *)
+DAND(TRUE, dwA, dwB, dwResult);          (* 32-bit *)
+DANDP(xTrig, dwA, dwB, dwResult);        (* 32-bit pulse *)
 ```
 
 ## Key Rules

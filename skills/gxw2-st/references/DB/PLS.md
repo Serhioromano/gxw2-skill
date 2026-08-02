@@ -20,8 +20,8 @@ PLS sets a destination bit device TRUE for one scan on the rising edge of EN. PL
 
 ## Examples (ST, from the manual)
 ```iecst
-PLS(xStartButton, M50);          // M50 pulses ON for 1 scan when button pressed
-PLF(xStopButton, M51);           // M51 pulses ON for 1 scan when button released
+PLS(xStartButton, M50);          (* M50 pulses ON for 1 scan when button pressed *)
+PLF(xStopButton, M51);           (* M51 pulses ON for 1 scan when button released *)
 ```
 
 ## Key Rules

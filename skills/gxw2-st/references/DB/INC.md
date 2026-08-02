@@ -22,10 +22,10 @@ This instruction increments the data of a specified device by "1" (+1 addition).
 
 ## Examples (ST, from the manual)
 ```iecst
-INC(TRUE, iCount);             // iCount := iCount + 1 (always)
-INC(xTrig, iCount);            // iCount := iCount + 1 when xTrig TRUE
-INCP(xTrig, iCount);           // Pulse: one-shot
-DINC(TRUE, diPosition);        // 32-bit increment
+INC(TRUE, iCount);             (* iCount := iCount + 1 (always) *)
+INC(xTrig, iCount);            (* iCount := iCount + 1 when xTrig TRUE *)
+INCP(xTrig, iCount);           (* Pulse: one-shot *)
+DINC(TRUE, diPosition);        (* 32-bit increment *)
 DINCP(xTrig, diPosition);
 ```
 

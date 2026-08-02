@@ -25,9 +25,9 @@ This instruction converts binary-coded decimal (BCD) data into binary (BIN) data
 ```iecst
 BIN(X000, K1X000, D0);
 BIN(X000, K2X000, D0);
-BIN(TRUE, wBcdIn, iResult);     // iResult := decimal value of BCD
-BINP(xTrig, wBcdIn, iResult);   // Pulse
-DBIN(TRUE, dwBcdIn, diResult);  // 32-bit BIN
+BIN(TRUE, wBcdIn, iResult);     (* iResult := decimal value of BCD *)
+BINP(xTrig, wBcdIn, iResult);   (* Pulse *)
+DBIN(TRUE, dwBcdIn, diResult);  (* 32-bit BIN *)
 ```
 
 ## Key Rules

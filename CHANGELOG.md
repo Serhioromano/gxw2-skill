@@ -4,6 +4,8 @@ All notable changes to GXW2-ST will be documented in this file.
 
 ## [Unreleased]
 
+- `change` - **Comments: `(* ... *)` only** — GX Works 2 ST does not support `//` line comments. Added mandatory constraint #12 and a Comment Style section to `references/common-rules.md`; converted every code example from `//` to `(* ... *)` in `common-rules.md`, `compatibility.md`, `csv-variables.md`, `devices.md`, `system-devices.md`, and all 37 instruction files in `references/DB/` that used `//` comments.
+- `fix` - Synced `SKILL.md` frontmatter version to 1.4.0 (package.json was bumped at `abeb53f` but the skill frontmatter was left at 1.3.0).
 - `plan` - Skill feedback loop design (`plans/02-skill-feedback-loop.md`): auto-create GitHub issue when the skill generates incorrect code, with code before/after, root cause, and recommended reference change.
 - `change` - **Makefile no longer manages CHANGELOG.md**: removed automatic `[Unreleased]` → `[vX.Y.Z]` renaming and release-notes extraction. `make publish` now creates GitHub releases with auto-generated notes; changelog entries are maintained manually.
 - `chore` - Added `make publish v=<patch|minor|major|X.Y.Z>` release workflow (adapted from pi-defender): prereq checks, version bump + tag, npm publish, GitHub release.

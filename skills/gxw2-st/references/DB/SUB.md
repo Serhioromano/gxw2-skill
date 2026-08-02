@@ -24,11 +24,11 @@ This instruction executes subtraction using two values to obtain the result (A â
 
 ## Examples (ST, from the manual)
 ```iecst
-SUB(TRUE, wVal1, wVal2, wResult);      // unconditional
-SUB_E(xTrig, wVal1, wVal2, wResult);   // triggered (returns only ENO flag)
-SUBP(xTrig, wVal1, wVal2, wResult);    // pulse
-DSUB(TRUE, dwVal1, dwVal2, dwResult);  // 32-bit
-DSUBP(xTrig, dwVal1, dwVal2, dwResult);// 32-bit pulse
+SUB(TRUE, wVal1, wVal2, wResult);      (* unconditional *)
+SUB_E(xTrig, wVal1, wVal2, wResult);   (* triggered (returns only ENO flag) *)
+SUBP(xTrig, wVal1, wVal2, wResult);    (* pulse *)
+DSUB(TRUE, dwVal1, dwVal2, dwResult);  (* 32-bit *)
+DSUBP(xTrig, dwVal1, dwVal2, dwResult);(* 32-bit pulse *)
 ```
 
 ## Key Rules

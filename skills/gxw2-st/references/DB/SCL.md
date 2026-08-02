@@ -25,7 +25,7 @@ This instruction executes scaling of the input value using a specified data tabl
 ## Examples (ST, from the manual)
 ```iecst
 SCL(TRUE, wRawValue, D300, wScaled);
-SCLP(xTrig, wRawValue, D300, wScaled);  // Pulse
+SCLP(xTrig, wRawValue, D300, wScaled);  (* Pulse *)
 ```
 
 ## Key Rules

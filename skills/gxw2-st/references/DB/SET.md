@@ -20,10 +20,10 @@ SET sets a bit device ON (holding operation). RST resets a bit device OFF. They 
 
 ## Examples (ST, from the manual)
 ```iecst
-SET(xAlarmCondition, Y0);        // Y0 latches ON when xAlarmCondition rises
-SET(xStart, M100);               // M100 latches ON
-RST(xResetButton, Y0);           // Y0 cleared when xResetButton is TRUE
-RST(xStop, M100);                // M100 cleared
+SET(xAlarmCondition, Y0);        (* Y0 latches ON when xAlarmCondition rises *)
+SET(xStart, M100);               (* M100 latches ON *)
+RST(xResetButton, Y0);           (* Y0 cleared when xResetButton is TRUE *)
+RST(xStop, M100);                (* M100 cleared *)
 ```
 
 ## Key Rules

@@ -9,7 +9,7 @@ description: >
   ST code for Mitsubishi PLC, device addresses X/Y/M/D/T/C,
   Mitsubishi ST syntax, built-in functions, factory automation,
   industrial control ST code, PLC Structured Text.
-version: 1.3.0
+version: 1.4.0
 compatibility: GX Works 2, FX series (FX3U, FX3G, FX3S, FX5U)
 ---
 

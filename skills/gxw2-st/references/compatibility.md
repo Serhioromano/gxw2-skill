@@ -86,10 +86,10 @@ Load when targeting a specific FX CPU model to verify feature availability.
 When the user specifies a target model, apply these rules:
 
 ```iecst
-// FX3U/FX5U — STRING OK
+(* FX3U/FX5U — STRING OK *)
 sMessage := CONCAT(sPrefix, sValue);
 
-// FX3G/FX3S — no STRING, use INT/DINT arrays or D registers instead
-// Generate code without string operations
-g_wMsgLen := K0; // use WORD registers for message handling
+(* FX3G/FX3S — no STRING, use INT/DINT arrays or D registers instead *)
+(* Generate code without string operations *)
+g_wMsgLen := K0; (* use WORD registers for message handling *)
 ```

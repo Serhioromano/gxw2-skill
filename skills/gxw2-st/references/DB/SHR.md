@@ -22,10 +22,10 @@ This function shifts data of specified bit length rightward by the specified num
 
 ## Examples (ST, from the manual)
 ```iecst
-wResult := SHR(wVal, K4);              // returns value
-g_bool3 := SHR_E(g_bool1, g_word1, g_const_word1, g_word2);  // triggered
-dwResult := DSHR(dwVal, K8);           // 32-bit
-DSHR_E(xTrig, dwVal, K8, dwResult);    // 32-bit triggered
+wResult := SHR(wVal, K4);              (* returns value *)
+g_bool3 := SHR_E(g_bool1, g_word1, g_const_word1, g_word2);  (* triggered *)
+dwResult := DSHR(dwVal, K8);           (* 32-bit *)
+DSHR_E(xTrig, dwVal, K8, dwResult);    (* 32-bit triggered *)
 ```
 
 ## Key Rules

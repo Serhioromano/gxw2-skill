@@ -108,12 +108,12 @@ X and Y devices use **octal** numbering (base-8). Valid digits per position: 0�
 > **Do not use direct device access in ST code.** Always create label variables in CSV files and reference labels in code.
 
 ```iecst
-// ❌ Wrong — direct device access in ST
+(* ❌ Wrong — direct device access in ST *)
 IF X0 THEN
     D100 := K100;
 END_IF;
 
-// ✅ Correct — use labels from CSV
+(* ✅ Correct — use labels from CSV *)
 IF DI_Start THEN
     g_iCounter := K100;
 END_IF;

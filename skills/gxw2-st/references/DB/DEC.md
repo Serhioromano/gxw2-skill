@@ -22,11 +22,11 @@ This instruction decrements the data of a specified device by "1" (-1 addition).
 
 ## Examples (ST, from the manual)
 ```iecst
-DEC(TRUE, wRemaining);         // wRemaining := wRemaining - 1 (always)
-DEC(xTrig, wRemaining);        // when xTrig TRUE
-DECP(xTrig, wRemaining);       // Pulse: one-shot
-DDEC(TRUE, diTotal);           // 32-bit decrement
-DDECP(xTrig, diTotal);         // 32-bit pulse
+DEC(TRUE, wRemaining);         (* wRemaining := wRemaining - 1 (always) *)
+DEC(xTrig, wRemaining);        (* when xTrig TRUE *)
+DECP(xTrig, wRemaining);       (* Pulse: one-shot *)
+DDEC(TRUE, diTotal);           (* 32-bit decrement *)
+DDECP(xTrig, diTotal);         (* 32-bit pulse *)
 ```
 
 ## Key Rules

@@ -22,8 +22,8 @@ This instruction obtains positions in which bits are ON in data.
 
 ## Examples (ST, from the manual)
 ```iecst
-ENCO(TRUE, M0, iPos, K3);      // If M5 is ON → iPos := 5 (2^N bits of S encoded)
-ENCOP(xTrig, M0, iPos, K3);    // Pulse
+ENCO(TRUE, M0, iPos, K3);      (* If M5 is ON → iPos := 5 (2^N bits of S encoded) *)
+ENCOP(xTrig, M0, iPos, K3);    (* Pulse *)
 ```
 
 ## Key Rules

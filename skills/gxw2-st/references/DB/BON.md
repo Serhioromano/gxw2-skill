@@ -25,11 +25,11 @@ This instruction checks whether a specified bit position in a device is ON or OF
 ## Examples (ST, from the manual)
 ```iecst
 BON(X000, D10, K9, M0);
-BON(TRUE, wStatus, K3, M20);     // M20 := bit 3 of wStatus
+BON(TRUE, wStatus, K3, M20);     (* M20 := bit 3 of wStatus *)
 BON(TRUE, dwEncoder, K15, xBit15);
-BON_E(xTrig, wStatus, K3, M20);  // Triggered
-BONP(xTrig, wStatus, K3, M20);   // Pulse
-DBON(TRUE, dwVal, K31, xBit31);  // 32-bit
+BON_E(xTrig, wStatus, K3, M20);  (* Triggered *)
+BONP(xTrig, wStatus, K3, M20);   (* Pulse *)
+DBON(TRUE, dwVal, K31, xBit31);  (* 32-bit *)
 ```
 
 ## Key Rules

@@ -26,9 +26,9 @@ This instruction compares two values, and outputs the result (smaller, equal or 
 ```iecst
 CMP(X000, K100, CN20, M0);
 CMP(TRUE, wValue, K100, M0);
-// M0: wValue > 100
-// M1: wValue = 100
-// M2: wValue < 100
+(* M0: wValue > 100 *)
+(* M1: wValue = 100 *)
+(* M2: wValue < 100 *)
 ```
 
 ## Key Rules

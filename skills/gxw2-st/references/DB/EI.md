@@ -18,7 +18,7 @@ Interrupts are usually disabled in PLCs. This instruction enables interrupts in 
 
 ## Examples (ST, from the manual)
 ```iecst
-EI(TRUE);    // Enable interrupts (after DI)
+EI(TRUE);    (* Enable interrupts (after DI) *)
 ```
 
 ## Key Rules

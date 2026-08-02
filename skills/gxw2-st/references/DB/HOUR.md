@@ -24,10 +24,10 @@ This instruction adds and measures the ON time duration of an input contact in o
 
 ## Examples (ST, from the manual)
 ```iecst
-HOUR(TRUE, xMotorRun, D100, M50);      // Track motor run hours → D100–D101, overflow → M50
-HOURP(xTrig, xMotorRun, D100, M50);    // Pulse
-DHOUR(TRUE, xMotorRun, D200, M51);     // 32-bit (DINT accumulator)
-DHOURP(xTrig, xMotorRun, D200, M51);   // 32-bit pulse
+HOUR(TRUE, xMotorRun, D100, M50);      (* Track motor run hours → D100–D101, overflow → M50 *)
+HOURP(xTrig, xMotorRun, D100, M50);    (* Pulse *)
+DHOUR(TRUE, xMotorRun, D200, M51);     (* 32-bit (DINT accumulator) *)
+DHOURP(xTrig, xMotorRun, D200, M51);   (* 32-bit pulse *)
 ```
 
 ## Key Rules

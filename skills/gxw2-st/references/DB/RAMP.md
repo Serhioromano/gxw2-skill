@@ -23,8 +23,8 @@ This instruction gradually changes a value from current to target with configura
 ## Examples (ST, from the manual)
 ```iecst
 RAMP(TRUE, K1000, K10, K5, D200);
-// Ramps D200 from current value toward 1000,
-// changing by ±10 every 5 scans
+(* Ramps D200 from current value toward 1000, *)
+(* changing by ±10 every 5 scans *)
 
 (* Check if ramp complete *)
 IF (D201 AND H0001) <> WORD#0 THEN

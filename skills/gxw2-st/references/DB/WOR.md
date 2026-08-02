@@ -24,10 +24,10 @@ This instruction executes the logical sum (OR) operation of two numeric values.
 
 ## Examples (ST, from the manual)
 ```iecst
-WOR(TRUE, wOutput, H0001, wOutput);      // Set bit 0 without affecting others
-WORP(xTrig, wA, wB, wResult);            // Pulse
-DOR(TRUE, dwA, dwB, dwResult);           // 32-bit
-DORP(xTrig, dwA, dwB, dwResult);         // 32-bit pulse
+WOR(TRUE, wOutput, H0001, wOutput);      (* Set bit 0 without affecting others *)
+WORP(xTrig, wA, wB, wResult);            (* Pulse *)
+DOR(TRUE, dwA, dwB, dwResult);           (* 32-bit *)
+DORP(xTrig, dwA, dwB, dwResult);         (* 32-bit pulse *)
 ```
 
 ## Key Rules

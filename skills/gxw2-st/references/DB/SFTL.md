@@ -23,8 +23,8 @@ This instruction shifts bit devices of the specified bit length leftward by the 
 
 ## Examples (ST, from the manual)
 ```iecst
-SFTL(TRUE, xNewBit, M0, K4, K1); // Shift M0–M63 left by 1, xNewBit → M63
-SFTLP(xTrig, xNewBit, M0, K4, K1); // Pulse
+SFTL(TRUE, xNewBit, M0, K4, K1); (* Shift M0–M63 left by 1, xNewBit → M63 *)
+SFTLP(xTrig, xNewBit, M0, K4, K1); (* Pulse *)
 ```
 
 ## Key Rules

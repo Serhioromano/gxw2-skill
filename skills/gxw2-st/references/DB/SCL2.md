@@ -26,7 +26,7 @@ This instruction executes scaling of the input value using a specified data tabl
 ```iecst
 SCL2(M8000, D0, R0, D10);
 SCL2(TRUE, wRawValue, D400, wScaled);
-SCL2P(xTrig, wRawValue, D400, wScaled); // Pulse
+SCL2P(xTrig, wRawValue, D400, wScaled); (* Pulse *)
 ```
 
 ## Key Rules

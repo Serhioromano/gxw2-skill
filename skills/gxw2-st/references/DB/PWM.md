@@ -23,7 +23,7 @@ This instruction outputs pulses with a specified period and ON duration.
 ```iecst
 PWM(X0, D10, K50, Y000);
 PWM(TRUE, K500, K1000, Y0);
-// Y0 outputs PWM: 500ms ON, 500ms OFF (50% duty, 1s period)
+(* Y0 outputs PWM: 500ms ON, 500ms OFF (50% duty, 1s period) *)
 ```
 
 ## Key Rules

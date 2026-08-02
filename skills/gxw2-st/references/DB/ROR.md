@@ -24,10 +24,10 @@ This instruction shifts and rotates the bit information rightward by the specifi
 
 ## Examples (ST, from the manual)
 ```iecst
-wResult := ROR(wVal, K4);                // rotated right 4 (returns value)
-ROR(TRUE, D0, K4, D0);                   // rotate D0 right by 4 bits
-DROR(TRUE, g_dword1, K8, g_dword1);      // 32-bit rotate right (32-bit variable required)
-DRORP(xTrig, dwVal, K8, dwResult);       // 32-bit pulse
+wResult := ROR(wVal, K4);                (* rotated right 4 (returns value) *)
+ROR(TRUE, D0, K4, D0);                   (* rotate D0 right by 4 bits *)
+DROR(TRUE, g_dword1, K8, g_dword1);      (* 32-bit rotate right (32-bit variable required) *)
+DRORP(xTrig, dwVal, K8, dwResult);       (* 32-bit pulse *)
 ```
 
 ## Key Rules

@@ -24,10 +24,10 @@ This instruction executes the exclusive logical sum (XOR) operation of two numer
 
 ## Examples (ST, from the manual)
 ```iecst
-WXOR(TRUE, wFlags, HFFFF, wInverted);    // Invert all 16 bits
-WXORP(xTrig, wA, wB, wResult);           // Pulse
-DXOR(TRUE, dwA, dwB, dwResult);          // 32-bit
-DXORP(xTrig, dwA, dwB, dwResult);        // 32-bit pulse
+WXOR(TRUE, wFlags, HFFFF, wInverted);    (* Invert all 16 bits *)
+WXORP(xTrig, wA, wB, wResult);           (* Pulse *)
+DXOR(TRUE, dwA, dwB, dwResult);          (* 32-bit *)
+DXORP(xTrig, dwA, dwB, dwResult);        (* 32-bit pulse *)
 ```
 
 ## Key Rules

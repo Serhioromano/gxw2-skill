@@ -20,10 +20,10 @@ MEP returns TRUE for one scan on the rising edge of the input. MEF returns TRUE 
 ## Examples (ST, from the manual)
 ```iecst
 IF MEP(xStart) THEN
-    iCount := iCount + 1;       // Increment once per rising edge
+    iCount := iCount + 1;       (* Increment once per rising edge *)
 END_IF;
 
-xPulse := MEP(xSensor);         // Use directly in assignment
+xPulse := MEP(xSensor);         (* Use directly in assignment *)
 ```
 
 ## Key Rules

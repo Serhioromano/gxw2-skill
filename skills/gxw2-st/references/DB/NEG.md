@@ -22,10 +22,10 @@ This instruction obtains the 2's complement of a numeric value (by inverting eac
 
 ## Examples (ST, from the manual)
 ```iecst
-NEG(TRUE, iVal);               // iVal := -iVal (always)
-NEGP(xTrig, iVal);             // Pulse
-DNEG(TRUE, diVal);             // 32-bit
-ENEG(TRUE, rVal);              // Floating point negation
+NEG(TRUE, iVal);               (* iVal := -iVal (always) *)
+NEGP(xTrig, iVal);             (* Pulse *)
+DNEG(TRUE, diVal);             (* 32-bit *)
+ENEG(TRUE, rVal);              (* Floating point negation *)
 ```
 
 ## Key Rules

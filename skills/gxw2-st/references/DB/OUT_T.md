@@ -19,7 +19,7 @@ This instruction starts a hardware timer with a preset value. Direct hardware ti
 
 ## Examples (ST, from the manual)
 ```iecst
-OUT_T(TRUE, TC1, K20);    // Start timer TC1: 20 × 100ms = 2s preset
+OUT_T(TRUE, TC1, K20);    (* Start timer TC1: 20 × 100ms = 2s preset *)
 ```
 
 ## Key Rules
