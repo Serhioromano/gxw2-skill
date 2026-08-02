@@ -4,6 +4,8 @@ All notable changes to GXW2-ST will be documented in this file.
 
 ## [Unreleased]
 
+- `change` - **Global constants require `VAR_GLOBAL_CONSTANT`**: a non-empty Constant column in a global CSV row must use class `VAR_GLOBAL_CONSTANT` (never `VAR_GLOBAL`); `VAR_GLOBAL` rows must leave Constant empty. Documented in `references/csv-variables.md` (Three Variable List Types, Available Classes, GVL.csv example + rules, IO.csv rules, Variable Generation Rules Summary).
+
 - `change` - **Comments: `(* ... *)` only** — GX Works 2 ST does not support `//` line comments. Added mandatory constraint #12 and a Comment Style section to `references/common-rules.md`; converted every code example from `//` to `(* ... *)` in `common-rules.md`, `compatibility.md`, `csv-variables.md`, `devices.md`, `system-devices.md`, and all 37 instruction files in `references/DB/` that used `//` comments.
 - `fix` - Synced `SKILL.md` frontmatter version to 1.4.0 (package.json was bumped at `abeb53f` but the skill frontmatter was left at 1.3.0).
 - `plan` - Skill feedback loop design (`plans/02-skill-feedback-loop.md`): auto-create GitHub issue when the skill generates incorrect code, with code before/after, root cause, and recommended reference change.

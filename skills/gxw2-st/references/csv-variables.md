@@ -51,6 +51,7 @@ Every POU (program, function block, function) requires two files with the same b
 |--------------------|---------------|---------|---------|
 | `IO.csv`           | `VAR_GLOBAL`  | 11 cols | Variables bound to physical I/O (X/Y). Prefixes: `DI_`, `DO_`, `AI_`, `AO_` |
 | `GVL.csv`          | `VAR_GLOBAL`  | 11 cols | Global variables needing HMI access or exact addressing. Prefix: `g_` |
+| `GVL.csv` (constants) | `VAR_GLOBAL_CONSTANT` | 11 cols | Global constants / default values — value in the Constant column, no device binding. Prefix: `c_` |
 | `{POU_Name}.csv`   | See below     | 7 cols  | Local variables — class depends on POU type |
 
 ### Available Classes by POU Type
@@ -60,6 +61,10 @@ Every POU (program, function block, function) requires two files with the same b
 | **Program** | `VAR`, `VAR_CONSTANT` only |
 | **Function Block (FB)** | `VAR_INPUT`, `VAR_OUTPUT`, `VAR` |
 | **Function (FUN)** | `VAR_INPUT` only (return value via function name) |
+
+Global lists (`IO.csv`/`GVL.csv`) support `VAR_GLOBAL` and `VAR_GLOBAL_CONSTANT`.
+
+> **Rule: a non-empty Constant column requires a CONSTANT class.** Any row whose **Constant** column holds a value (default/constant) must use `VAR_CONSTANT` (program local) or `VAR_GLOBAL_CONSTANT` (global). `VAR` / `VAR_GLOBAL` rows must leave the Constant column empty (`""`).
 
 ---
 
@@ -83,6 +88,7 @@ Every POU (program, function block, function) requires two files with the same b
 - Prefixes: `DI_` (digital input), `DO_` (digital output), `AI_` (analog input), `AO_` (analog output)
 - Device column is **required**
 - Address uses IEC format: `%IX0.0` for X0, `%QX0.0` for Y0, `%MW100` for D100
+- Constant column stays **empty** (`""`) — I/O variables are bound to devices, never to constant values
 
 ---
 
@@ -97,10 +103,14 @@ Every POU (program, function block, function) requires two files with the same b
 "VAR_GLOBAL"	"g_iCycleCount"	"INT"	""	"D100"	"%MW100"	"Cycle counter"	""	""	""	""
 "VAR_GLOBAL"	"g_rTemperature"	"REAL"	""	"D102"	"%MW102"	"Current temperature"	""	""	""	""
 "VAR_GLOBAL"	"g_xAlarmActive"	"BOOL"	""	"M100"	""	"Alarm active flag"	""	""	""	""
+"VAR_GLOBAL_CONSTANT"	"c_T_GREEN_A"	"TIME"	"T#30s"	""	""	"Green duration for direction A (default 30 s)"	""	""	""	""
+"VAR_GLOBAL_CONSTANT"	"c_T_YELLOW"	"TIME"	"T#3s"	""	""	"Blinking yellow phase duration (default 3 s)"	""	""	""	""
 ```
 
 **Rules:**
-- Prefix: `g_` for all global variables
+- Prefix: `g_` for all global variables; `c_` for global constants
+- **A value in the Constant column ⇒ class `VAR_GLOBAL_CONSTANT`.** If a global row carries a default/constant value (e.g. `T#30s`, `K100`, `E3.14`), the Class MUST be `VAR_GLOBAL_CONSTANT` — never `VAR_GLOBAL`. `VAR_GLOBAL` rows must leave the Constant column empty (`""`)
+- Global constants (`VAR_GLOBAL_CONSTANT`) have **no device binding** — Device and Address columns stay empty (`""`)
 - Addresses must be **sequential** (no gaps) when using D registers
 - `REAL`/`DINT`/`DWORD` consume **2 consecutive D registers** — account for this in address assignment
 - Bit devices (M) leave Address column empty (`""`)
@@ -242,6 +252,7 @@ Structures are **not defined inline** (`TYPE ... END_TYPE`). Create an importabl
 | Analog input      | IO.csv       | `AI_`          | `VAR_GLOBAL`    | 11 cols | Required      | Required       |
 | Analog output     | IO.csv       | `AO_`          | `VAR_GLOBAL`    | 11 cols | Required      | Required       |
 | HMI/exact-address | GVL.csv      | `g_`           | `VAR_GLOBAL`    | 11 cols | Required      | Required (D) / Empty (M) |
+| Global constant   | GVL.csv      | `c_`           | `VAR_GLOBAL_CONSTANT` | 11 cols | Empty    | Empty          |
 | Program local     | {Program}.csv| (free)         | `VAR`, `VAR_CONSTANT` | 7 cols | Empty   | Empty          |
 | FB input          | {FB}.csv     | (free)         | `VAR_INPUT`     | 7 cols  | Empty         | Empty          |
 | FB output         | {FB}.csv     | (free)         | `VAR_OUTPUT`    | 7 cols  | Empty         | Empty          |
