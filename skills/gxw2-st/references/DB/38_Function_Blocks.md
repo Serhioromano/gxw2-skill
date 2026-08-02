@@ -53,36 +53,7 @@ Support: FX3U ✓, FX3G ✓.
 
 ### Hardware Counters (OUT_C / OUT_C_32)
 
-Direct hardware counter access, **no CSV declaration needed** — the alternative to IEC counter FBs when you want a hardware counter device:
-
-```iecst
-(* 16-bit counters (C0–C199) *)
-OUT_C(TRUE, CC0, K200);       (* start 16-bit counter, preset 200 *)
-
-(* 32-bit counters (C200–C255) *)
-OUT_C_32(TRUE, CC235, K200);  (* start 32-bit counter, preset 200 *)
-
-(* Reset *)
-RST(TRUE, CC235);             (* reset counter to 0 *)
-```
-
-- `CNx` — current counter value (e.g. `CN235`)
-- `CSx` — counter contact, TRUE when count ≥ preset
-- `OUT_C` for 16-bit (C0–C199), `OUT_C_32` for 32-bit (C200–C255)
-
-**Counter types and ranges (FX3U):**
-
-| Type | Range | Points | Counting Range |
-|------|-------|--------|----------------|
-| General up counter (16-bit) | C0–C15 | 16 | 0 to 32,767 |
-| EEPROM hold up counter (16-bit) | C16–C199 | 184 | 0 to 32,767 |
-| General bi-direction (32-bit) | C200–C219 | 20 | ±2,147,483,647 |
-| EEPROM hold bi-direction (32-bit) | C220–C234 | 15 | ±2,147,483,647 |
-| High-speed single-phase (32-bit, EEPROM hold) | C235–C245 | 11 | ±2,147,483,647 |
-| High-speed single-phase dual input (32-bit, EEPROM hold) | C246–C250 | 5 | ±2,147,483,647 |
-| High-speed dual-phase (32-bit, EEPROM hold) | C251–C255 | 5 | ±2,147,483,647 |
-
-> High-speed counter notes: single-phase up to 60 kHz (6 channels max). Dual-phase: 1× frequency up to 30 kHz (2–3 channels), 4× frequency up to 24 kHz (2 channels). M8198 enables 4× for C251/C252; M8199 enables 4× for C253/C255.
+Direct hardware counter access, **no CSV declaration needed** — the alternative to IEC counter FBs when you want a hardware counter device. Instruction syntax, operands, examples, device ranges and the full counter type table — see [OUT_C.md](OUT_C.md).
 
 ## Group 3 — Timers: TON, TOF, TP
 
@@ -108,15 +79,7 @@ Support: FX3U ✓, FX3G ✓.
 
 ### Hardware Timers (OUT_T)
 
-Direct hardware timer access, **no CSV declaration needed** — the alternative to IEC timer FBs when you want a hardware timer device:
-
-```iecst
-OUT_T(TRUE, TC1, K20);    (* start timer TC1: 20 × 100ms = 2s preset *)
-```
-
-- `TN1` — current timer value (elapsed, 100ms units)
-- `TS1` — timer contact, TRUE when timer done
-- No CSV declaration needed for `OUT_T`, `TNx`, `TSx`
+Direct hardware timer access, **no CSV declaration needed** — the alternative to IEC timer FBs when you want a hardware timer device. Instruction syntax, operands and examples — see [OUT_T.md](OUT_T.md).
 
 **Timer types and ranges (FX3U):**
 

@@ -76,7 +76,6 @@ heavy instruction catalog.
 2. Load on-demand references as needed by the plan:
    - instruction files recorded in the plan (e.g. `references/DB/MOV.md`) — load only those, never the index
    - [references/data-types.md](references/data-types.md) — type declarations and casting
-   - [references/functions.md](references/functions.md) — built-in FUN/FB (timers, counters, strings, etc.)
    - [references/devices.md](references/devices.md) — device addresses (X, Y, M, D, etc.)
    - [references/system-devices.md](references/system-devices.md) — special relays/registers (M8000+, D8000+)
 3. Generate `.st` and `.csv` files according to the plan.
@@ -127,7 +126,6 @@ code generation.
 |------|-----------|
 | Instruction files from the plan (`references/DB/{File}`) | Load only the instruction files the plan recorded; never the index (see path rule below) |
 | [references/data-types.md](references/data-types.md) | Declaring variables, choosing types, writing K/H/E literals, or type casting |
-| [references/functions.md](references/functions.md) | Using built-in FUN/FB: timers, counters, edge detection, math, strings, selection, type casting, user-defined FB/FUN |
 | [references/devices.md](references/devices.md) | Code uses device addresses (X, Y, M, D, T, C, Z, V, R) or digit-specified addressing (`K4X0`) |
 | [references/system-devices.md](references/system-devices.md) | Code uses M8000+ special relays or D8000+ special registers |
 
@@ -144,7 +142,7 @@ Each instruction has its own file in `references/DB/`. To get full details
 2. If the plan lacks the file name, load [references/DB/00_Instruction_List.md](references/DB/00_Instruction_List.md) **once**, look up the instruction, then drop the index from context again.
 3. Load the file at `references/DB/{File}` — the instruction's own file. Never keep the index loaded just to read one instruction.
 
-> Some instructions share one file with a paired instruction (e.g. `SET`/`RST` in `SET.md`, `PLS`/`PLF` in `PLS.md`, `MEP`/`MEF` in `MEP.md`). The File column always shows the exact filename to load.
+> Some instructions share one file with a paired instruction (e.g. `SET`/`RST` in `SET.md`, `PLS`/`PLF` in `PLS.md`, `MEP`/`MEF` in `MEP.md`, `OUT_C`/`OUT_C_32` in `OUT_C.md`). The File column always shows the exact filename to load.
 
 > **Single source of truth:** every instruction is documented in **exactly
 > one** file — its own `{INSTR}.md` in `references/DB/`, or its group section

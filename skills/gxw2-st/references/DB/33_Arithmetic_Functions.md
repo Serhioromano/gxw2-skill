@@ -61,3 +61,25 @@ g_real2 := EXPT(g_real1, g_int1);               (* no _E, returns directly *)
 ```
 
 > For INT/DINT prefer native operators: `iSum := iA + iB;`. Use `ADD_E`/`DADD` etc. for WORD/DWORD arithmetic.
+
+## SQRT
+
+Square root — **REAL only**, no `D` prefix. Pulse variant: `SQRTP`.
+
+Syntax (GX Works 2):
+
+```iecst
+SQRT(IN);              (* returns REAL value directly *)
+SQRTP(xTrig, IN, d);   (* pulse: result goes to the last parameter d *)
+```
+
+- `IN`: Operand [REAL]
+- `d`: Result [REAL]
+
+Example (ST, from the manual):
+
+```iecst
+rResult := SQRT(rValue);
+```
+
+> **NOT supported on FX series:** `LN`, `LOG`, `EXP`, `SIN`, `COS`, `TAN`, `ASIN`, `ACOS`, `ATAN`, `TRUNC`.

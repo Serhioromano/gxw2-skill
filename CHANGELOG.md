@@ -4,6 +4,7 @@ All notable changes to GXW2-ST will be documented in this file.
 
 ## [Unreleased]
 
+- `plan` - Skill feedback loop design (`plans/02-skill-feedback-loop.md`): auto-create GitHub issue when the skill generates incorrect code, with code before/after, root cause, and recommended reference change.
 - `change` - **Makefile no longer manages CHANGELOG.md**: removed automatic `[Unreleased]` → `[vX.Y.Z]` renaming and release-notes extraction. `make publish` now creates GitHub releases with auto-generated notes; changelog entries are maintained manually.
 - `chore` - Added `make publish v=<patch|minor|major|X.Y.Z>` release workflow (adapted from pi-defender): prereq checks, version bump + tag, npm publish, GitHub release.
 - `docs` - README positioned as a Pi package only (not for other agent harnesses); added full `pi install` / `pi update` / `pi remove` instructions.

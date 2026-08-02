@@ -14,7 +14,7 @@ operands, variants, examples, support):
 1. Find the instruction in the tables below (by name or short description) and read the **File** column.
 2. Load the file at `references/DB/{File}` — e.g. instruction `MOV` → `MOV.md`, `ADD` → `ADD.md`.
 
-> Some instructions share one file with a paired instruction (e.g. `SET`/`RST` in `SET.md`, `PLS`/`PLF` in `PLS.md`, `MEP`/`MEF` in `MEP.md`). The File column always shows the exact filename to load.
+> Some instructions share one file with a paired instruction (e.g. `SET`/`RST` in `SET.md`, `PLS`/`PLF` in `PLS.md`, `MEP`/`MEF` in `MEP.md`, `OUT_C`/`OUT_C_32` in `OUT_C.md`). The File column always shows the exact filename to load.
 
 ## Part 1 — Basic & Applied Instruction
 
@@ -25,8 +25,7 @@ operands, variants, examples, support):
 | LDP.md | [LDP.md](LDP.md) | LDP, LDF, ANDP, ANDF, ORP, ORF |  | 57 | ✓ | ✓ |
 | OUT.md | [OUT.md](OUT.md) | OUT (Excluding timers and counters) |  | 62 | ✓ | ✓ |
 | OUT_T.md | [OUT_T.md](OUT_T.md) | OUT_T / Hardware Timer Start | Hardware Timer Start | 62 | ✓ | ✓ |
-| OUT_C.md | [OUT_C.md](OUT_C.md) | OUT_C / Hardware Counter Start (16-bit) | Hardware Counter Start (16-bit) | 66 | ✓ | ✓ |
-| OUT_C_32.md | [OUT_C_32.md](OUT_C_32.md) | OUT_C_32 / Hardware Counter Start (32-bit) | Hardware Counter Start (32-bit) | 68 | ✓ | ✓ |
+| OUT_C.md | [OUT_C.md](OUT_C.md) | OUT_C, OUT_C_32 / Hardware Counter Start | Hardware Counter Start (16-bit / 32-bit) | 66 / 68 | ✓ | ✓ |
 | MPS.md | [MPS.md](MPS.md) | MPS, MRD, MPP |  | 73 | ✓ | ✓ |
 | INV.md | [INV.md](INV.md) | INV |  | 77 | ✓ | ✓ |
 | MEP.md | [MEP.md](MEP.md) | MEP, MEF |  | 79 | ✓ | — |

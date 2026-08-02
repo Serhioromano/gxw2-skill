@@ -76,6 +76,21 @@ Constant names: prefix `c_` with UPPER_SNAKE_CASE body (e.g., `c_MAX_SPEED`, `c_
 | `H`    | Hexadecimal      | `HFF`, `HABCD`    |
 | `E`    | REAL (scientific)| `E3.14`, `E1.5e2` |
 
+## Postfix Patterns (Mitsubishi-Specific)
+
+Function/instruction names carry optional suffixes that change execution and width.
+
+| Postfix | Meaning | Example |
+|---------|---------|---------|
+| `_E`    | Triggered execution — first parameter is a BOOL condition (EN); result goes to the **last** parameter; the function returns **only the ENO flag**, not the result | `ADD_E(EN, s1, s2, d)` |
+| `P`     | Pulse (rising-edge) execution — attaches directly without underscore | `ADDP(xTrig, s1, s2, d)` |
+| `D`     | 32-bit (DWORD/DINT/REAL) — upgrades 16-bit WORD/INT operations | `DADD`, `DABS`, `DMOV` |
+
+- Without `_E`/`P` a function returns the value directly: `rResult := MAXIMUM(rA, rB);`
+- `D` combines with `_E`/`P`: `DABS_E` (32-bit + triggered), `DADDP` (32-bit + pulse).
+- `_E`/`P` apply to functions/instructions only — **not** to FBs (TON/CTU/R_TRIG are used via an instance declared in CSV, never called directly).
+- String functions have limited postfix support: `_E` only on INSERT, DELETE, REPLACE, FIND; `P` on LEN, LEFT, RIGHT, MID, CONCAT.
+
 ## Assignment Operator
 
 GX Works 2 uses `:=` for **ALL** parameters, including FB outputs. Never use `=>`.

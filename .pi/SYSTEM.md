@@ -33,7 +33,8 @@ gxw2-skill/
 │   ├── review-requests/        # запросы на ревью
 │   └── review-results/         # результаты ревью
 ├── plans/                      # планы разработки
-│   └── 01-pi-package-install.md
+│   ├── 01-pi-package-install.md
+│   └── 02-skill-feedback-loop.md
 └── skills/
     └── gxw2-st/                # директория навыка (имя = frontmatter name)
         ├── SKILL.md            # frontmatter (name, version, compatibility) + двухфазный workflow (Plan → Generate)
@@ -43,7 +44,6 @@ gxw2-skill/
         │   ├── data-types.md       # Типы данных и приведение
         │   ├── devices.md          # Карта устройств (X, Y, M, D, T, C, ...)
         │   ├── system-devices.md   # Специальные реле/регистры (M8000+, D8000+)
-        │   ├── functions.md        # Встроенные FUN/FB
         │   ├── compatibility.md    # Совместимость по сериям FX (Phase 1, при указании модели)
         │   └── DB/                 # Каталог инструкций (~219 файлов)
         │       ├── 00_Instruction_List.md          # индекс всех инструкций (180+), колонка File = имя файла
