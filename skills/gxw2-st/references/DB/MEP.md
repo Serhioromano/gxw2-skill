@@ -15,7 +15,7 @@ MEP returns TRUE for one scan on the rising edge of the input. MEF returns TRUE 
 
 ## Support
 - FX3U: ✓
-- FX3G: —
+- FX3G: ✓
 
 ## Examples (ST, from the manual)
 ```iecst
