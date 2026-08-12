@@ -95,6 +95,8 @@ When a global variable (IO.csv or GVL.csv) is bound to a device, the **Address**
 
 This applies only to the 11-column global lists (IO.csv / GVL.csv). Local POU variables (7-column CSVs) leave Device and Address empty (`""`).
 
+**Non-volatile range:** global variable lists must use **M400+** for M relays and **D200+** for D registers — these ranges are non-volatile (retentive, survive power loss / RUN–STOP). Never assign global variables below M400 / D200.
+
 ---
 
 ## IO.csv Format
@@ -109,14 +111,15 @@ This applies only to the 11-column global lists (IO.csv / GVL.csv). Local POU va
 "VAR_GLOBAL"	"DI_Start"	"BOOL"	""	"X0"	"%IX0"	"Start pushbutton (NO)"	""	""	""	""
 "VAR_GLOBAL"	"DI_Stop"	"BOOL"	""	"X1"	"%IX1"	"Stop pushbutton (NC)"	""	""	""	""
 "VAR_GLOBAL"	"DO_Pump"	"BOOL"	""	"Y0"	"%QX0"	"Pump contactor output"	""	""	""	""
-"VAR_GLOBAL"	"AI_Pressure"	"INT"	""	"D10"	"%MW0.10"	"Pressure sensor (4-20mA scaled)"	""	""	""	""
-"VAR_GLOBAL"	"AO_Valve"	"INT"	""	"D20"	"%MW0.20"	"Valve position command (0-1000)"	""	""	""	""
+"VAR_GLOBAL"	"AI_Pressure"	"INT"	""	"D210"	"%MW0.210"	"Pressure sensor (4-20mA scaled)"	""	""	""	""
+"VAR_GLOBAL"	"AO_Valve"	"INT"	""	"D220"	"%MW0.220"	"Valve position command (0-1000)"	""	""	""	""
 ```
 
 **Rules:**
 - Prefixes: `DI_` (digital input), `DO_` (digital output), `AI_` (analog input), `AO_` (analog output)
 - Device column is **required**
-- Address uses GX Works 2 `%`-notation (see **% Address Numbering in Global Variable Lists**): `%IX0` for X0, `%QX0` for Y0, `%MW0.100` for D100
+- Address uses GX Works 2 `%`-notation (see **% Address Numbering in Global Variable Lists**): `%IX0` for X0, `%QX0` for Y0, `%MW0.200` for D200
+- D registers for analog I/O start at **D200** (non-volatile range — see **% Address Numbering in Global Variable Lists**)
 - Constant column stays **empty** (`""`) — I/O variables are bound to devices, never to constant values
 
 ---
@@ -129,9 +132,9 @@ This applies only to the 11-column global lists (IO.csv / GVL.csv). Local POU va
 "GXW2-ST Examples"
 "Class"	"Label Name"	"Data Type"	"Constant"	"Device"	"Address"	"Comment"	"Remark"	"Relation with System Label"	"System Label Name"	"Attribute"
 "VAR_GLOBAL"	"g_xPumpStart"	"BOOL"	""	"X0"	"%IX0"	"Pump start command"	""	""	""	""
-"VAR_GLOBAL"	"g_iCycleCount"	"INT"	""	"D100"	"%MW0.100"	"Cycle counter"	""	""	""	""
-"VAR_GLOBAL"	"g_rTemperature"	"REAL"	""	"D102"	"%MD0.102"	"Current temperature"	""	""	""	""
-"VAR_GLOBAL"	"g_xAlarmActive"	"BOOL"	""	"M100"	"%MX0.100"	"Alarm active flag"	""	""	""	""
+"VAR_GLOBAL"	"g_iCycleCount"	"INT"	""	"D200"	"%MW0.200"	"Cycle counter"	""	""	""	""
+"VAR_GLOBAL"	"g_rTemperature"	"REAL"	""	"D202"	"%MD0.202"	"Current temperature"	""	""	""	""
+"VAR_GLOBAL"	"g_xAlarmActive"	"BOOL"	""	"M400"	"%MX0.400"	"Alarm active flag"	""	""	""	""
 "VAR_GLOBAL_CONSTANT"	"c_T_GREEN_A"	"TIME"	"T#30s"	""	""	"Green duration for direction A (default 30 s)"	""	""	""	""
 "VAR_GLOBAL_CONSTANT"	"c_T_YELLOW"	"TIME"	"T#3s"	""	""	"Blinking yellow phase duration (default 3 s)"	""	""	""	""
 ```
@@ -143,7 +146,8 @@ This applies only to the 11-column global lists (IO.csv / GVL.csv). Local POU va
 - Global constants (`VAR_GLOBAL_CONSTANT`) have **no device binding** — Device and Address columns stay empty (`""`)
 - Addresses must be **sequential** (no gaps) when using D registers
 - `REAL`/`DINT`/`DWORD` consume **2 consecutive D registers** — account for this in address assignment
-- M relays use `%MX0.{n}` in the Address column (e.g. `M100` → `%MX0.100`)
+- M relays use `%MX0.{n}` in the Address column (e.g. `M400` → `%MX0.400`)
+- Global M relays start at **M400**, D registers at **D200** — non-volatile ranges (survive power loss); never assign globals below M400 / D200 (see **% Address Numbering in Global Variable Lists**)
 - Device column is required for all device-bound globals
 
 ---
@@ -297,7 +301,7 @@ Structures are **not defined inline** (`TYPE ... END_TYPE`). Create an importabl
 | Digital output    | IO.csv       | `DO_`          | `VAR_GLOBAL`    | 11 cols | Required      | Required       |
 | Analog input      | IO.csv       | `AI_`          | `VAR_GLOBAL`    | 11 cols | Required      | Required       |
 | Analog output     | IO.csv       | `AO_`          | `VAR_GLOBAL`    | 11 cols | Required      | Required       |
-| HMI/exact-address | GVL.csv      | `g_` (camelCase) | `VAR_GLOBAL`    | 11 cols | Required      | Required — `%`-notation (see % Address Numbering) |
+| HMI/exact-address | GVL.csv      | `g_` (camelCase) | `VAR_GLOBAL`    | 11 cols | Required      | Required — `%`-notation, M ≥ 400 / D ≥ 200 |
 | Global constant   | GVL.csv      | `c_` (UPPER_SNAKE_CASE) | `VAR_GLOBAL_CONSTANT` | 11 cols | Empty    | Empty          |
 | Program local     | {Program}.csv| (free)         | `VAR`, `VAR_CONSTANT` | 7 cols | Empty   | Empty          |
 | FB input          | {FB}.csv     | (free)         | `VAR_INPUT`     | 7 cols  | Empty         | Empty          |
@@ -305,6 +309,8 @@ Structures are **not defined inline** (`TYPE ... END_TYPE`). Create an importabl
 | FB local          | {FB}.csv     | (free)         | `VAR`           | 7 cols  | Empty         | Empty          |
 | FUN input         | {FUN}.csv    | (free)         | `VAR_INPUT`     | 7 cols  | Empty         | Empty          |
 | Structure member  | {Struct}.csv | (Hungarian)    | —               | 4 cols  | —             | —              |
+
+> Global M relays must be ≥ **M400** and global D registers ≥ **D200** (non-volatile ranges).
 
 ---
 
