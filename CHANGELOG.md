@@ -2,7 +2,9 @@
 
 All notable changes to GXW2-ST will be documented in this file.
 
-## [Unreleased]
+## [v1.5.0]
+
+- `change` - **Default project layout is INIT/MAIN/PROCESS (was INIT/ROUTINE/MAIN)**: every project now generates `PRG_INIT` (one-time startup actions; registered in program/task settings with execution condition M8002 — **no M8002 guard inside the code**), `PRG_MAIN` (business logic, every scan), and `PRG_PROCESS` (non-business actions: error checks, alarm handling, data transfer, HMI/comm refresh). Programs communicate only via globals. Updated `references/common-rules.md` (3-Program Structure section), `references/system-devices.md` (usage example — INIT without `IF M8002`, ROUTINE → PROCESS), `SKILL.md` (Phase 1 POU-list default + Modify split name), `README.md` (Three Programs Per Project), `examples/14-pid-control.st` (header note: PID table init moves to PRG_INIT in the 3-program layout). Added example project `examples/15-three-program/` (`PRG_INIT`, `PRG_MAIN`, `PRG_PROCESS` `.st`/`.csv` pairs, UTF-16 LE + BOM).
 
 - `change` - **Global variables use non-volatile ranges (M400+/D200+)**: global variable lists must start M relays at **M400** and D registers at **D200** — these ranges are non-volatile (retentive, survive power loss); never assign globals below M400 / D200. Documented in `references/csv-variables.md` (% Address Numbering section, IO.csv/GVL.csv rules, Variable Generation Rules Summary). Updated `examples/gvl.csv` (M0–M12 → M400–M412, D100–D108 → D200–D208) and `examples/io.csv` (D10–D21 → D210–D221), keeping UTF-16 LE + BOM, tab-separated, all-quoted format.
 

@@ -14,7 +14,7 @@ A **package for the [Pi Coding Agent](https://github.com/earendil-works/pi)** th
   - `:=` for ALL FB parameters including outputs
   - MEP/MEF preferred over R_TRIG/F_TRIG
   - K/H/E/T# literal prefix notation
-- Provides state machine patterns (Init→Reset→Idle) and 3-program structure (INIT/ROUTINE/MAIN)
+- Provides state machine patterns (Init→Reset→Idle) and 3-program structure (INIT/MAIN/PROCESS)
 
 ## Versions & Compatibility
 
@@ -111,10 +111,12 @@ GX Works 2 uses the **Label Editor** for variables, not inline `VAR...END_VAR` b
 No Q-series, L-series, or iQ-R constructs. The skill targets the FX compiler's specific limitations: no `CONTINUE`, no `LREAL`, no `SR`/`RS` FBs, no `VAR_IN_OUT`, no named CASE labels, and no trigonometric functions (`SIN`, `COS`, `TAN`, etc.).
 
 ### Three Programs Per Project
-Every project follows the INIT → ROUTINE → MAIN structure:
-- **INIT** — runs once on first scan (M8002)
-- **ROUTINE** — runs every 100ms for non-critical tasks
-- **MAIN** — runs every scan with all business logic
+Every project follows the INIT → MAIN → PROCESS structure:
+- **PRG_INIT** — one-time startup actions; registered in program/task settings
+  with execution condition M8002 so the PLC runs it once — **no M8002 guard in code**
+- **PRG_MAIN** — runs every scan with all business logic
+- **PRG_PROCESS** — runs every scan; non-business actions: error checks, alarm
+  handling, data transfer, HMI/comm refresh
 
 ### State Machine Convention
 All state machines start with states 0 (Init), 10 (Reset), 20 (Idle). Integer values only, no CONSTANT declarations for state names.

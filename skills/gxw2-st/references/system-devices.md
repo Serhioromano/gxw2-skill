@@ -67,13 +67,14 @@ Load when using special relays (M8000+) or special registers (D8000+) for diagno
 Special relays and registers are one of the **few exceptions** to the "no direct device access" rule. They may be used directly in ST code:
 
 ```iecst
-(* INIT program — runs on first scan *)
-IF M8002 THEN
-    g_iState := 0;
-    g_iCycleCount := K0;
-END_IF;
+(* PRG_INIT — registered in program/task settings with execution condition
+   M8002 (initial pulse), so the PLC runs this body exactly once after RUN.
+   No IF M8002 guard inside the code — see common-rules.md → 3-Program Structure. *)
+g_iState := 0;
+g_iCycleCount := K0;
 
-(* ROUTINE program — runs on 100ms clock *)
+(* PRG_PROCESS — non-business actions every scan; slow periodic work
+   uses the 100ms clock M8012 *)
 IF M8012 THEN
     g_iCounter := g_iCounter + K1;
 END_IF;

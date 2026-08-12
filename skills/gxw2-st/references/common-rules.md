@@ -214,12 +214,20 @@ EXIT;  (* exits the innermost loop immediately *)
 | Comparison  | `=`, `<>`, `<`, `>`, `<=`, `>=`          |
 | Logical     | `NOT`, `AND`, `OR`, `XOR`                |
 
-## 3-Program Structure
+## 3-Program Structure (Default Project Layout)
 
-Every project should use these 3 programs:
-1. **INIT** — runs once on first scan (M8002). Initializes variables, sets defaults.
-2. **ROUTINE** — runs every 100ms on a timer. Non-critical tasks (HMI refresh, slow monitoring).
-3. **MAIN** — runs every scan. All business logic.
+Every project generates these **3 programs by default** (ALL-CAPS POU names, see Naming Conventions):
+
+1. **`PRG_INIT`** — runs **once** after RUN (initialization). Contains every one-time startup action: default values, initial state, calibration data, retentive restore. **The ST body contains NO M8002 guard.** The "run once" behavior comes from the **program/task registration**: register `PRG_INIT` in the program/task settings (PLC Parameter → PLC System → Program) and set its execution condition to **M8002 (initial pulse)** — or configure the equivalent run-once task in the target setup — so the PLC itself executes the body on the first scan only. The body is just the statements to run once.
+2. **`PRG_MAIN`** — runs every scan. All business logic: state machines, sequences, control algorithms, operator commands.
+3. **`PRG_PROCESS`** — runs every scan (or on a slower cycle when needed). Actions that are **not** business logic but must be done anyway: error/diagnostic checks, alarm handling, data transfer, HMI/comm refresh, watchdog updates, sensor plausibility checks. It never changes business state directly — it sets flags/error codes and hands data to `PRG_MAIN` via global variables.
+
+Rules:
+- Always generate all 3 programs unless the user explicitly asks for fewer or for a different layout.
+- **Do not wrap the `PRG_INIT` body in `IF M8002 THEN ... END_IF`.** M8002 is configured as the program's execution condition in the registration settings, not written in the code.
+- Keep `PRG_INIT` one-time only — nothing that must run continuously.
+- `PRG_MAIN` and `PRG_PROCESS` must not duplicate each other's work: MAIN owns the business flow, PROCESS owns support/housekeeping.
+- Programs communicate only through global variables (GVL.csv) — locals of one program are invisible to the others.
 
 ## State Machine Pattern
 

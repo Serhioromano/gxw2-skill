@@ -48,6 +48,10 @@
   Critical:
     - PID parameter table must occupy 29 consecutive, undisturbed D registers.
     - No other logic may write to D500–D528 while PID is active.
+    - In the default 3-program layout (PRG_INIT/PRG_MAIN/PRG_PROCESS), the
+      Section 1 parameter-table initialization moves to **PRG_INIT** and runs
+      via task registration (execution condition M8002) — no `IF M8002` guard
+      in code. This standalone example keeps `IF M8002` because it is a single POU.
     - Autotune completion: PID clears D501 bit 4 automatically.
       If (D501 AND 2#0000_0000_0001_0000) = 0 after a scan, autotune finished.
     - Sampling time (D500) must be ≥ 1 scan time.

@@ -64,6 +64,10 @@ gxw2-skill/
             ├── 12-function-block/FB_MOTOR.st/.csv       # пример FB (в подпапке)
             ├── 13-function/F_SCALE_VALUE.st/.csv        # пример FUN (в подпапке)
             ├── 14-pid-control.st/.csv
+            ├── 15-three-program/                        # пример проекта: PRG_INIT/PRG_MAIN/PRG_PROCESS
+            │   ├── PRG_INIT.st/.csv                     # разовый запуск через регистрацию в задачнике, без M8002 в коде
+            │   ├── PRG_MAIN.st/.csv                     # бизнес-логика (state machine), каждый скан
+            │   └── PRG_PROCESS.st/.csv                  # ошибки, передача данных, housekeeping
             ├── io.csv               # шаблон I/O привязок (проектный)
             ├── gvl.csv              # шаблон глобальных переменных (проектный)
             ├── pou-local.csv        # шаблон локальных переменных POU
@@ -74,6 +78,7 @@ gxw2-skill/
 
 - **Двухфазный workflow** описан в `SKILL.md`: Phase 1 — план с каталогом инструкций (`DB/00_Instruction_List.md`), Phase 2 — генерация кода с обязательными `common-rules.md` и `csv-variables.md`. Не дублируй его в SYSTEM.md.
 - Каждый пример — **пара файлов**: `.st` (только код, без `VAR...END_VAR`) + `.csv` (переменные для GX Works 2 Label Editor: UTF-16 LE с BOM, таб-разделитель, все значения в кавычках).
+- **Структура проекта по умолчанию — 3 программы: `PRG_INIT` + `PRG_MAIN` + `PRG_PROCESS`.** `PRG_INIT` содержит одноразовые действия при запуске и **не содержит условия на M8002 в коде** — разовый запуск обеспечивается регистрацией программы в настройках (execution condition = M8002). `PRG_MAIN` — бизнес-логика (каждый скан); `PRG_PROCESS` — не-бизнес действия: проверка ошибок, передача данных, alarm handling, HMI/comm refresh. Правило описано в `common-rules.md` → 3-Program Structure.
 - **Имена FB/FUN/PRG (Issue #7):** имена ФАЙЛОВ POU — префикс `FB_`/`F_`/`PRG_` + ВЕРХНИЙ РЕГИСТР (`FB_MOTOR`, `F_SCALE_VALUE`, `PRG_MAIN`); имя POU в области определения совпадает с базой имени файла. Инстансы FB в коде/CSV — CamelCase с префиксом `fb` (`fbMotor : FB_MOTOR`); FUN вызывается по имени `F_...`. Правило описано в `common-rules.md` → Naming Conventions.
 - `references/DB/` — один файл на инструкцию. Некоторые инструкции делят файл (SET/RST, PLS/PLF, MEP/MEF) — точное имя файла указано в колонке File индекса.
 - Версии в `package.json` и frontmatter `SKILL.md` держать синхронными.

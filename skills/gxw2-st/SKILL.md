@@ -49,7 +49,12 @@ heavy instruction catalog.
 4. Produce a **plan** — a detailed blueprint that expands the original task
    with concrete technical decisions. Include:
    - **Original task** — restate the user's request in your own words
-   - **POU list** — which Program/FB/FUN units to create, their responsibilities
+   - **POU list** — which Program/FB/FUN units to create, their responsibilities.
+     Default project layout = 3 programs: `PRG_INIT` (one-time startup; registered
+     in program/task settings with execution condition M8002 — **no M8002 guard in
+     code**), `PRG_MAIN` (business logic), `PRG_PROCESS` (error checks, data
+     transfer, non-business actions). See
+     [references/common-rules.md](references/common-rules.md) → 3-Program Structure.
    - **Instruction selection** — exactly which instructions to use (with full
      signatures, variants `_E`/`P`/`D`, and why this variant fits the task).
      Record the **File** column from the index for each selected instruction
@@ -97,7 +102,7 @@ rework a state machine), do not regenerate from scratch:
 4. Edit **both** files of each pair — `.st` (code) and `.csv` (variables).
    A device or address changed in one file must be changed in the other.
 5. Keep the delta plan small; re-run the full Plan → Generate only if the
-   change touches program structure (POU list, INIT/ROUTINE/MAIN split).
+   change touches program structure (POU list, INIT/MAIN/PROCESS split).
 
 ---
 
