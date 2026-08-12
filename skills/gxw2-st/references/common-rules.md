@@ -62,13 +62,31 @@ Always load this file. These constraints apply to every code generation for GX W
 | `ai`   | ARR INT| `aiLookupTable`    |
 | `ar`   | ARR REAL|`arCalibration`    |
 | `fb`   | FB instance | `fbMotor`     |
-| `f`    | FUN call    | `fScaleValue` |
+| `F_`   | FUN name/call (ALL CAPS) | `F_SCALE_VALUE` |
+| `FB_`  | FB POU/file name (ALL CAPS) | `FB_MOTOR` |
+| `PRG_` | Program POU/file name (ALL CAPS) | `PRG_MAIN` |
 | `c_`   | Constant    | `c_MAX_SPEED`  |
 
 Global variable name prefix: `g_`. I/O variable name prefix: `DI_`, `DO_`, `AI_`, `AO_`.
-FB instance names: prefix `fb` (e.g., `fbMotor`, `fbTimer`).
-FUN names: prefix `f` (e.g., `fScaleValue`, `fToCelsius`).
+FB instance names: prefix `fb` in CamelCase (e.g., `fbMotor`, `fbTimer`). The ALL-CAPS `FB_`/`F_`/`PRG_` prefixes are for POU **file names** only — never for instance declarations.
+FUN names: prefix `F_` in ALL CAPS (e.g., `F_SCALE_VALUE`, `F_TO_CELSIUS`) — the FUN name is used both as the file name and as the call name.
 Constant names: prefix `c_` with UPPER_SNAKE_CASE body (e.g., `c_MAX_SPEED`, `c_DEFAULT_TIMEOUT`).
+
+### FB/FUN/PRG POU and File Naming
+
+POU file names carry an ALL-CAPS prefix so every file immediately reveals what it defines: a function block, a function, or a program.
+
+| POU type | File name pattern | ALL CAPS | File pair | Example |
+|----------|-------------------|----------|-----------|---------|
+| Function Block | `FB_<NAME>` | yes | `FB_<NAME>.st` + `FB_<NAME>.csv` | `FB_MOTOR.st` / `FB_MOTOR.csv` |
+| Function | `F_<NAME>` | yes | `F_<NAME>.st` + `F_<NAME>.csv` | `F_SCALE_VALUE.st` / `F_SCALE_VALUE.csv` |
+| Program | `PRG_<NAME>` | yes | `PRG_<NAME>.st` + `PRG_<NAME>.csv` | `PRG_MAIN.st` / `PRG_MAIN.csv` |
+
+Rules:
+- `FB_`, `F_`, `PRG_` are **file-name prefixes** — the POU name in the definition area matches the file base name: `FB_MOTOR`, `F_SCALE_VALUE`, `PRG_MAIN` (never `MotorControl` or `ScaleValue` for files).
+- FB **instances** are declared in CamelCase with the `fb` prefix: `"VAR" "fbMotor" "FB_MOTOR"` — instance `fbMotor` of type `FB_MOTOR`. Multiple instances of the same FB append a CamelCase suffix: `fbMotor1`, `fbMotor2`.
+- FUNs are called by name — no instance declaration — so the caller uses the `F_` name directly: `rResult := F_SCALE_VALUE(...)`.
+- Built-in FB instances (TON, TOF, TP, CTU, CTD, CTUD, R_TRIG, F_TRIG) keep lowercase type-prefixed names (`tonStart`, `ctParts`, `rtStart`) — they are standard library blocks with no project files, so the ALL-CAPS prefix is reserved for POU file names.
 
 ## Comment Style
 

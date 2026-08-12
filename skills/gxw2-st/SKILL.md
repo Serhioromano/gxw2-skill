@@ -9,7 +9,7 @@ description: >
   ST code for Mitsubishi PLC, device addresses X/Y/M/D/T/C,
   Mitsubishi ST syntax, built-in functions, factory automation,
   industrial control ST code, PLC Structured Text.
-version: 1.4.0
+version: 1.4.2
 compatibility: GX Works 2, FX series (FX3U, FX3G, FX3S, FX5U)
 ---
 
@@ -170,16 +170,23 @@ Every code generation produces **two file sets**:
 
 | POU Type | Files Required |
 |----------|---------------|
-| Program | `{Name}.st` + `{Name}.csv` |
-| Function Block | `{Name}.st` + `{Name}.csv` |
-| Function | `{Name}.st` + `{Name}.csv` |
+| Program | `PRG_<NAME>.st` + `PRG_<NAME>.csv` |
+| Function Block | `FB_<NAME>.st` + `FB_<NAME>.csv` |
+| Function | `F_<NAME>.st` + `F_<NAME>.csv` |
 | I/O binding (project-wide) | `IO.csv` |
 | Global variables (project-wide) | `GVL.csv` |
 | Structure definition | `{StructName}.csv` |
 
+> POU file names carry an ALL-CAPS prefix — `FB_`
+> for function blocks, `F_` for functions, `PRG_` for programs (`FB_MOTOR`,
+> `F_SCALE_VALUE`, `PRG_MAIN`). FB instances are declared in CamelCase
+> (`fbMotor : FB_MOTOR`). Full rules in `references/common-rules.md` → Naming
+> Conventions.
+
 ### FB Instance Declarations
 
 FB instances (TON, CTU, R_TRIG, user-defined FBs) must be declared as `VAR`
-in the CSV of the POU that uses them.
+in the CSV of the POU that uses them. For user-defined FBs the instance is
+declared in CamelCase with the `fb` prefix: `fbMotor : FB_MOTOR`.
 
 

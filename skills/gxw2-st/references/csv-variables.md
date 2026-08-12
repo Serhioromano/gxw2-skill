@@ -148,10 +148,12 @@ Programs support only `VAR` and `VAR_CONSTANT`. No `VAR_INPUT`, no `VAR_OUTPUT`.
 ## Function Block CSV Pattern
 
 FB requires two files with the same name:
-- `{FBName}.st` — code only (no FB declaration, no VAR blocks)
-- `{FBName}.csv` — local + input + output variables (7 columns)
+- `{FB_NAME}.st` — code only (no FB declaration, no VAR blocks)
+- `{FB_NAME}.csv` — local + input + output variables (7 columns)
 
-**MotorControl.csv:**
+FB file names follow the `FB_` + ALL CAPS convention (see `common-rules.md` → Naming Conventions): the POU/file name is `FB_MOTOR`, while instances are declared in CamelCase (`fbMotor : FB_MOTOR`).
+
+**FB_MOTOR.csv:**
 ```tsv
 "GXW2-ST Examples"
 "Class"	"Label Name"	"Data Type"	"Constant"	"Device"	"Address"	"Comment"
@@ -164,11 +166,23 @@ FB requires two files with the same name:
 "VAR"	"rtStart"	"R_TRIG"	""	""	""	"Rising edge detector instance"
 ```
 
-**MotorControl.st:**
+**FB_MOTOR.st:**
 ```iecst
 (* Motor control with feedback monitoring *)
 rtStart(CLK := xStart, Q := xRisingEdge);
 (* ... body uses VAR_INPUT, VAR_OUTPUT, and VAR names directly *)
+```
+
+**Caller (declares the instance in its own CSV — instance in CamelCase, type is the FB file name):**
+```tsv
+"VAR"	"fbMotor"	"FB_MOTOR"	""	""	""	"Motor FB instance"
+```
+```iecst
+fbMotor(xStart := xStartBtn, xStop := xStopBtn,
+        xFeedback := DI_Feedback, xFaultReset := xReset,
+        xMotor := Y_Motor, xFault := xMotorFault,
+        xRunning := xMotorRunning, xReady := xMotorReady,
+        tStartDelay := T#2s, tFaultTimeout := T#5s);
 ```
 
 ---
@@ -179,7 +193,9 @@ rtStart(CLK := xStart, Q := xRisingEdge);
 
 FUN has VAR_INPUT only — no VAR_OUTPUT (result is function return).
 
-**ScaleValue.csv** (defines the function's inputs, 7 columns):
+FUN names follow the `F_` + ALL CAPS convention (see `common-rules.md` → Naming Conventions): the POU name and the file base name match, e.g. `F_SCALE_VALUE`. The caller uses the `F_` name directly — no instance declaration.
+
+**F_SCALE_VALUE.csv** (defines the function's inputs, 7 columns):
 ```tsv
 "GXW2-ST Examples"
 "Class"	"Label Name"	"Data Type"	"Constant"	"Device"	"Address"	"Comment"
@@ -190,18 +206,18 @@ FUN has VAR_INPUT only — no VAR_OUTPUT (result is function return).
 "VAR_INPUT"	"rEngMax"	"REAL"	""	""	""	"Engineering maximum"
 ```
 
-**ScaleValue.st:**
+**F_SCALE_VALUE.st:**
 ```iecst
 (* Returns scaled REAL value *)
-ScaleValue := rEngMin +
+F_SCALE_VALUE := rEngMin +
     ((INT_TO_REAL(iRaw - iRawMin) / INT_TO_REAL(iRawMax - iRawMin)) *
      (rEngMax - rEngMin));
 ```
 
 **Calling (no CSV declaration needed):**
 ```iecst
-rResult := ScaleValue(iRaw := AI_Pressure, iRawMin := K0, iRawMax := K4000,
-                      rEngMin := E0.0, rEngMax := E100.0);
+rResult := F_SCALE_VALUE(iRaw := AI_Pressure, iRawMin := K0, iRawMax := K4000,
+                         rEngMin := E0.0, rEngMax := E100.0);
 ```
 
 ---
@@ -270,7 +286,7 @@ When an ST code uses an FB instance (TON, CTU, R_TRIG, or user-defined FB), that
 "VAR"	"tonDelay"	"TON"	""	""	""	"On-delay timer"
 "VAR"	"ctParts"	"CTU"	""	""	""	"Parts counter"
 "VAR"	"rtStart"	"R_TRIG"	""	""	""	"Rising edge detector"
-"VAR"	"fbMotor"	"MotorControl"	""	""	""	"Motor FB instance"
+"VAR"	"fbMotor"	"FB_MOTOR"	""	""	""	"Motor FB instance (type FB_MOTOR)"
 ```
 
 Without this declaration, the code will not compile in GX Works 2.

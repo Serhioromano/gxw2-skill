@@ -1,11 +1,13 @@
 (*
-  Function Block: MotorControl
+  Function Block: FB_MOTOR
   Purpose: Motor control with feedback monitoring, start delay,
            fault detection on feedback timeout, and fault reset.
            Demonstrates a complete FB pattern for GX Works 2.
-  Files:   MotorControl.st (this file — code body only)
-           MotorControl.csv (VAR_INPUT, VAR_OUTPUT, VAR declarations)
-  Rules:   No inline VAR...END_VAR. All variables declared in CSV.
+  Files:   FB_MOTOR.st (this file — code body only)
+           FB_MOTOR.csv (VAR_INPUT, VAR_OUTPUT, VAR declarations)
+  Rules:   FB file/POU name uses the FB_ prefix in ALL CAPS (FB_MOTOR);
+           instances are declared in CamelCase (fbMotor : FB_MOTOR).
+           No inline VAR...END_VAR. All variables declared in CSV.
            All FB parameters use := including outputs.
            No VAR_IN_OUT on FX — use separate VAR_INPUT + VAR_OUTPUT.
 *)

@@ -2,6 +2,11 @@
 
 All notable changes to GXW2-ST will be documented in this file.
 
+## [Unreleased]
+
+- `change` - **FB/FUN/PRG file naming (Issue #7)**: POU **file names** carry an ALL-CAPS prefix — `FB_` for function blocks, `F_` for functions, `PRG_` for programs (`FB_MOTOR`, `F_SCALE_VALUE`, `PRG_MAIN`). The POU name in the definition area matches the file base name. FB **instances** are declared in CamelCase with the `fb` prefix (`fbMotor : FB_MOTOR`); FUNs are named and called as `F_...` (`rResult := F_SCALE_VALUE(...)`) with no instance declaration. Documented in `references/common-rules.md` (Naming Conventions → FB/FUN/PRG POU and File Naming), `references/csv-variables.md` (FB/FUN CSV patterns), and `SKILL.md` (File Map + FB Instance Declarations). Renamed example pairs: `examples/12-function-block/MotorControl` → `FB_MOTOR`, `examples/13-function/ScaleValue` → `F_SCALE_VALUE`. Built-in FB instances (TON/TOF/TP/CTU/CTD/CTUD/R_TRIG/F_TRIG) keep lowercase type-prefixed names (`tonStart`, `ctParts`, `rtStart`).
+- `fix` - Synced `SKILL.md` frontmatter version to 1.4.2 (package.json was bumped at `f222c5e` but the skill frontmatter was left at 1.4.0).
+
 ## [v1.4.2]
 
 - `change` - **Global constants require `VAR_GLOBAL_CONSTANT`**: a non-empty Constant column in a global CSV row must use class `VAR_GLOBAL_CONSTANT` (never `VAR_GLOBAL`); `VAR_GLOBAL` rows must leave Constant empty. Documented in `references/csv-variables.md` (Three Variable List Types, Available Classes, GVL.csv example + rules, IO.csv rules, Variable Generation Rules Summary).

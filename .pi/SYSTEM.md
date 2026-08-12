@@ -61,8 +61,8 @@ gxw2-skill/
             ├── 09-bit-operations.st/.csv
             ├── 10-type-casting.st/.csv
             ├── 11-edge-detection.st/.csv
-            ├── 12-function-block/MotorControl.st/.csv   # пример FB (в подпапке)
-            ├── 13-function/ScaleValue.st/.csv           # пример FUN (в подпапке)
+            ├── 12-function-block/FB_MOTOR.st/.csv       # пример FB (в подпапке)
+            ├── 13-function/F_SCALE_VALUE.st/.csv        # пример FUN (в подпапке)
             ├── 14-pid-control.st/.csv
             ├── io.csv               # шаблон I/O привязок (проектный)
             ├── gvl.csv              # шаблон глобальных переменных (проектный)
@@ -74,6 +74,7 @@ gxw2-skill/
 
 - **Двухфазный workflow** описан в `SKILL.md`: Phase 1 — план с каталогом инструкций (`DB/00_Instruction_List.md`), Phase 2 — генерация кода с обязательными `common-rules.md` и `csv-variables.md`. Не дублируй его в SYSTEM.md.
 - Каждый пример — **пара файлов**: `.st` (только код, без `VAR...END_VAR`) + `.csv` (переменные для GX Works 2 Label Editor: UTF-16 LE с BOM, таб-разделитель, все значения в кавычках).
+- **Имена FB/FUN/PRG (Issue #7):** имена ФАЙЛОВ POU — префикс `FB_`/`F_`/`PRG_` + ВЕРХНИЙ РЕГИСТР (`FB_MOTOR`, `F_SCALE_VALUE`, `PRG_MAIN`); имя POU в области определения совпадает с базой имени файла. Инстансы FB в коде/CSV — CamelCase с префиксом `fb` (`fbMotor : FB_MOTOR`); FUN вызывается по имени `F_...`. Правило описано в `common-rules.md` → Naming Conventions.
 - `references/DB/` — один файл на инструкцию. Некоторые инструкции делят файл (SET/RST, PLS/PLF, MEP/MEF) — точное имя файла указано в колонке File индекса.
 - Версии в `package.json` и frontmatter `SKILL.md` держать синхронными.
 - Релиз: `make publish v=<patch|minor|major|x.y.z>` — обновляет CHANGELOG, бампает версию, публикует в npm, создаёт GitHub release. Проверка навыка: `make test`.
