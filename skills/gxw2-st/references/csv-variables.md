@@ -68,6 +68,35 @@ Global lists (`IO.csv`/`GVL.csv`) support `VAR_GLOBAL` and `VAR_GLOBAL_CONSTANT`
 
 ---
 
+## % Address Numbering in Global Variable Lists
+
+When a global variable (IO.csv or GVL.csv) is bound to a device, the **Address** column uses GX Works 2 `%`-notation. Addresses are numbered as follows (device → address):
+
+| Device | Address | Label data type | Pattern |
+|--------|---------|-----------------|---------|
+| X000 | `%IX0` | BOOL | `%IX{n}` |
+| X001 | `%IX1` | BOOL | `%IX{n}` |
+| Y000 | `%QX0` | BOOL | `%QX{n}` |
+| Y002 | `%QX2` | BOOL | `%QX{n}` |
+| D0 | `%MD0.0` | REAL / DINT / DWORD | `%MD{area}.{n}` |
+| D2 | `%MD0.2` | REAL / DINT / DWORD | `%MD{area}.{n}` |
+| D500 | `%MW0.500` | INT / WORD | `%MW{area}.{n}` |
+| D501 | `%MW0.501` | INT / WORD | `%MW{area}.{n}` |
+| M500 | `%MX0.500` | BOOL | `%MX{area}.{n}` |
+| M501 | `%MX0.501` | BOOL | `%MX{area}.{n}` |
+| R500 | `%MW2.500` | INT / WORD | `%MW{area}.{n}` |
+| R501 | `%MW2.501` | INT / WORD | `%MW{area}.{n}` |
+
+**Rules:**
+- `%IX` = digital input (X), `%QX` = digital output (Y) — the address is the device number itself (`X0` → `%IX0`, `Y2` → `%QX2`), no area prefix
+- D registers and M relays use `{area}.{n}` where `{n}` is the device number: `%MW` = 16-bit word device (INT/WORD), `%MD` = 32-bit double-word device (REAL/DINT/DWORD), `%MX` = bit device (BOOL)
+- The number before the dot is the device area: `0` = main D/M area, `2` = R file register area (`R500` → `%MW2.500`)
+- 32-bit labels (`%MD`) occupy 2 consecutive D registers — e.g. `D2` as REAL is `%MD0.2` and covers D2–D3
+
+This applies only to the 11-column global lists (IO.csv / GVL.csv). Local POU variables (7-column CSVs) leave Device and Address empty (`""`).
+
+---
+
 ## IO.csv Format
 
 **11 columns** (tab-separated, all quoted):
@@ -77,17 +106,17 @@ Global lists (`IO.csv`/`GVL.csv`) support `VAR_GLOBAL` and `VAR_GLOBAL_CONSTANT`
 ```tsv
 "GXW2-ST Examples"
 "Class"	"Label Name"	"Data Type"	"Constant"	"Device"	"Address"	"Comment"	"Remark"	"Relation with System Label"	"System Label Name"	"Attribute"
-"VAR_GLOBAL"	"DI_Start"	"BOOL"	""	"X0"	"%IX0.0"	"Start pushbutton (NO)"	""	""	""	""
-"VAR_GLOBAL"	"DI_Stop"	"BOOL"	""	"X1"	"%IX0.1"	"Stop pushbutton (NC)"	""	""	""	""
-"VAR_GLOBAL"	"DO_Pump"	"BOOL"	""	"Y0"	"%QX0.0"	"Pump contactor output"	""	""	""	""
-"VAR_GLOBAL"	"AI_Pressure"	"INT"	""	"D10"	"%MW10"	"Pressure sensor (4-20mA scaled)"	""	""	""	""
-"VAR_GLOBAL"	"AO_Valve"	"INT"	""	"D20"	"%MW20"	"Valve position command (0-1000)"	""	""	""	""
+"VAR_GLOBAL"	"DI_Start"	"BOOL"	""	"X0"	"%IX0"	"Start pushbutton (NO)"	""	""	""	""
+"VAR_GLOBAL"	"DI_Stop"	"BOOL"	""	"X1"	"%IX1"	"Stop pushbutton (NC)"	""	""	""	""
+"VAR_GLOBAL"	"DO_Pump"	"BOOL"	""	"Y0"	"%QX0"	"Pump contactor output"	""	""	""	""
+"VAR_GLOBAL"	"AI_Pressure"	"INT"	""	"D10"	"%MW0.10"	"Pressure sensor (4-20mA scaled)"	""	""	""	""
+"VAR_GLOBAL"	"AO_Valve"	"INT"	""	"D20"	"%MW0.20"	"Valve position command (0-1000)"	""	""	""	""
 ```
 
 **Rules:**
 - Prefixes: `DI_` (digital input), `DO_` (digital output), `AI_` (analog input), `AO_` (analog output)
 - Device column is **required**
-- Address uses IEC format: `%IX0.0` for X0, `%QX0.0` for Y0, `%MW100` for D100
+- Address uses GX Works 2 `%`-notation (see **% Address Numbering in Global Variable Lists**): `%IX0` for X0, `%QX0` for Y0, `%MW0.100` for D100
 - Constant column stays **empty** (`""`) — I/O variables are bound to devices, never to constant values
 
 ---
@@ -99,10 +128,10 @@ Global lists (`IO.csv`/`GVL.csv`) support `VAR_GLOBAL` and `VAR_GLOBAL_CONSTANT`
 ```tsv
 "GXW2-ST Examples"
 "Class"	"Label Name"	"Data Type"	"Constant"	"Device"	"Address"	"Comment"	"Remark"	"Relation with System Label"	"System Label Name"	"Attribute"
-"VAR_GLOBAL"	"g_xPumpStart"	"BOOL"	""	"X0"	"%IX0.0"	"Pump start command"	""	""	""	""
-"VAR_GLOBAL"	"g_iCycleCount"	"INT"	""	"D100"	"%MW100"	"Cycle counter"	""	""	""	""
-"VAR_GLOBAL"	"g_rTemperature"	"REAL"	""	"D102"	"%MW102"	"Current temperature"	""	""	""	""
-"VAR_GLOBAL"	"g_xAlarmActive"	"BOOL"	""	"M100"	""	"Alarm active flag"	""	""	""	""
+"VAR_GLOBAL"	"g_xPumpStart"	"BOOL"	""	"X0"	"%IX0"	"Pump start command"	""	""	""	""
+"VAR_GLOBAL"	"g_iCycleCount"	"INT"	""	"D100"	"%MW0.100"	"Cycle counter"	""	""	""	""
+"VAR_GLOBAL"	"g_rTemperature"	"REAL"	""	"D102"	"%MD0.102"	"Current temperature"	""	""	""	""
+"VAR_GLOBAL"	"g_xAlarmActive"	"BOOL"	""	"M100"	"%MX0.100"	"Alarm active flag"	""	""	""	""
 "VAR_GLOBAL_CONSTANT"	"c_T_GREEN_A"	"TIME"	"T#30s"	""	""	"Green duration for direction A (default 30 s)"	""	""	""	""
 "VAR_GLOBAL_CONSTANT"	"c_T_YELLOW"	"TIME"	"T#3s"	""	""	"Blinking yellow phase duration (default 3 s)"	""	""	""	""
 ```
@@ -114,8 +143,8 @@ Global lists (`IO.csv`/`GVL.csv`) support `VAR_GLOBAL` and `VAR_GLOBAL_CONSTANT`
 - Global constants (`VAR_GLOBAL_CONSTANT`) have **no device binding** — Device and Address columns stay empty (`""`)
 - Addresses must be **sequential** (no gaps) when using D registers
 - `REAL`/`DINT`/`DWORD` consume **2 consecutive D registers** — account for this in address assignment
-- Bit devices (M) leave Address column empty (`""`)
-- Device column is required for I/O-bound globals; optional for M-relay globals
+- M relays use `%MX0.{n}` in the Address column (e.g. `M100` → `%MX0.100`)
+- Device column is required for all device-bound globals
 
 ---
 
@@ -268,7 +297,7 @@ Structures are **not defined inline** (`TYPE ... END_TYPE`). Create an importabl
 | Digital output    | IO.csv       | `DO_`          | `VAR_GLOBAL`    | 11 cols | Required      | Required       |
 | Analog input      | IO.csv       | `AI_`          | `VAR_GLOBAL`    | 11 cols | Required      | Required       |
 | Analog output     | IO.csv       | `AO_`          | `VAR_GLOBAL`    | 11 cols | Required      | Required       |
-| HMI/exact-address | GVL.csv      | `g_` (camelCase) | `VAR_GLOBAL`    | 11 cols | Required      | Required (D) / Empty (M) |
+| HMI/exact-address | GVL.csv      | `g_` (camelCase) | `VAR_GLOBAL`    | 11 cols | Required      | Required — `%`-notation (see % Address Numbering) |
 | Global constant   | GVL.csv      | `c_` (UPPER_SNAKE_CASE) | `VAR_GLOBAL_CONSTANT` | 11 cols | Empty    | Empty          |
 | Program local     | {Program}.csv| (free)         | `VAR`, `VAR_CONSTANT` | 7 cols | Empty   | Empty          |
 | FB input          | {FB}.csv     | (free)         | `VAR_INPUT`     | 7 cols  | Empty         | Empty          |
