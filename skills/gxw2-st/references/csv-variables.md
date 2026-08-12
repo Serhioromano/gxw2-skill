@@ -50,7 +50,7 @@ Every POU (program, function block, function) requires two files with the same b
 | File Pattern       | Class         | Columns | Purpose |
 |--------------------|---------------|---------|---------|
 | `IO.csv`           | `VAR_GLOBAL`  | 11 cols | Variables bound to physical I/O (X/Y). Prefixes: `DI_`, `DO_`, `AI_`, `AO_` |
-| `GVL.csv`          | `VAR_GLOBAL`  | 11 cols | Global variables needing HMI access or exact addressing. Prefix: `g_` |
+| `GVL.csv`          | `VAR_GLOBAL`  | 11 cols | Global variables needing HMI access or exact addressing. Prefix: `g_` + **camelCase** (never ALL CAPS) |
 | `GVL.csv` (constants) | `VAR_GLOBAL_CONSTANT` | 11 cols | Global constants / default values — value in the Constant column, no device binding. Prefix: `c_` |
 | `{POU_Name}.csv`   | See below     | 7 cols  | Local variables — class depends on POU type |
 
@@ -109,6 +109,7 @@ Global lists (`IO.csv`/`GVL.csv`) support `VAR_GLOBAL` and `VAR_GLOBAL_CONSTANT`
 
 **Rules:**
 - Prefix: `g_` for all global variables; `c_` for global constants
+- **Global variable names are camelCase** — `g_xPumpStart`, `g_iCycleCount`, `g_rTemperature`, `g_xAlarmActive`. **Never ALL CAPS** (`G_XPUMPSTART`, `G_PUMP_START`). ALL CAPS is reserved for constructs only: POU file names (`FB_`, `F_`, `PRG_`), constant names (`c_`), and instruction names (see `common-rules.md` → Naming Conventions)
 - **A value in the Constant column ⇒ class `VAR_GLOBAL_CONSTANT`.** If a global row carries a default/constant value (e.g. `T#30s`, `K100`, `E3.14`), the Class MUST be `VAR_GLOBAL_CONSTANT` — never `VAR_GLOBAL`. `VAR_GLOBAL` rows must leave the Constant column empty (`""`)
 - Global constants (`VAR_GLOBAL_CONSTANT`) have **no device binding** — Device and Address columns stay empty (`""`)
 - Addresses must be **sequential** (no gaps) when using D registers
@@ -267,8 +268,8 @@ Structures are **not defined inline** (`TYPE ... END_TYPE`). Create an importabl
 | Digital output    | IO.csv       | `DO_`          | `VAR_GLOBAL`    | 11 cols | Required      | Required       |
 | Analog input      | IO.csv       | `AI_`          | `VAR_GLOBAL`    | 11 cols | Required      | Required       |
 | Analog output     | IO.csv       | `AO_`          | `VAR_GLOBAL`    | 11 cols | Required      | Required       |
-| HMI/exact-address | GVL.csv      | `g_`           | `VAR_GLOBAL`    | 11 cols | Required      | Required (D) / Empty (M) |
-| Global constant   | GVL.csv      | `c_`           | `VAR_GLOBAL_CONSTANT` | 11 cols | Empty    | Empty          |
+| HMI/exact-address | GVL.csv      | `g_` (camelCase) | `VAR_GLOBAL`    | 11 cols | Required      | Required (D) / Empty (M) |
+| Global constant   | GVL.csv      | `c_` (UPPER_SNAKE_CASE) | `VAR_GLOBAL_CONSTANT` | 11 cols | Empty    | Empty          |
 | Program local     | {Program}.csv| (free)         | `VAR`, `VAR_CONSTANT` | 7 cols | Empty   | Empty          |
 | FB input          | {FB}.csv     | (free)         | `VAR_INPUT`     | 7 cols  | Empty         | Empty          |
 | FB output         | {FB}.csv     | (free)         | `VAR_OUTPUT`    | 7 cols  | Empty         | Empty          |

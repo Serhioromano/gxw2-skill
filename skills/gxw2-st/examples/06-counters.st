@@ -30,7 +30,7 @@ END_IF;
   Starts at preset 50 batches, counts down on each batch complete.
   Loads preset value on rising edge of LOAD input.
 *)
-ctBatches(CD := MEP(xPartsFull), LOAD := MEP(g_xHMI_Reset),
+ctBatches(CD := MEP(xPartsFull), LOAD := MEP(g_xHmiReset),
           PV := K50, Q := xBatchesDone, CV := iBatchesLeft);
 
 (*
@@ -39,7 +39,7 @@ ctBatches(CD := MEP(xPartsFull), LOAD := MEP(g_xHMI_Reset),
   Uses separate QU (up output) and QD (down output).
 *)
 ctTotal(CU := MEP(DI_PhotoEye), CD := MEP(DI_LowLevel),
-        RESET := MEP(g_xHMI_Reset), LOAD := FALSE,
+        RESET := MEP(g_xHmiReset), LOAD := FALSE,
         PV := K9999, QU := xTotalUp, QD := xTotalDown, CV := iTotalCount);
 
 (*

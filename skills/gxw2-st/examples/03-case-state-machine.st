@@ -48,7 +48,7 @@ CASE iState OF
         DO_GreenLight := TRUE;  (* Green light = ready *)
         xMotorRun := FALSE;
         xValveOpen := FALSE;
-        IF MEP(g_xHMI_Start) OR MEP(DI_Start) THEN
+        IF MEP(g_xHmiStart) OR MEP(DI_Start) THEN
             iState := 30;  (* Advance to Run *)
         END_IF;
 
@@ -84,7 +84,7 @@ CASE iState OF
         DO_RedLight := TRUE;
         g_xAlarmActive := TRUE;
         (* Wait for HMI reset *)
-        IF MEP(g_xHMI_Reset) THEN
+        IF MEP(g_xHmiReset) THEN
             g_xAlarmActive := FALSE;
             iState := 10;  (* Go to Reset after fault *)
         END_IF;

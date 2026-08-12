@@ -67,10 +67,21 @@ Always load this file. These constraints apply to every code generation for GX W
 | `PRG_` | Program POU/file name (ALL CAPS) | `PRG_MAIN` |
 | `c_`   | Constant    | `c_MAX_SPEED`  |
 
-Global variable name prefix: `g_`. I/O variable name prefix: `DI_`, `DO_`, `AI_`, `AO_`.
+Global variable name prefix: `g_` and the body is **camelCase** (e.g., `g_xSystemReady`, `g_iCycleCount`, `g_rTemperature`). I/O variable name prefix: `DI_`, `DO_`, `AI_`, `AO_` (fixed uppercase prefix + CamelCase body: `DI_Start`, `AI_Pressure`).
 FB instance names: prefix `fb` in CamelCase (e.g., `fbMotor`, `fbTimer`). The ALL-CAPS `FB_`/`F_`/`PRG_` prefixes are for POU **file names** only — never for instance declarations.
 FUN names: prefix `F_` in ALL CAPS (e.g., `F_SCALE_VALUE`, `F_TO_CELSIUS`) — the FUN name is used both as the file name and as the call name.
 Constant names: prefix `c_` with UPPER_SNAKE_CASE body (e.g., `c_MAX_SPEED`, `c_DEFAULT_TIMEOUT`).
+
+**ALL CAPS is reserved for constructs only.** Variable names — global, local, FB/FUN I/O, and structure members — are **never** written in ALL CAPS:
+
+| Category | Case | Examples |
+|----------|------|----------|
+| Constructs: POU **file names** (`FB_`, `F_`, `PRG_`), constants (`c_`), instructions | ALL CAPS / UPPER_SNAKE_CASE | `FB_MOTOR`, `F_SCALE_VALUE`, `PRG_MAIN`, `c_MAX_SPEED`, `MOV`, `DABS` |
+| Global variables (`g_`) | **camelCase** — never ALL CAPS | `g_xSystemReady`, `g_iCycleCount`, `g_rTemperature`, `g_tCycleTimeout` |
+| Local variables, FB/FUN I/O, structure members | camelCase | `xMotorRunning`, `iCount`, `rTemperature`, `iID` |
+| I/O bindings | Fixed uppercase prefix + CamelCase body | `DI_Start`, `DO_Pump`, `AI_Pressure`, `AO_Valve` |
+
+> **Global variables must be generated in camelCase — never in ALL CAPS.** `g_xSystemReady` is correct; `G_XSYSTEMREADY`, `G_SYSTEM_READY`, or `G_X_SYSTEM_READY` are **wrong**. ALL-CAPS names are used only for constructs (POU file names, constants, instructions), not for variables.
 
 ### FB/FUN/PRG POU and File Naming
 
