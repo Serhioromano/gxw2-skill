@@ -2,7 +2,7 @@
 
 All notable changes to GXW2-ST will be documented in this file.
 
-## [Unreleased]
+## [v1.6.1]
 
 - `change` - **Code files use the `.iecst` extension (was `.st`)**: every generated code file now uses `.iecst` (IEC 61131-3 Structured Text). Renamed all example code files (`examples/*.iecst`, `examples/15-three-program/*.iecst`) and updated every `.st` → `.iecst` reference in `SKILL.md`, `references/common-rules.md`, `references/csv-variables.md`, and `README.md`.
 
