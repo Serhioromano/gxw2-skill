@@ -6,7 +6,7 @@ A **package for the [Pi Coding Agent](https://github.com/earendil-works/pi)** th
 
 - Generates correct ST code compatible with GX Works 2 FX series compiler
 - Generates **CSV variable files** for the GX Works 2 Label Editor (UTF-16 LE, tab-separated)
-- Creates function blocks (FB), functions (FUN), and structured programs with proper 2-file pattern (`.st` + `.csv`)
+- Creates function blocks (FB), functions (FUN), and structured programs with proper 2-file pattern (`.iecst` + `.csv`)
 - Knows every GX Works 2 FX-specific constraint:
   - Forbidden constructs (`CONTINUE`, `LREAL`, `SR`/`RS`, named CASE, `VAR_IN_OUT`)
   - Correct Mitsubishi function names (`RND` not `ROUND`, `MAXIMUM` not `MAX`, `LIMITATION` not `LIMIT`)
@@ -105,7 +105,7 @@ Example prompts:
 ## Key Design Decisions
 
 ### CSV-First Variable Management
-GX Works 2 uses the **Label Editor** for variables, not inline `VAR...END_VAR` blocks. This skill always generates paired `.st` code files and `.csv` label files in **UTF-16 LE with BOM, tab-separated, all values quoted** — exactly the format GX Works 2 expects for CSV import.
+GX Works 2 uses the **Label Editor** for variables, not inline `VAR...END_VAR` blocks. This skill always generates paired `.iecst` code files and `.csv` label files in **UTF-16 LE with BOM, tab-separated, all values quoted** — exactly the format GX Works 2 expects for CSV import.
 
 ### FX Series Only
 No Q-series, L-series, or iQ-R constructs. The skill targets the FX compiler's specific limitations: no `CONTINUE`, no `LREAL`, no `SR`/`RS` FBs, no `VAR_IN_OUT`, no named CASE labels, and no trigonometric functions (`SIN`, `COS`, `TAN`, etc.).

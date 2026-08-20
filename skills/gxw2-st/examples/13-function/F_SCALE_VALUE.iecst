@@ -2,7 +2,7 @@
   Function: F_SCALE_VALUE
   Purpose: Linear scaling of a raw INT value to engineering REAL units.
            Converts iRaw from range [iRawMin..iRawMax] to [rEngMin..rEngMax].
-  Files:   F_SCALE_VALUE.st (this file — code body only)
+  Files:   F_SCALE_VALUE.iecst (this file — code body only)
            F_SCALE_VALUE.csv (VAR_INPUT declarations)
   Rules:   FUN names use the F_ prefix in ALL CAPS; the file base name and
            POU name match (F_SCALE_VALUE).

@@ -40,7 +40,7 @@ Example of the raw format (shown here as readable text, but write as UTF-16 LE):
 
 Every POU (program, function block, function) requires two files with the same base name:
 
-- `{POU_Name}.st` — code body only (no variable declarations)
+- `{POU_Name}.iecst` — code body only (no variable declarations)
 - `{POU_Name}.csv` — all variables for that POU (UTF-16 LE, tab-separated, all quoted)
 
 ---
@@ -182,7 +182,7 @@ Programs support only `VAR` and `VAR_CONSTANT`. No `VAR_INPUT`, no `VAR_OUTPUT`.
 ## Function Block CSV Pattern
 
 FB requires two files with the same name:
-- `{FB_NAME}.st` — code only (no FB declaration, no VAR blocks)
+- `{FB_NAME}.iecst` — code only (no FB declaration, no VAR blocks)
 - `{FB_NAME}.csv` — local + input + output variables (7 columns)
 
 FB file names follow the `FB_` + ALL CAPS convention (see `common-rules.md` → Naming Conventions): the POU/file name is `FB_MOTOR`, while instances are declared in CamelCase (`fbMotor : FB_MOTOR`).
@@ -200,7 +200,7 @@ FB file names follow the `FB_` + ALL CAPS convention (see `common-rules.md` → 
 "VAR"	"rtStart"	"R_TRIG"	""	""	""	"Rising edge detector instance"
 ```
 
-**FB_MOTOR.st:**
+**FB_MOTOR.iecst:**
 ```iecst
 (* Motor control with feedback monitoring *)
 rtStart(CLK := xStart, Q := xRisingEdge);
@@ -240,7 +240,7 @@ FUN names follow the `F_` + ALL CAPS convention (see `common-rules.md` → Namin
 "VAR_INPUT"	"rEngMax"	"REAL"	""	""	""	"Engineering maximum"
 ```
 
-**F_SCALE_VALUE.st:**
+**F_SCALE_VALUE.iecst:**
 ```iecst
 (* Returns scaled REAL value *)
 F_SCALE_VALUE := rEngMin +
@@ -258,7 +258,7 @@ rResult := F_SCALE_VALUE(iRaw := AI_Pressure, iRawMin := K0, iRawMax := K4000,
 
 ## Program CSV Pattern
 
-Programs follow the same 2-file rule: `{ProgramName}.st` + `{ProgramName}.csv`
+Programs follow the same 2-file rule: `{ProgramName}.iecst` + `{ProgramName}.csv`
 
 **MAIN.csv** (7 columns):
 ```tsv

@@ -3,7 +3,7 @@
   Purpose: Motor control with feedback monitoring, start delay,
            fault detection on feedback timeout, and fault reset.
            Demonstrates a complete FB pattern for GX Works 2.
-  Files:   FB_MOTOR.st (this file — code body only)
+  Files:   FB_MOTOR.iecst (this file — code body only)
            FB_MOTOR.csv (VAR_INPUT, VAR_OUTPUT, VAR declarations)
   Rules:   FB file/POU name uses the FB_ prefix in ALL CAPS (FB_MOTOR);
            instances are declared in CamelCase (fbMotor : FB_MOTOR).

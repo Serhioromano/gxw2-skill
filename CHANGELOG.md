@@ -2,6 +2,10 @@
 
 All notable changes to GXW2-ST will be documented in this file.
 
+## [Unreleased]
+
+- `change` - **Code files use the `.iecst` extension (was `.st`)**: every generated code file now uses `.iecst` (IEC 61131-3 Structured Text). Renamed all example code files (`examples/*.iecst`, `examples/15-three-program/*.iecst`) and updated every `.st` → `.iecst` reference in `SKILL.md`, `references/common-rules.md`, `references/csv-variables.md`, and `README.md`.
+
 ## [v1.5.0]
 
 - `change` - **Default project layout is INIT/MAIN/PROCESS (was INIT/ROUTINE/MAIN)**: every project now generates `PRG_INIT` (one-time startup actions; registered in program/task settings with execution condition M8002 — **no M8002 guard inside the code**), `PRG_MAIN` (business logic, every scan), and `PRG_PROCESS` (non-business actions: error checks, alarm handling, data transfer, HMI/comm refresh). Programs communicate only via globals. Updated `references/common-rules.md` (3-Program Structure section), `references/system-devices.md` (usage example — INIT without `IF M8002`, ROUTINE → PROCESS), `SKILL.md` (Phase 1 POU-list default + Modify split name), `README.md` (Three Programs Per Project), `examples/14-pid-control.st` (header note: PID table init moves to PRG_INIT in the 3-program layout). Added example project `examples/15-three-program/` (`PRG_INIT`, `PRG_MAIN`, `PRG_PROCESS` `.st`/`.csv` pairs, UTF-16 LE + BOM).

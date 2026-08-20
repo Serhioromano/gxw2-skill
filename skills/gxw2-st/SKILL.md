@@ -16,7 +16,7 @@ compatibility: GX Works 2, FX series (FX3U, FX3G, FX3S, FX5U)
 # GX Works 2 Structured Text — FX Series
 
 Generate ST code and CSV variable import files for Mitsubishi FX series PLCs
-in GX Works 2. Every code output must include both `.st` code files and `.csv`
+in GX Works 2. Every code output must include both `.iecst` code files and `.csv`
 variable files for the Label Editor.
 
 ## Target Platform
@@ -83,7 +83,7 @@ heavy instruction catalog.
    - [references/data-types.md](references/data-types.md) — type declarations and casting
    - [references/devices.md](references/devices.md) — device addresses (X, Y, M, D, etc.)
    - [references/system-devices.md](references/system-devices.md) — special relays/registers (M8000+, D8000+)
-3. Generate `.st` and `.csv` files according to the plan.
+3. Generate `.iecst` and `.csv` files according to the plan.
 4. **Do not re-load `references/DB/00_Instruction_List.md`** during code generation — use your plan
    and the lightweight reference files.
 
@@ -94,12 +94,12 @@ heavy instruction catalog.
 When the user asks to **change existing ST code** (fix a bug, add a timer,
 rework a state machine), do not regenerate from scratch:
 
-1. Read the existing `.st`/`.csv` pair(s) named in the request. Confirm the
+1. Read the existing `.iecst`/`.csv` pair(s) named in the request. Confirm the
    target platform first (see Target Platform above).
 2. Produce a **delta plan** — what logic changes, which instructions/FBs are
    added or removed, which CSV variables and FB instances are affected.
 3. Load only the instruction files involved (see Instruction File Path Rule).
-4. Edit **both** files of each pair — `.st` (code) and `.csv` (variables).
+4. Edit **both** files of each pair — `.iecst` (code) and `.csv` (variables).
    A device or address changed in one file must be changed in the other.
 5. Keep the delta plan small; re-run the full Plan → Generate only if the
    change touches program structure (POU list, INIT/MAIN/PROCESS split).
@@ -165,7 +165,7 @@ Each instruction has its own file in `references/DB/`. To get full details
 
 Every code generation produces **two file sets**:
 
-1. **`.st` files** — code body only. No `VAR...END_VAR` blocks, no inline
+1. **`.iecst` files** — code body only. No `VAR...END_VAR` blocks, no inline
    variable declarations, no FB instance declarations.
 2. **`.csv` files** — all variables for GX Works 2 Label Editor import.
    Exact column formats and rules in
@@ -175,9 +175,9 @@ Every code generation produces **two file sets**:
 
 | POU Type | Files Required |
 |----------|---------------|
-| Program | `PRG_<NAME>.st` + `PRG_<NAME>.csv` |
-| Function Block | `FB_<NAME>.st` + `FB_<NAME>.csv` |
-| Function | `F_<NAME>.st` + `F_<NAME>.csv` |
+| Program | `PRG_<NAME>.iecst` + `PRG_<NAME>.csv` |
+| Function Block | `FB_<NAME>.iecst` + `FB_<NAME>.csv` |
+| Function | `F_<NAME>.iecst` + `F_<NAME>.csv` |
 | I/O binding (project-wide) | `IO.csv` |
 | Global variables (project-wide) | `GVL.csv` |
 | Structure definition | `{StructName}.csv` |

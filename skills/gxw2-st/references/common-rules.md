@@ -41,7 +41,7 @@ Always load this file. These constraints apply to every code generation for GX W
 ## Always-Generate Rules
 
 - Every code output = ST file(s) + CSV variable file(s).
-- Programs, FBs, and FUNs all follow the 2-file rule: `.st` + `.csv` with the same base name.
+- Programs, FBs, and FUNs all follow the 2-file rule: `.iecst` + `.csv` with the same base name.
 - Direct device access in ST code is **discouraged** — use label variables from CSV instead.
 - Include comment headers with POU purpose and I/O mapping.
 - Write code in English. Write comments in English.
@@ -89,9 +89,9 @@ POU file names carry an ALL-CAPS prefix so every file immediately reveals what i
 
 | POU type | File name pattern | ALL CAPS | File pair | Example |
 |----------|-------------------|----------|-----------|---------|
-| Function Block | `FB_<NAME>` | yes | `FB_<NAME>.st` + `FB_<NAME>.csv` | `FB_MOTOR.st` / `FB_MOTOR.csv` |
-| Function | `F_<NAME>` | yes | `F_<NAME>.st` + `F_<NAME>.csv` | `F_SCALE_VALUE.st` / `F_SCALE_VALUE.csv` |
-| Program | `PRG_<NAME>` | yes | `PRG_<NAME>.st` + `PRG_<NAME>.csv` | `PRG_MAIN.st` / `PRG_MAIN.csv` |
+| Function Block | `FB_<NAME>` | yes | `FB_<NAME>.iecst` + `FB_<NAME>.csv` | `FB_MOTOR.iecst` / `FB_MOTOR.csv` |
+| Function | `F_<NAME>` | yes | `F_<NAME>.iecst` + `F_<NAME>.csv` | `F_SCALE_VALUE.iecst` / `F_SCALE_VALUE.csv` |
+| Program | `PRG_<NAME>` | yes | `PRG_<NAME>.iecst` + `PRG_<NAME>.csv` | `PRG_MAIN.iecst` / `PRG_MAIN.csv` |
 
 Rules:
 - `FB_`, `F_`, `PRG_` are **file-name prefixes** — the POU name in the definition area matches the file base name: `FB_MOTOR`, `F_SCALE_VALUE`, `PRG_MAIN` (never `MotorControl` or `ScaleValue` for files).
