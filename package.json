@@ -1,6 +1,6 @@
 {
   "name": "gxw2-skill",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Pi skill: generates Structured Text (ST) code and CSV variable import files for Mitsubishi Electric FX series PLCs (FX3U, FX3G, FX3S, FX5U) in GX Works 2.",
   "keywords": [
     "pi-package",
