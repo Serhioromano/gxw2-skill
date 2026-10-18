@@ -2,6 +2,13 @@
 
 All notable changes to GXW2-ST will be documented in this file.
 
+## [v1.6.2]
+
+- `add` - **`RETURN` documented (ST early exit)**: new `references/DB/RETURN.md` covering the `RETURN;` statement — syntax (statement only, no `EN`, no `RETURN <value>;`), FUN guard clauses (the function result must be assigned to the `F_NAME` before every `RETURN`, otherwise the caller gets an undefined result), early exit from program/FB bodies, the `RETURN` vs `RET` vs `IRET` vs `EXIT` distinction, and pitfalls. Added the `RETURN` row to `references/DB/00_Instruction_List.md` (section 7 — Program Flow) and a `Program Flow Control — RETURN` section to `references/common-rules.md` (after Iteration). `examples/13-function/F_SCALE_VALUE.iecst` now uses a divide-by-zero guard clause with `RETURN;`.
+- `docs` - `README.md`: added statement forms (`RETURN;` / `EXIT;`) to the FX-specific constraint list.
+- `fix` - Synced `SKILL.md` frontmatter version to 1.6.1 (package.json was bumped to 1.6.1 but the skill frontmatter was left at 1.4.2).
+- `fix` - Broken catalog link: the index listed the byte-swap instruction as `SWA.md`, but the file is `SWAP.md` — corrected the File column in `references/DB/00_Instruction_List.md` and the heading in `references/DB/SWAP.md`.
+
 ## [v1.6.1]
 
 - `change` - **Code files use the `.iecst` extension (was `.st`)**: every generated code file now uses `.iecst` (IEC 61131-3 Structured Text). Renamed all example code files (`examples/*.iecst`, `examples/15-three-program/*.iecst`) and updated every `.st` → `.iecst` reference in `SKILL.md`, `references/common-rules.md`, `references/csv-variables.md`, and `README.md`.

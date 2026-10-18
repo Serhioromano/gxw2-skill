@@ -206,6 +206,23 @@ END_REPEAT;
 EXIT;  (* exits the innermost loop immediately *)
 ```
 
+## Program Flow Control — RETURN
+
+`RETURN` is the only early-exit statement in GX Works 2 ST. It ends the body of the current POU (program, FB, or function); statements below it are skipped for this scan.
+
+```iecst
+IF rDenominator = E0.0 THEN
+    F_DIVIDE_SAFE := E0.0;   (* assign the FUN result BEFORE RETURN *)
+    RETURN;                  (* skips the rest of this POU body for this scan *)
+END_IF;
+```
+
+- `RETURN;` **is supported** in GX Works 2 ST — statement form only: no `RETURN(EN);`, no `RETURN <value>;`.
+- In a FUN the result is the value assigned to the function name, so **assign `F_NAME` before every `RETURN`**. A `RETURN` on a path without the assignment silently returns an undefined result (`0` or a leftover from an earlier call).
+- `RETURN` ends the **whole POU body**, not just a loop. To leave a `FOR`/`WHILE`/`REPEAT` loop, use `EXIT`.
+- Do not use `RETURN` in `PRG_INIT` to emulate a one-time run — that comes from the program registration.
+- No CSV declaration needed. Full details, examples and pitfalls: [DB/RETURN.md](DB/RETURN.md).
+
 ## Operators
 
 | Category     | Operators                                |

@@ -14,6 +14,7 @@ A **package for the [Pi Coding Agent](https://github.com/earendil-works/pi)** th
   - `:=` for ALL FB parameters including outputs
   - MEP/MEF preferred over R_TRIG/F_TRIG
   - K/H/E/T# literal prefix notation
+  - Statement forms: `RETURN;` (early POU exit — assign the FUN result first) and `EXIT;` (loop break only)
 - Provides state machine patterns (Init→Reset→Idle) and 3-program structure (INIT/MAIN/PROCESS)
 
 ## Versions & Compatibility

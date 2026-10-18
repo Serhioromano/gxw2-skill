@@ -43,6 +43,7 @@ operands, variants, examples, support):
 | EI.md | [EI.md](EI.md) | EI / Enable Interrupt | Enable Interrupt | 121 | ✓ | ✓ |
 | FEND.md | [FEND.md](FEND.md) | FEND / Main Routine Program End | Main Routine Program End | 123 | ✓ | ✓ |
 | WDT.md | [WDT.md](WDT.md) | WDT / Watchdog Timer Refresh | Watchdog Timer Refresh | 125 | ✓ | ✓ |
+| RETURN.md | [RETURN.md](RETURN.md) | RETURN / ST early exit (statement, no ladder equivalent) | Early exit from POU body / FUN guard clause | — | ✓ | ✓ |
 ### 8. Move and Compare
 
 | CMP.md | [CMP.md](CMP.md) | CMP / Compare | Compare | 133 | ✓ | ✓ |
@@ -186,7 +187,7 @@ operands, variants, examples, support):
 | BTOW.md | [BTOW.md](BTOW.md) | BTOW / BYTE to WORD | BYTE to WORD | 503 | — | — |
 | UNI.md | [UNI.md](UNI.md) | UNI / 4-bit Linking of Word Data | 4-bit Linking of Word Data | 506 | — | — |
 | DIS.md | [DIS.md](DIS.md) | DIS / 4-bit Grouping of Word Data | 4-bit Grouping of Word Data | 508 | — | — |
-| SWA.md | [SWA.md](SWA.md) | SWAP / Byte Swap | Byte Swap | 510 | ✓ | — |
+| SWAP.md | [SWAP.md](SWAP.md) | SWAP / Byte Swap | Byte Swap | 510 | ✓ | — |
 | SORT2.md | [SORT2.md](SORT2.md) | SORT2 / Sort Tabulated Data 2 | Sort Tabulated Data 2 | 512 | ✓ | — |
 ### 20. Positioning Control
 

@@ -1,4 +1,4 @@
 - Навык и справки создавать на ангилйском языке
-- После обновления структуры обновить SYSTEM.md
+- После обновления структуры обновить AGENTS.md
 - update changelog afther changes are done
 - Never publish package on you own

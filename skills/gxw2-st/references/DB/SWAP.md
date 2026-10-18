@@ -1,4 +1,4 @@
-# SWA — SWAP / Byte Swap
+# SWAP — SWAP / Byte Swap
 
 Manual section: **19.6**, page **510**. Index names: SWAP.
 
